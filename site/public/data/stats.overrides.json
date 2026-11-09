@@ -1,0 +1,7579 @@
+{
+ "_readme": "Manual stat labels. Key = '<PropertyType>.<field>' (see game.json -> statLabels). Fill 'en'/'ru' to replace the label shown on the site; 'format' may be 'percent' (value x100 %), 'multiplier' (x1.05 -> +5%), 'seconds', 'number' or 'hidden'. Empty strings mean 'use the game label / auto label'. This file is never overwritten by the extractor.",
+ "fields": {
+  "Accelerator_AKillRateReload.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "Accelerator_AKillRateReload.fireRate": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": true
+  },
+  "Accelerator_AKillRateReload.maxStacks": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Stacks / Максимум зарядов",
+   "_mult": false
+  },
+  "Accelerator_AKillRateReload.reloadSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Reload Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "Accelerator_AKillSpeed.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "Accelerator_AKillSpeed.maxStacks": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Stacks / Максимум зарядов",
+   "_mult": true
+  },
+  "Accelerator_AKillSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Accelerator_AddedStatsPerBurst.damagePerBurst": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Burst / Урон залпа",
+   "_mult": true
+  },
+  "Accelerator_AddedStatsPerBurst.spreadPerBurst": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Spread Per Burst / Разброс залпа",
+   "_mult": true
+  },
+  "Accelerator_BeeHeal.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": false
+  },
+  "Accelerator_BeeReload.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Size / Максимальный размер",
+   "_mult": true
+  },
+  "Accelerator_BeeSwarm.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "Accelerator_BeeSwarm.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "Accelerator_BeeSwarm.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "Accelerator_BeeSwarm.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": false
+  },
+  "Accelerator_Burst.burstSizeIncrease": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Burst Size Increase / Увеличение размера залпа",
+   "_mult": false
+  },
+  "Accelerator_Burst.maxBurstSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Burst Size / Максимальный размер залпа",
+   "_mult": false
+  },
+  "Accelerator_DmgMissile.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Accelerator_DmgMissile.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Accelerator_DmgMissile.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": false
+  },
+  "Accelerator_DmgMissile.trackingRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Tracking Radius / Радиус преследования",
+   "_mult": false
+  },
+  "Accelerator_ExplodeChance.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Accelerator_ExplodeChance.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "Accelerator_FinalRocket.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "Accelerator_FinalRocket.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Size / Максимальный размер",
+   "_mult": true
+  },
+  "Accelerator_FireSpeedBoost.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Accelerator_FireSpeedBoost.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Accelerator_GrenadeBullets.sizeMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "Accelerator_NormDmg.normalDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Normal Bullet Damage / Обычный урон от пуль",
+   "_mult": false
+  },
+  "Accelerator_RefundBurst.efficiency": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "Accelerator_ReloadWarp.abilityCharge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "Accelerator_ReloadWarp.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Distance / Расстояние",
+   "_mult": false
+  },
+  "Accelerator_ReloadWarp.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "Accelerator_ReloadWarp.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": false
+  },
+  "Accelerator_Requeen.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Accelerator_Requeen.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Accelerator_Requeen.gravityDivisor": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Gravity / Притяжение",
+   "_mult": true
+  },
+  "Accelerator_Requeen.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Accelerator_SpeedBurstOnEmptyReload.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "Accelerator_SpeedBurstOnEmptyReload.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Accelerator_SpeedDamage.damagMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Accelerator_SpeedDamage.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Scaling / Масштабирование урона",
+   "_mult": true
+  },
+  "Accelerator_SpeedDamage.maxSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Speed / Максимальная скорость",
+   "_mult": true
+  },
+  "Accelerator_SpeedRegen.maxRegenSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Health Regen / Максимальное восстановление здоровья",
+   "_mult": true
+  },
+  "Accelerator_SpeedRegen.saturatedRegenDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Accelerator_SpeedRegen.saturatedRegenIncrease": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Elemental Increase / Стихийный подъём",
+   "_mult": true
+  },
+  "Accelerator_SprintAmmoRefund.ammoPerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Second / Добавлено патронов в секунду",
+   "_mult": true
+  },
+  "Accelerator_SprintDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Accelerator_SprintSize.targetMagnetism": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bullet Size / Размер пуль",
+   "_mult": true
+  },
+  "AcidGrenade_DamageExplode.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "AcidGrenade_DamageExplode.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "AcidGrenade_HeavySupport.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Heavy Support / Тяжёлая поддержка",
+   "_mult": false
+  },
+  "AcidGrenade_MoveAbilityCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "AcidGrenade_OverclockCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "AcidGrenade_OverclockCharge.cooldown": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Death Protection Cooldown / Перезарядка защиты от смерти",
+   "_mult": false
+  },
+  "AcidGrenade_OverclockCharge.damageRes": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Resistance / Сопротивление урону",
+   "_mult": false
+  },
+  "AcidGrenade_OverclockCharge.damageResDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "AcidGrenade_OverhealthRad.radiusMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Overshield Radius / Радиус защитного экрана",
+   "_mult": true
+  },
+  "AcidGrenade_Puddle.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "AcidGrenade_PuddleCharge.chargeMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Puddle Recharge Speed / Скорость перезарядки в луже",
+   "_mult": true
+  },
+  "AcidGrenade_PullIn.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": false
+  },
+  "AcidGrenade_PullIn.radiusMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "AcidGrenade_RandExplosion.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "AcidGrenade_StillCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Per Second / Заряда в секунду",
+   "_mult": false
+  },
+  "AcidGrenade_StillCharge.damageResistance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Resistance / Сопротивление урону",
+   "_mult": true
+  },
+  "Aim.aimFOV": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Aim.canAim": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "AmmoCapacity.ammoCapacity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Capacity / Количество патронов",
+   "_mult": true
+  },
+  "AmmoCapacity.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "AmmoCapacity.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "AmmoCapacity.turbocharged": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "AmmoOnFire.ammoOnFire": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Cost / Стоимость в патронах",
+   "_mult": false
+  },
+  "AutomaticFire.automatic": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BatteryCapacity.ammoCapacity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Battery Capacity / Ёмкость батареи",
+   "_mult": true
+  },
+  "BatteryCapacity.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BatteryCapacity.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BatteryCapacity.turbocharged": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BounceShotgun_AimStats.addedRange": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": false
+  },
+  "BounceShotgun_AimStats.spreadMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Spread / Разброс",
+   "_mult": false
+  },
+  "BounceShotgun_AmmoOnKill.ammoOnKill": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": false
+  },
+  "BounceShotgun_Backboost.aboveDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "BounceShotgun_Backboost.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": false
+  },
+  "BounceShotgun_BounceDamageIncrease.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Bounce / Урон на отскок",
+   "_mult": false
+  },
+  "BounceShotgun_BulletCharge.chargeSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Speed / Скорость зарядки",
+   "_mult": true
+  },
+  "BounceShotgun_BulletCharge.fireInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": true
+  },
+  "BounceShotgun_ChargeLob.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Time / Время зарядки",
+   "_mult": false
+  },
+  "BounceShotgun_ChargeLob.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": false
+  },
+  "BounceShotgun_DefaultEffect.amount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": false
+  },
+  "BounceShotgun_DefaultEffect.effect": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BounceShotgun_FastIgniteReload.ignitedReloadDurationMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ignited Reload Speed / Скорость перезарядки при горении",
+   "_mult": false
+  },
+  "BounceShotgun_Flamethrower.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "BounceShotgun_Flamethrower.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire / Огонь",
+   "_mult": true
+  },
+  "BounceShotgun_Flamethrower.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "BounceShotgun_Flamethrower.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Radius / Радиус",
+   "_mult": true
+  },
+  "BounceShotgun_Flamethrower.turboDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Pesticide / Пестицид",
+   "_mult": false
+  },
+  "BounceShotgun_IgniteFireInterval.ignitedFireIntervalMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ignited Fire Rate / Скорость стрельбы при горении",
+   "_mult": false
+  },
+  "BounceShotgun_IgniteSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": false
+  },
+  "BounceShotgun_ImmolationAmmo.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": false
+  },
+  "BounceShotgun_SelfFire.selfFireAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Self Fire / Огонь на себя",
+   "_mult": false
+  },
+  "BounceShotgun_SlideDamageBoost.slideDamageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Slide Damage / Урон от скольжения",
+   "_mult": false
+  },
+  "Bruiser_Cannonball.addForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "Bruiser_Cannonball.impactForceBounds": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Bruiser_Cannonball.maxDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "Bruiser_Cannonball.maxRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Radius / Максимальный радиус",
+   "_mult": true
+  },
+  "Bruiser_Cannonball.minDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Min Damage / Минимальный урон",
+   "_mult": true
+  },
+  "Bruiser_Cannonball.minRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Min Radius / Минимальный радиус",
+   "_mult": true
+  },
+  "Bruiser_Cannonball.stackingPotencyMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "Bruiser_Cannonball.turboDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "Bruiser_DeathTeamHeal.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "Bruiser_Killcode.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Bruiser_Killcode.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "Bruiser_Leap.chargeRefundedWhenNoDive": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Refunded / Восстановление заряда",
+   "_mult": true
+  },
+  "Bruiser_Leap.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Bruiser_Leap.leapForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Leap Force / Сила прыжка",
+   "_mult": true
+  },
+  "Bruiser_Leap.stackMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Bruiser_Leap.upwardLeap": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Upward Leap / Прыжок вверх",
+   "_mult": true
+  },
+  "Bruiser_LightningDive.emDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Bruiser_LightningDive.maxHits": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Hits / Максимально попаданий",
+   "_mult": true
+  },
+  "Bruiser_LightningDive.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": false
+  },
+  "Bruiser_LightningDive.turboAddDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveAwayForce.impactRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveAwayForce.pushAwayForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Outward Force / Сила удара в сторону",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveAwayForce.upForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Up Force / Сила удара вверх",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveBounces.bounces": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Dive Bounces / Бонус за пике",
+   "_mult": false
+  },
+  "Bruiser_NoseDiveCooldown.chargesStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Bruiser_NoseDiveCooldown.emCooldownMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Bruiser_NoseDiveCooldown.maxCharges": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charges / Заряды",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveCooldown.rechargeDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveCooldown.rechargeStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Bruiser_NoseDiveCooldown.turbocharged": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Bruiser_NoseDiveDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveDamage.effect": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Bruiser_NoseDiveDamage.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": false
+  },
+  "Bruiser_NoseDiveDistRadius.sizePerMeter": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size Per Meter / Область поражения на метр",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveShield.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveShield.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveShield.turboDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Bruiser_NoseDiveShield.turboSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "BulletMagnetism.bulletMagnetismSurface": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bullet Size / Размер пуль",
+   "_mult": true
+  },
+  "BulletMagnetism.bulletMagnetismTarget": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletMagnetism.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletMagnetism.showSurfaceMagnetismStat": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletMagnetism.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletMagnetismTracking.bulletMagnetismTarget": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Tracking Radius / Радиус преследования",
+   "_mult": true
+  },
+  "BulletMagnetismTracking.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletPhysics.bulletGravity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bullet Gravity / Притяжение пуль",
+   "_mult": false
+  },
+  "BulletPhysics.bulletSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bullet Speed / Скорость пуль",
+   "_mult": false
+  },
+  "BulletPhysics.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletPrefab.bullet": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletShake.bulletShakeRotation": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletShake.bulletShakeTranslation": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletShake.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "BulletsPerShot.bulletsPerShot": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bullets Per Shot / Пуль на выстрел",
+   "_mult": false
+  },
+  "BurstFire.burstFireInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Burst Interval / Интервал между залпами",
+   "_mult": false
+  },
+  "BurstFire.burstSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Burst Size / Количество пуль залпа",
+   "_mult": false
+  },
+  "Carver_AcidRange.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Carver_AcidRange.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "Carver_AddFireOverTime.overheatSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Overheat Speed / Скорость перегрева",
+   "_mult": false
+  },
+  "Carver_Blood.bloodOnKill": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Blood on Kill / Кровь за врага",
+   "_mult": true
+  },
+  "Carver_Blood.maxBlood": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Blood / Максимум крови",
+   "_mult": true
+  },
+  "Carver_Blood.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Carver_BloodConsume.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Stack / Урон на заряд",
+   "_mult": true
+  },
+  "Carver_BloodConsume.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Carver_BloodDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Carver_BloodDamageResist.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Resistance / Сопротивление урону",
+   "_mult": false
+  },
+  "Carver_BloodJump.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": false
+  },
+  "Carver_BloodLightning.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance Per Stack / Шанс на заряд",
+   "_mult": true
+  },
+  "Carver_BloodMoveCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "Carver_BloodMoveCharge.threshold": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Threshold / Порог",
+   "_mult": false
+  },
+  "Carver_DamageArea.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Carver_DamageArea.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Carver_DamageReduction.damageReduction": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "Carver_DamageReduction.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Carver_Deflector.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": false
+  },
+  "Carver_FireMoveSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Carver_HealBurst.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": false
+  },
+  "Carver_HealBurst.interval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Interval / Интервал",
+   "_mult": false
+  },
+  "Carver_HealBurst.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Radius / Радиус",
+   "_mult": false
+  },
+  "Carver_HealthDrop.dropChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": false
+  },
+  "Carver_HealthDrop.healAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": false
+  },
+  "Carver_IgniteAmmo.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": false
+  },
+  "Carver_KillHeavyAmmo.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Efficiency / Эффективность патронов",
+   "_mult": false
+  },
+  "Carver_PullIn.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "Carver_PullIn.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "Carver_Rage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Stack / Урон на заряд",
+   "_mult": true
+  },
+  "Carver_Rage.rageOnKill": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Stacks on Kill / Заряды за врага",
+   "_mult": true
+  },
+  "Carver_Rage.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed Per Stack / Скорость за заряд",
+   "_mult": true
+  },
+  "Carver_Shackles.chargeSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Carver_Shackles.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Carver_Shackles.moveSpeedBounds": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Carver_Shackles.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Radius / Радиус",
+   "_mult": true
+  },
+  "Carver_ShockFireRate.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Carver_ShockFireRate.fireRate": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": true
+  },
+  "CellTouchingMagSize.magSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Cell / Патронов на ячейку",
+   "_mult": false
+  },
+  "Charge.canStaack": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Charge.chargeCoolDownSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Charge.chargeDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Time / Время зарядки",
+   "_mult": false
+  },
+  "ChargeOther.canFireWhileCharging": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ChargeOther.chargeMultiplierOnFire": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ChargeOther.fireOnRelease": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ChargeOther.fireWhenFullyCharged": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "CryoGrenade_AmbientFreeze.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGrenade_AmbientFreeze.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Radius / Радиус",
+   "_mult": true
+  },
+  "CryoGrenade_Cyclone.acceleration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Lock-on Speed / Скорость наведения",
+   "_mult": true
+  },
+  "CryoGrenade_Cyclone.addedDamageRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bullet Size / Размер пуль",
+   "_mult": true
+  },
+  "CryoGrenade_Cyclone.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "CryoGrenade_Cyclone.lifetime": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Added Duration / Дополнительная длительность",
+   "_mult": true
+  },
+  "CryoGrenade_Cyclone.orbitRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "CryoGrenade_Cyclone.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "CryoGrenade_DetonateDown.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "CryoGrenade_ExtraExpl.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGrenade_FollowCrosshair.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "CryoGrenade_FreezeCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "CryoGrenade_FrozenDamageTaken.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "CryoGrenade_FrozenElementMult.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGrenade_Lifetime.lifetime": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "CryoGrenade_Lifetime.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "CryoGrenade_NearbyHeal.distance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Distance / Расстояние",
+   "_mult": true
+  },
+  "CryoGrenade_NearbyHeal.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing Per Second / Лечение в секунду",
+   "_mult": true
+  },
+  "CryoGrenade_Oven.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGrenade_Oven.fireInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": true
+  },
+  "CryoGrenade_Roll.rollSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "CryoGrenade_Roll.sizePerMeter": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size Per Meter / Область поражения на метр",
+   "_mult": true
+  },
+  "CryoGrenade_Shards.count": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cluster Count / Количество бомб в кассете",
+   "_mult": false
+  },
+  "CryoGrenade_Shards.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGrenade_ShatterMelee.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGrenade_ShatterMelee.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "CryoGun_AirAmmo.ammoPerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Second / Добавлено патронов в секунду",
+   "_mult": true
+  },
+  "CryoGun_AntiGun.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGun_AutoRifle.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "CryoGun_CellAmmo.ammoPerCell": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Cell / Патронов на ячейку",
+   "_mult": true
+  },
+  "CryoGun_CloseRange.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGun_CloseRange.distance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "CryoGun_EleLaunch.cooldown": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": true
+  },
+  "CryoGun_EleLaunch.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "CryoGun_EleLaunch.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "CryoGun_Explosive.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGun_Explosive.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "CryoGun_Explosive.normalDamageAdd": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "CryoGun_Explosive.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "CryoGun_FrozeDmg.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGun_HaloFireRate.fireInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": true
+  },
+  "CryoGun_HaloFireRate.haloRange": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charged Range / Дальность при заряде",
+   "_mult": false
+  },
+  "CryoGun_HaloSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "CryoGun_ImmuneLoad.cooldown": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "CryoGun_NormalDamage.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGun_Popcorn.count": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cluster Count / Количество бомб в кассете",
+   "_mult": false
+  },
+  "CryoGun_Popcorn.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGun_Popcorn.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "CryoGun_Popcorn.maxDistance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Distance / Расстояние",
+   "_mult": false
+  },
+  "CryoGun_RandElement.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "CryoGun_ShatterAmmo.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo / Патроны",
+   "_mult": false
+  },
+  "CryoGun_ShatterStacks.shatterStacksMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "CryoGun_ShootMelee.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGun_ShootMelee.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "CryoGun_ShootMelee.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "CryoGun_Sniper.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGun_Sniper.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "CryoGun_SpinDamage.purpleDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Blue / Голубой",
+   "_mult": false
+  },
+  "CryoGun_SpinDamage.redDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Yellow / Жёлтый",
+   "_mult": false
+  },
+  "CryoGun_SpinDamage.yellowDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Purple / Фиолетовый",
+   "_mult": false
+  },
+  "CryoGun_SpinMoveDmg.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "CryoGun_SpinMoveDmg.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "CryoGun_SprintFire.amount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": true
+  },
+  "DMLRLaserCharge.laserAmmoRefill": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Generated by Laser / Генерируемые лазером патроны",
+   "_mult": false
+  },
+  "DMLRLaserCharge.laserChargeCapacity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Laser Charge Capacity / Ёмкость заряда лазера",
+   "_mult": false
+  },
+  "DMLRLaserCharge.laserChargeOnHit": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Laser Charge on Hit / Заряд лазера от удара",
+   "_mult": false
+  },
+  "DMLRLaserCharge.laserChargeUsePerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Laser Charge Consumption / Расход заряда лазера",
+   "_mult": false
+  },
+  "DMLRLaserCharge.maxMagazineSizeMultiplierFromAmmoRefill": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "DMLRLaserDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Laser Damage / Урон от лазера",
+   "_mult": false
+  },
+  "DMLRLaserDamage.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Laser Element / Стихия лазера",
+   "_mult": false
+  },
+  "DMLRLaserDamage.effectType": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "DMLRLaserDamage.turbocharged": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "DMLR_AutoModeSwitch.damageMultPerStack": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Stack / Урон на заряд",
+   "_mult": false
+  },
+  "DMLR_AutoModeSwitch.switchInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Switch Interval / Интервал переключения",
+   "_mult": false
+  },
+  "DMLR_AutoModeSwitch.turboDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Stack / Урон на заряд",
+   "_mult": true
+  },
+  "DMLR_BigLaserDamage.chargeUseMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Laser Charge Consumption / Расход заряда лазера",
+   "_mult": true
+  },
+  "DMLR_BigLaserDamage.minCharge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Min Laser Charge / Минимальный заряд лазера",
+   "_mult": false
+  },
+  "DMLR_ChargeOnCoreKill.laserCharge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "DMLR_ChargeOnSaturate.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "DMLR_HealingLaser.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": false
+  },
+  "DMLR_HealingLaser.healingCharge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge on Heal / Заряд при лечении",
+   "_mult": false
+  },
+  "DMLR_HealingLaser.selfHealingMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing Efficiency / Эффективность лечения",
+   "_mult": true
+  },
+  "DMLR_HotExhaust.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": false
+  },
+  "DMLR_IntermittentElement.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Amount / Количество",
+   "_mult": false
+  },
+  "DMLR_LaserBurst.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": false
+  },
+  "DMLR_LaserBurst.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "DMLR_LaserBurst.interval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Interval / Интервал",
+   "_mult": false
+  },
+  "DMLR_LaserBurst.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Size / Максимальный размер",
+   "_mult": false
+  },
+  "DMLR_LaserBurst.turboDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "DMLR_LaserDamageResist.damageResistance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "DMLR_LaserMoveSpeed.speedIncrease": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": false
+  },
+  "DMLR_LightningArc.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "DMLR_LightningArc.turboArcChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": false
+  },
+  "DMLR_LimbDamage.limbDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Limb Damage / Урон по конечностям",
+   "_mult": false
+  },
+  "DMLR_LimbDamage.shellDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Shell Damage / Урон по корпусу",
+   "_mult": false
+  },
+  "DMLR_RefundAmmoOnKill.ammoCount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": false
+  },
+  "DMLR_RefundAmmoOnKill.refundChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "DMLR_ReloadThrow.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Second Explosion Damage / Урон от второго взрыва",
+   "_mult": true
+  },
+  "DMLR_ReloadThrow.initialDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "First Explosion Damage / Урон от первого взрыва",
+   "_mult": true
+  },
+  "DMLR_ReloadThrow.shotSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Second Explosion Size / Зона поражения второго взрыва",
+   "_mult": true
+  },
+  "DMLR_ReloadThrow.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "DMLR_ReloadThrow.turboLaserDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Laser Damage / Урон от лазера",
+   "_mult": false
+  },
+  "DMLR_Shards.coneAngle": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Spread / Разброс",
+   "_mult": true
+  },
+  "DMLR_Shards.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "DMLR_ThrowReloadCancel.efficacyPerCancel": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficacy Per Throw / Эффективность броска",
+   "_mult": false
+  },
+  "Damage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Damage.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": true
+  },
+  "Damage.effectType": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Damage.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Damage.modifyDamageByPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Damage.modifyEffectAmountPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Damage.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "FireAnimation.fireAnimationSpeedMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "FireAnimation.overrides": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "FireConstraints.canAimWhileSliding": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "FireConstraints.canFireWhileJumping": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "FireConstraints.canFireWhileSliding": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "FireConstraints.canFireWhileSprinting": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "FireInterval.fireInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": false
+  },
+  "FireInterval.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "FireSound.fireSound": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Glider_BackwardFlySpeed.multiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Glider_BodyPartFuel.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Glider_BodyPartHealing.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "Glider_BodyPartMoveSpeed.speedMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Glider_Floater.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "Glider_Floater.detachChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Glider_Floater.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Glider_Floater.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Radius / Радиус",
+   "_mult": true
+  },
+  "Glider_GiveFuelOnAirKill.fuelOnAirKill": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Glider_Look.flyLookSensitivityMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Glider_Look.lockFlyDirection": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Globbler_DamageTakenSiphon.maxDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "Globbler_DamageTakenSiphon.multiplierPerDamageTaken": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "Globbler_ElementChance.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Globbler_Globblometer.globblometer": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "{globblometer} / {каплемер}",
+   "_mult": false
+  },
+  "Globbler_GlobblometerAmmo.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Stack / Патроны за заряд",
+   "_mult": false
+  },
+  "Globbler_GlobblometerSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": false
+  },
+  "Globbler_GrenadeSiphon.chargePerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Per Second / Заряда в секунду",
+   "_mult": false
+  },
+  "Globbler_GrenadeSiphon.maxSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Size / Максимальный размер",
+   "_mult": true
+  },
+  "Globbler_GrenadeSiphon.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "Globbler_ImpactDmg.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Globbler_PocketReload.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo / Патроны",
+   "_mult": false
+  },
+  "Globbler_Puddle.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Globbler_Puddle.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Globbler_RarityStats.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Globbler_RarityStats.efficiency": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": false
+  },
+  "Globbler_RarityStats.fireRate": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Globbler_RarityStats.globblometer": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Globbler_RarityStats.reloadSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Globbler_SelfDmgResist.damageResist": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Resistance / Сопротивление урону",
+   "_mult": true
+  },
+  "Globbler_SelfDmgResist.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Globbler_SizeCharge.chargeTimePerAmmo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Time / Время зарядки",
+   "_mult": true
+  },
+  "Globbler_SizeCharge.damagePerAmmo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Bullet / Урон на пулю",
+   "_mult": true
+  },
+  "Globbler_SizeCharge.sizePerAmmo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size Per Bullet / Размер на пулю",
+   "_mult": true
+  },
+  "Globbler_SizeWeight.maxSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Size / Максимальный размер",
+   "_mult": true
+  },
+  "Globbler_SwitchDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "Globbler_WaveGrenade.ammoCapacity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Capacity / Количество патронов",
+   "_mult": true
+  },
+  "Globbler_WaveGrenade.fireInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": true
+  },
+  "Globbler_WaveGrenade.length": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Distance / Расстояние",
+   "_mult": true
+  },
+  "Globbler_WaveGrenade.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "GrapplePole_Antigrav.multiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Gravity / Притяжение",
+   "_mult": false
+  },
+  "GrapplePole_Antigrav.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "GrapplePole_AttachToPlayer.energyMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Energy Used / Использование энергии",
+   "_mult": false
+  },
+  "GrapplePole_AttachToPlayer.maxDistance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Grapple Range / Расстояние для захвата",
+   "_mult": true
+  },
+  "GrapplePole_Beenade.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "GrapplePole_ElementRecharge.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Added Duration / Дополнительная длительность",
+   "_mult": true
+  },
+  "GrapplePole_Explosion.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "GrapplePole_Eyeball.moveSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "GrapplePole_Eyeball.turboDistance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Grapple Range / Расстояние для захвата",
+   "_mult": true
+  },
+  "GrapplePole_GrappleDistance.maxDistance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Grapple Range / Расстояние для захвата",
+   "_mult": true
+  },
+  "GrapplePole_GrappleDuration.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Grapple Time / Длительность захвата",
+   "_mult": true
+  },
+  "GrapplePole_GrappleDurationTouching.durationPerUpgrade": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration Per Upgrade / Длительность за улучшение",
+   "_mult": true
+  },
+  "GrapplePole_GrappleHeal.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing Per Second / Лечение в секунду",
+   "_mult": true
+  },
+  "GrapplePole_JetpackRecharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Per Second / Заряда в секунду",
+   "_mult": true
+  },
+  "GrapplePole_JumpOffSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "GrapplePole_LessEnergyWhileSaturated.energyMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Energy Used / Использование энергии",
+   "_mult": true
+  },
+  "GrapplePole_MaxPoles.maxPoles": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Poles / Максимально поручней",
+   "_mult": false
+  },
+  "GrapplePole_MultiplePlayerEnergyMult.energyMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Energy Used / Использование энергии",
+   "_mult": true
+  },
+  "GrapplePole_OutOfCombatDuration.multiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Grapple Time / Длительность захвата",
+   "_mult": true
+  },
+  "GrapplePole_RechargeOtherPoles.chargeSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "GrapplePole_ShockCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "GrapplePole_Vending.efficiency": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "GrapplePole_Vending.interval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Interval / Интервал",
+   "_mult": false
+  },
+  "GrapplePole_WreckingBall.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "GravityTracking.bulletGravity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Tracking Force / Сила преследования",
+   "_mult": false
+  },
+  "Grenade_DmgToCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Efficiency / Эффективность заряда",
+   "_mult": true
+  },
+  "Grenade_Fuse.reloadDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fuse / Фитиль",
+   "_mult": false
+  },
+  "Grenade_GrenadeHealth.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": false
+  },
+  "Grenade_Icon.priority": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Grenade_OutgoingDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Grenade_PennyPound.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Grenade_SelfEffect.selfEffectMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Self Damage / Урон по себе",
+   "_mult": false
+  },
+  "Grenade_SlideGrenade.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": true
+  },
+  "HeavyLaser_DmgStacks.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Stack / Урон на заряд",
+   "_mult": true
+  },
+  "HeavyLaser_DmgStacks.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "HeavyLaser_DmgStacks.maxStacks": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Stacks / Максимум зарядов",
+   "_mult": false
+  },
+  "HeavyLaser_FireDmg.fireDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "HeavyLaser_FireUtilCharge.chargePerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Per Second / Заряда в секунду",
+   "_mult": true
+  },
+  "HeavyLaser_IgniteDmgStack.damagePerStack": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Stack / Урон на заряд",
+   "_mult": true
+  },
+  "HeavyLaser_IgniteDmgStack.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "HeavyLaser_IgniteDmgStack.maxStacks": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Stacks / Максимум зарядов",
+   "_mult": false
+  },
+  "HeavyLaser_LaserExplode.ammoCost": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Cost / Стоимость в патронах",
+   "_mult": true
+  },
+  "HeavyLaser_LaserExplode.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Damage / Урон взрыва",
+   "_mult": true
+  },
+  "HeavyLaser_LaserExplode.interval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Interval / Интервал взрывов",
+   "_mult": false
+  },
+  "HeavyLaser_LaserExplode.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "HeavyLaser_MeleeAmmo.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Per Second / Заряда в секунду",
+   "_mult": true
+  },
+  "HeavyLaser_ScorchedEarth.ammoUseMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Cost / Стоимость в патронах",
+   "_mult": false
+  },
+  "HeavyLaser_ScorchedEarth.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "HeavyLaser_ScorchedEarth.selfDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Self Damage / Урон по себе",
+   "_mult": true
+  },
+  "HeavyNuke_AmmoOnKill.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "HeavyNuke_ChargeJump.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "HeavyNuke_Crafter.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "HeavyNuke_SoulReaper.damagePerStack": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Stack / Урон на заряд",
+   "_mult": true
+  },
+  "HeavyNuke_SoulReaper.damageToStackMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "HeavyNuke_SoulReaper.sizePerStack": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size Per Stack / Размер на заряд",
+   "_mult": true
+  },
+  "HeavyRailgun_AirDmg.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "HeavyRailgun_ChargeFloat.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "HeavyRailgun_ChargeFloat.fullChargeForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "HeavyRailgun_ExplodingTrail.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Damage / Урон взрыва",
+   "_mult": true
+  },
+  "HeavyRailgun_ExplodingTrail.delay": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Delay / Задержка",
+   "_mult": true
+  },
+  "HeavyRailgun_ExplodingTrail.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "HeavyRailgun_Knockback.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "HeavyRailgun_ShockRod.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Damage / Урон взрыва",
+   "_mult": false
+  },
+  "HeavyRailgun_ShockRod.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "HeavyRailgun_SprintDmg.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "HeavyShotgun_LowHero.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "HeavyShotgun_LowHero.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "HeavyShotgun_LowHero.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "HeavyShotgun_LowHero.spread": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Spread / Разброс",
+   "_mult": true
+  },
+  "HeavyShotgun_ReloadDmg.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "HeavyShotgun_ReloadDmg.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "HeavyShotgun_ReloadExplode.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "HeavyShotgun_ReloadExplode.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "HeavyShotgun_SecretPocket.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Efficiency / Эффективность патронов",
+   "_mult": true
+  },
+  "HeavyShotgun_SlowResist.damageTaken": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "HeavyShotgun_SlowResist.moveSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "HitForce.hitForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "HitForce.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "HitForce.stackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "IncendiaryGrenade_ChargeOnIgnite.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "IncendiaryGrenade_ClusterBomb.clusterSplitCount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cluster Count / Количество бомб в кассете",
+   "_mult": false
+  },
+  "IncendiaryGrenade_Combustion.efficiency": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "IncendiaryGrenade_Combustion.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "IncendiaryGrenade_Combustion.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": false
+  },
+  "IncendiaryGrenade_CorrosionRadius.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": false
+  },
+  "IncendiaryGrenade_FireArea.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "IncendiaryGrenade_FireArea.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Radius / Радиус заряда",
+   "_mult": true
+  },
+  "IncendiaryGrenade_FireArea.utilCharge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Hearth & Home / Домашний очаг",
+   "_mult": false
+  },
+  "IncendiaryGrenade_FullRecharge.chanceIncrease": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance Increase / Увеличение шанса",
+   "_mult": false
+  },
+  "IncendiaryGrenade_FullRecharge.killChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Combust Chance / Шанс самовозгорания",
+   "_mult": true
+  },
+  "IncendiaryGrenade_FullRecharge.rechargeChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Chance / Шанс перезарядки",
+   "_mult": true
+  },
+  "IncendiaryGrenade_GiveAndTake.incomingDamageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Incoming Fire Damage / Урон от огня по себе",
+   "_mult": true
+  },
+  "IncendiaryGrenade_GiveAndTake.outgoingDamageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Outgoing Fire Damage / Урон от огня по врагам",
+   "_mult": true
+  },
+  "IncendiaryGrenade_HealExplosion.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": false
+  },
+  "IncendiaryGrenade_PunchCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "IncendiaryGrenade_SelfDamage.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": false
+  },
+  "IncendiaryGrenade_TakenFireDmg.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": false
+  },
+  "IncendiaryGrenade_ThrowHeal.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": true
+  },
+  "KillExplosion.explosionChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "KillExplosion.explosionDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Damage / Урон взрыва",
+   "_mult": true
+  },
+  "KillExplosion.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Lasso_DeathPartCooldown.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Lasso_FollowUp.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Lasso_FollowUp.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Lasso_HealthCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Lasso_HealthCharge.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": false
+  },
+  "Lasso_HealthCharge.dashCharge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Lasso_LaunchAmmo.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Efficiency / Эффективность патронов",
+   "_mult": true
+  },
+  "Lasso_LaunchExplosion.atRocketPos": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Lasso_LaunchExplosion.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Lasso_LaunchExplosion.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Lasso_PullForce.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Rocket Force / Сила ракеты",
+   "_mult": true
+  },
+  "Lasso_PullForce.stackMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Lasso_RangeTouching.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range Per Cell / Увеличение дальности на ячейку",
+   "_mult": true
+  },
+  "Lasso_RocketJump.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "Lasso_SaturateLassoCharge.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Lasso_SaturateLassoCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Lasso_ThrowHealth.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "LeadFlinger_AimRange.aimRange": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Aim Range / Дальность прицеливания",
+   "_mult": false
+  },
+  "LeadFlinger_AmmoOnCoreKill.ammoRefilled": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": false
+  },
+  "LeadFlinger_DamageOnKill.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "LeadFlinger_DamageOnKill.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "LeadFlinger_DamageOnKill.emDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "LeadFlinger_DamageOnReload.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "LeadFlinger_DamageOnReload.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "LeadFlinger_DamageOnReload.emDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "LeadFlinger_DetonateCores.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "LeadFlinger_DetonateCores.nonCoreChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "LeadFlinger_DetonateCores.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "LeadFlinger_DmgChance.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "LeadFlinger_DmgChance.dmgSelfChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Self Chance / Шанс урона по себе",
+   "_mult": false
+  },
+  "LeadFlinger_DmgChance.emDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "LeadFlinger_DmgChance.moreDmgChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Increase Damage Chance / Шанс усиления урона",
+   "_mult": true
+  },
+  "LeadFlinger_DmgChance.selfDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": false
+  },
+  "LeadFlinger_ElementFunnel.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": false
+  },
+  "LeadFlinger_FastUnloadDamage.baseInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "LeadFlinger_FastUnloadDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Bullet / Урон на пулю",
+   "_mult": true
+  },
+  "LeadFlinger_FastUnloadDamage.emDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "LeadFlinger_FastUnloadDamage.maxReloadInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Time Per Bullet / Времени на пулю",
+   "_mult": false
+  },
+  "LeadFlinger_FireMoveSpeed.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "LeadFlinger_FireMoveSpeed.speedIncrease": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "LeadFlinger_HipFireDamage.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Hipfire Damage / Урон при стрельбе от бедра",
+   "_mult": false
+  },
+  "LeadFlinger_HipFireDamage.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "LeadFlinger_HoverOnKill.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "LeadFlinger_InstaReload.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "LeadFlinger_InstaReload.speedMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Reload Speed / Скорость перезарядки",
+   "_mult": false
+  },
+  "LeadFlinger_Junkblast.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "LeadFlinger_Junkblast.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "LeadFlinger_Junkblast.stacksOnKill": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Stacks on Kill / Заряды за врага",
+   "_mult": false
+  },
+  "LeadFlinger_KillBurst.burstSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Burst Size / Количество пуль залпа",
+   "_mult": false
+  },
+  "LeadFlinger_KillBurst.turboDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bonus Damage / Бонусный урон",
+   "_mult": true
+  },
+  "LeadFlinger_LastShotExplodes.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "LeadFlinger_LastShotExplodes.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "LeadFlinger_LastShotExplodes.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "LeadFlinger_Phantom.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "LeadFlinger_Phantom.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "LeadFlinger_RandomDamage.maxDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "LeadFlinger_RandomDamage.minDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Min Damage / Минимальный урон",
+   "_mult": false
+  },
+  "LeadFlinger_RefillLastShot.ammoRefilled": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": false
+  },
+  "LeadFlinger_RefillLastShot.refillLastShotChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": false
+  },
+  "LeadFlinger_RefillLastShot.turboChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": false
+  },
+  "MagazineSize.magazineSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Magazine Size / Размер магазина",
+   "_mult": false
+  },
+  "MagazineSize.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MagazineSize.turbocharged": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MaxBounces.maxBounces": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bounces / Отскоки",
+   "_mult": false
+  },
+  "MeleeDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "MeleeDamage.effect": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MeleeDamage.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": true
+  },
+  "MeleeSpeed.addRange": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "MeleeSpeed.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "MeleeSpeed.screenshakeMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MeleeSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "MiniCannonFiring.minFireIntervalMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Fire Rate / Максимальная скорость стрельбы",
+   "_mult": false
+  },
+  "MiniCannonFiring.modifyFireIntervalByPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MiniCannonFiring.spinUpSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Spin Up Speed / Скорость разгона оружия",
+   "_mult": false
+  },
+  "MiniCannon_AmmoMash.ammoPerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Stack / Патроны за заряд",
+   "_mult": false
+  },
+  "MiniCannon_DamageResist.damageResist": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "MiniCannon_DamageTaken.damageTaken": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "MiniCannon_FieryMash.combustChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Combust Chance / Шанс самовозгорания",
+   "_mult": false
+  },
+  "MiniCannon_FieryMash.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "MiniCannon_FieryMash.fireAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MiniCannon_FireMoveSpeed.speedMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "MiniCannon_Gunship.airDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Airborne Damage / Урон в воздухе",
+   "_mult": true
+  },
+  "MiniCannon_Gunship.groundDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Grounded Damage / Урон на земле",
+   "_mult": true
+  },
+  "MiniCannon_Knockback.knockback": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Knockback / Отталкивание",
+   "_mult": true
+  },
+  "MiniCannon_MissileCharge.chargeEfficiency": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Efficiency / Эффективность заряда",
+   "_mult": false
+  },
+  "MiniCannon_MissileCharge.explosionDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Damage / Урон взрыва",
+   "_mult": true
+  },
+  "MiniCannon_MissileCharge.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": false
+  },
+  "MiniCannon_Orbital.lifetimeAdd": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fly Duration / Длительность полёта",
+   "_mult": false
+  },
+  "MiniCannon_Orbital.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Orbit Radius / Радиус облёта",
+   "_mult": false
+  },
+  "MiniCannon_Orbital.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MiniCannon_Prism.rarity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MiniCannon_Prism.value": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MiniCannon_RandElement.amount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Amount / Количество",
+   "_mult": true
+  },
+  "MiniCannon_RandElement.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": false
+  },
+  "MiniCannon_TightenSpread.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "MiniCannon_TightenSpread.minSpread": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Min Spread / Минимальный разброс",
+   "_mult": false
+  },
+  "MuzzleFlash.muzzleFlash": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_AllSourcesInfect.multiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "MycoGear_AntigravGrab.addHeight": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Height / Высота",
+   "_mult": true
+  },
+  "MycoGear_AntigravGrab.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "MycoGear_ConsumedSpeed.grabCooldown": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "MycoGear_ConsumedSpeed.maxSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Speed / Максимальная скорость",
+   "_mult": true
+  },
+  "MycoGear_ConsumedSpeed.minSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Min Speed / Минимальная скорость",
+   "_mult": true
+  },
+  "MycoGear_ElemmentRelease.delay": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Delay / Задержка",
+   "_mult": true
+  },
+  "MycoGear_ElemmentRelease.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Radius / Радиус",
+   "_mult": true
+  },
+  "MycoGear_ExtraGrabs.extraCount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charges / Заряды",
+   "_mult": true
+  },
+  "MycoGear_ExtraGrabs.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Distance / Расстояние",
+   "_mult": true
+  },
+  "MycoGear_EyeBeam.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "MycoGear_EyeBeam.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": true
+  },
+  "MycoGear_EyeBeam.maxDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "MycoGear_ForwardBoost.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "MycoGear_FullInfectionSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "MycoGear_Glide.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "MycoGear_Glide.useDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "MycoGear_GrabChargesStalk.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "MycoGear_GrabCooldown.chargesStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_GrabCooldown.emCooldownMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_GrabCooldown.maxCharges": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charges / Заряды",
+   "_mult": true
+  },
+  "MycoGear_GrabCooldown.rechargeDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "MycoGear_GrabCooldown.rechargeStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_GrabDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "MycoGear_GrabDamage.effect": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": false
+  },
+  "MycoGear_GrabDamage.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": true
+  },
+  "MycoGear_GrabDamage.stackMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_GrabHeal.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": true
+  },
+  "MycoGear_GrabHeight.addHeight": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Height / Высота",
+   "_mult": true
+  },
+  "MycoGear_GrabSize.scaleWithInfection": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_GrabSize.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Size / Максимальный размер",
+   "_mult": true
+  },
+  "MycoGear_Hypersprint.infectionRate": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Infection / Заражение",
+   "_mult": true
+  },
+  "MycoGear_Hypersprint.pushForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": false
+  },
+  "MycoGear_Hypersprint.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "MycoGear_Icon.priority": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_Icon.utility": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_InfectExpl.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "MycoGear_InfectFireR.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "MycoGear_InfectFireR.fireRateMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": true
+  },
+  "MycoGear_InfectMelee.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "MycoGear_InfectRecharge.chargeSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": false
+  },
+  "MycoGear_InfectRecharge.threshold": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Threshold / Порог",
+   "_mult": true
+  },
+  "MycoGear_LaunchExpl.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "MycoGear_LaunchExpl.stalkMoveSpeedMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_MeleeResist.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "MycoGear_Platform.cooldown": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "MycoGear_Platform.healthPerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "MycoGear_Platform.lifetime": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "MycoGear_Platform.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "MycoGear_PlatformSize.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "MycoGear_StalkBoostForce.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "MycoGear_StalkBoostForce.stackMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "MycoGear_StalkSpeed.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "MycoGear_StalkSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Pattern.pattern": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Pattern.turbocharged": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PhotonDisc_AmmoCharge.ammoCost": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Cost / Стоимость в патронах",
+   "_mult": false
+  },
+  "PhotonDisc_AmmoCharge.ammoGeneration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Second / Добавлено патронов в секунду",
+   "_mult": false
+  },
+  "PhotonDisc_AttuneCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "PhotonDisc_AttuneEleChance.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "PhotonDisc_AttuneEleChance.turboChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "PhotonDisc_Attunement.element": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PhotonDisc_HealthChunk.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "PhotonDisc_InverseRange.baseDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "PhotonDisc_InverseRange.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "PhotonDisc_InverseRange.maxRange": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Range / Максимальная дальность",
+   "_mult": false
+  },
+  "PhotonDisc_InverseRange.minRange": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PhotonDisc_OutgoingDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "PhotonDisc_OutgoingDamage.otherDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Unattuned Damage / Ненастроенный урон",
+   "_mult": true
+  },
+  "PhotonDisc_SingleDmg.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "PhotonDisc_SingleDmgBounce.bounces": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bounces / Отскоки",
+   "_mult": false
+  },
+  "PhotonDisc_SingleDmgBounce.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "PhotonDisc_SingleDmgBounce.stackMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PhotonDisc_SprintSize.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "PhotonDisc_SuccessiveDmg.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "PhotonDisc_SuccessiveDmg.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "PhotonDisc_TossSpeed.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "PhotonDisc_TossSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "PhotonDisc_Wave.length": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Distance / Расстояние",
+   "_mult": true
+  },
+  "PhotonDisc_Wave.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "PhotonDisc_Wave.stackMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_ArcLightning.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "PlateLauncher_ArcLightning.interval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Interval / Интервал",
+   "_mult": false
+  },
+  "PlateLauncher_ArcLightning.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": false
+  },
+  "PlateLauncher_ArcLightning.turboAddInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Interval / Интервал",
+   "_mult": false
+  },
+  "PlateLauncher_Beecall.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_Beecall.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": false
+  },
+  "PlateLauncher_Blades.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Blade Damage / Урон от лезвия",
+   "_mult": false
+  },
+  "PlateLauncher_Blades.emDamageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_Blades.emSizeMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_Blades.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "PlateLauncher_BounceDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "PlateLauncher_CatchDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage on Catch / Урон при ловле пластин",
+   "_mult": true
+  },
+  "PlateLauncher_CatchDamage.moveSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": false
+  },
+  "PlateLauncher_CatchRecoil.catchRecoil": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Catch Recoil / Отдача при ловле пластин",
+   "_mult": false
+  },
+  "PlateLauncher_CatchUpForce.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": false
+  },
+  "PlateLauncher_ConsumeGrenade.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "PlateLauncher_CorrodePuddle.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "PlateLauncher_CorrodePuddle.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "PlateLauncher_DamageArc.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Damage / Урон взрыва",
+   "_mult": false
+  },
+  "PlateLauncher_DamageArc.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_MultipleHits.hitSpeedMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed on Hit / Скорость при попадании",
+   "_mult": false
+  },
+  "PlateLauncher_MultipleHits.maxHits": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Hits / Максимально попаданий",
+   "_mult": false
+  },
+  "PlateLauncher_OpenCellPlateSize.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_OpenCellPlateSize.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size Per Empty Cell / Размер на пустую ячейку",
+   "_mult": false
+  },
+  "PlateLauncher_PingPong.batteryCost": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Battery Cost / Стоимость батареи",
+   "_mult": false
+  },
+  "PlateLauncher_PingPong.emBatteryCostMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_RecallDamage.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "PlateLauncher_RecallDamage.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_RecallSpeed.recallSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recall Speed / Скорость возврата",
+   "_mult": false
+  },
+  "PlateLauncher_ShockMoveCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "PlateLauncher_Shockwave.emRadiusMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_Shockwave.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "PlateLauncher_Shockwave.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "PlateLauncher_SlideDuration.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "PlateLauncher_SlideDurationCells.timePerCell": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration Per Cell / Длительность на ячейку",
+   "_mult": true
+  },
+  "PlateLauncher_StandDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "PlateLauncher_StandDamage.damageResist": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Resistance / Сопротивление урону",
+   "_mult": true
+  },
+  "PlateLauncher_StandDamage.emDamageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "PlateLauncher_StandHeal.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing Per Second / Лечение в секунду",
+   "_mult": true
+  },
+  "PlateLauncher_StandHeal.interval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Interval / Интервал",
+   "_mult": false
+  },
+  "PlayerUpgradeFlag.flags": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_AbilityCooldown.chargesStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_AbilityCooldown.emCooldownMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_AbilityCooldown.maxCharges": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charges / Заряды",
+   "_mult": true
+  },
+  "Player_AbilityCooldown.rechargeDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "Player_AbilityCooldown.rechargeStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_AirDamage.airDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Airborne Damage / Урон в воздухе",
+   "_mult": true
+  },
+  "Player_ApplyElementOnSaturate.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": false
+  },
+  "Player_ApplyElementOnSaturate.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_AutoReload.efficiency": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Efficiency / Эффективность патронов",
+   "_mult": true
+  },
+  "Player_EffectAmount.amountAppliedMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": true
+  },
+  "Player_EffectAmount.effect": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_ElementHealthRegen.addedHealth": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": true
+  },
+  "Player_ExtraHealChunksOnMeleeKill.chunks": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chunks / Фрагменты",
+   "_mult": false
+  },
+  "Player_HealChunkGrenadeCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Player_Health.allowBoost": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": true
+  },
+  "Player_Health.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Health.stackMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_HealthChunkAmmo.ammoDensity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Efficiency / Эффективность патронов",
+   "_mult": false
+  },
+  "Player_HealthChunks.healthMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": false
+  },
+  "Player_IceCube.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "Player_IceCube.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": false
+  },
+  "Player_IceCube.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "Player_IceCube.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "Player_IceCube.iceCubeScale": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_IceCube.iceMaterial": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_IceCube.iceMesh": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_IceCube.maxFrozenDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Player_IceCube.screenMat": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_IceWave.circleCount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_IceWave.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "Player_IceWave.localRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_IceWave.radialSteps": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_IceWave.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_IceWave.totalRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Player_IncreasedEffectMatchDamage.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bonus Damage / Бонусный урон",
+   "_mult": true
+  },
+  "Player_IncreasedEffectMatchDamage.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_LimbDmg.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Player_LimbDmg.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_MoreDamageAndHealing.damageTakenMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "Player_MoreDamageAndHealing.healingMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Collected Health / Собираемое здоровье",
+   "_mult": true
+  },
+  "Player_OverloadedMoveFaster.addedSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Player_RefundAmmoOnMeleeKill.ammoDensity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Efficiency / Эффективность патронов",
+   "_mult": false
+  },
+  "Player_RefundAmmoOnMeleeKill.refundOnAnyKill": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_RepairHealing.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": false
+  },
+  "Player_RunSpeed.allowBoost": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Run Speed / Скорость бега",
+   "_mult": false
+  },
+  "Player_RunSpeed.runSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_RunSpeed.turbocharged": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Shatter.animation": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Shatter.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "Player_Shatter.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Radius / Радиус",
+   "_mult": true
+  },
+  "Player_Shatter.triggerNormalizedTime": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_ShootHealthChunks.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": false
+  },
+  "Player_ShootHealthChunks.healMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing Efficiency / Эффективность лечения",
+   "_mult": false
+  },
+  "Player_Skate.accelWhenSlowing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.animationSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "Player_Skate.decalSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.dirAccelGrounded": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.dirAccelInAir": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.dirDecelGrounded": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.dirDecelInAir": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.fadeInTime": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.fadeOutTime": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.moveSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Player_Skate.speedAccelGrounded": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.speedAccelInAir": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.speedDecelGrounded": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Skate.speedDecelInAir": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_SlideDamageResist.damageTakenMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "Player_SlideJump.cooldown": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_SlideJump.forwardForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Forward Speed / Скорость движения вперёд",
+   "_mult": true
+  },
+  "Player_SlideJump.upwardForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Upward Speed / Скорость движения вверх",
+   "_mult": true
+  },
+  "Player_SlideSpeed.allowBoost": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Slide Speed / Скорость скольжения",
+   "_mult": false
+  },
+  "Player_SlideSpeed.slideSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_SpeedyElement.addedSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Player_SpeedyElement.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Player_SprintHealthRegen.multiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health Regeneration / Восстановление здоровья",
+   "_mult": true
+  },
+  "Player_StatusEffectResistance.dotDamageTakenMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "Player_StatusEffectResistance.effect": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Player_Wallrun.turboSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": false
+  },
+  "Range.falloffEndDistance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Range.falloffStartDistance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Range.isMinRangeBetter": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Range.maxDamageRange": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Range.maxFalloffDamageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Falloff Start / Начало зоны ослабления урона",
+   "_mult": true
+  },
+  "Range.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Range.stackMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Recoil.allowBoost": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Vertical Recoil / Вертикальная отдача",
+   "_mult": false
+  },
+  "Recoil.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Recoil.recoilSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Recoil.recoilX": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Recoil.recoilY": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recoil / Отдача",
+   "_mult": false
+  },
+  "Recoil.recoilZ": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "RecoilTranslate.maxTranslate": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "RecoilTranslate.translate": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Reload.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Reload.reloadDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Reload Speed / Скорость перезарядки",
+   "_mult": false
+  },
+  "Reload.turbocharged": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ReloadAnimation.clip": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "SMG_AimRecoil.aimRecoilMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Aim Recoil / Отдача при прицеливании",
+   "_mult": false
+  },
+  "SMG_ChargeBurst.fireIntervalMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": false
+  },
+  "SMG_ChargeDamageReduction.damageReduction": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "SMG_CorrodeDOTAmmo.ammoReturned": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": false
+  },
+  "SMG_CorrodeDOTAmmo.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "SMG_Discharge.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "SMG_Discharge.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": false
+  },
+  "SMG_EnergyConvergence.ammoPerStack": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Stack / Патроны за заряд",
+   "_mult": false
+  },
+  "SMG_FastReloadOnKill.reloadDurationMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Reload Speed / Скорость перезарядки",
+   "_mult": false
+  },
+  "SMG_HealOnSustainedFire.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": false
+  },
+  "SMG_InfinityBurn.damageThreshold": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Threshold / Порог урона",
+   "_mult": false
+  },
+  "SMG_InfinityBurn.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": false
+  },
+  "SMG_InfinityBurn.rawDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "SMG_MassAcceleration.fireIntervalEfficiency": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "SMG_MoreFireOnRapidIgnite.increasedFire": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Increased Fire / Усиление огня",
+   "_mult": false
+  },
+  "SMG_OverloadSpeed.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "SMG_OverloadSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "SMG_PowerSiphon.ammoEfficiency": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Efficiency / Эффективность патронов",
+   "_mult": false
+  },
+  "SMG_RarityRangeMultiplier.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range Per Rarity / Дальность за редкость",
+   "_mult": false
+  },
+  "SMG_ReturnAmmoOnShockSaturate.ammoReturned": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": false
+  },
+  "SMG_RocketBurst.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": false
+  },
+  "SMG_ScorchingDetonation.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "SMG_ScorchingDetonation.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": false
+  },
+  "SMG_SlideTracking.trackingRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Tracking Radius / Радиус преследования",
+   "_mult": true
+  },
+  "SMG_ToxinRepurposing.addedAcidPerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Acid Per Second / Сила действия кислоты в секунду",
+   "_mult": false
+  },
+  "SMG_ToxinRepurposing.addedRecoilPerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recoil Per Second / Отдача в секунду",
+   "_mult": false
+  },
+  "SMG_ToxinRepurposing.maxDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": false
+  },
+  "SMG_ViolentIgnition.effectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Amount / Количество огня",
+   "_mult": false
+  },
+  "SMG_ViolentIgnition.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Radius / Радиус поджигания",
+   "_mult": false
+  },
+  "Salvo_AllyFireHeal.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_AllyFireHeal.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "Salvo_AmmoSiphon.ammoSiphon": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Cost / Стоимость в патронах",
+   "_mult": false
+  },
+  "Salvo_AmmoSiphon.stackAmmoMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Cost / Стоимость в патронах",
+   "_mult": false
+  },
+  "Salvo_Bounce.bounces": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bounces / Отскоки",
+   "_mult": false
+  },
+  "Salvo_Bounce.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bounce Radius / Радиус отскока",
+   "_mult": true
+  },
+  "Salvo_Bounce.turboSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bullet Speed / Скорость пуль",
+   "_mult": true
+  },
+  "Salvo_Cooldown.chargesStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_Cooldown.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "Salvo_Cooldown.durationStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_Cooldown.maxCharges": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charges / Заряды",
+   "_mult": true
+  },
+  "Salvo_Cooldown.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_Damage.emDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_Damage.salvoDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Salvo_Damage.salvoEffect": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": false
+  },
+  "Salvo_Damage.salvoEffectAmount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_Damage.stackMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_DamageFlyRecharge.chargeOnDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Efficiency / Эффективность заряда",
+   "_mult": true
+  },
+  "Salvo_DecayBomb.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "Salvo_DecayBomb.emSizeMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_DecayBomb.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": false
+  },
+  "Salvo_DecayBomb.stackingCooldownMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "Salvo_DecayBomb.turboFlySpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fly Speed / Скорость полёта",
+   "_mult": true
+  },
+  "Salvo_Dodge.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Salvo_ExplosionRadius.explosionRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "Salvo_FlyFuelUseSpeed.fuelUseSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fly Duration / Длительность полёта",
+   "_mult": true
+  },
+  "Salvo_FlyMelee.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Salvo_FlyMelee.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Salvo_FlyMelee.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Salvo_FlySpeed.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_FlySpeed.flySpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fly Speed / Скорость полёта",
+   "_mult": true
+  },
+  "Salvo_GlideSlide.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_GlideSlide.slideSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Slide Speed / Скорость скольжения",
+   "_mult": true
+  },
+  "Salvo_GlideSlide/UpgradeProperty_Salvo_AimFallSpeed.speedMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_HealCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Salvo_HealthSalvo.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": true
+  },
+  "Salvo_IgnitionCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Salvo_Physics.offsetMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_Physics.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bullet Speed / Скорость пуль",
+   "_mult": false
+  },
+  "Salvo_Physics.trackForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Tracking Force / Сила преследования",
+   "_mult": false
+  },
+  "Salvo_Recoil.recoil": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recoil / Отдача",
+   "_mult": true
+  },
+  "Salvo_Recoil.recoilSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_Recoil.shake": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_SalvoFuel.fuelOnFire": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fuel Refunded / Восстановление топлива",
+   "_mult": true
+  },
+  "Salvo_SalvoHeaing.salvoHealing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "Salvo_SalvoLocks.fireInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": false
+  },
+  "Salvo_SalvoLocks.lockOnInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_SalvoLocks.maxLocksStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Salvo_SalvoLocks.maxSalvoLocks": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Salvo Target Locks / Цели залповой ракетницы",
+   "_mult": true
+  },
+  "Salvo_SalvoRadius.lockRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Tracking Radius / Радиус преследования",
+   "_mult": false
+  },
+  "Scrapper_BoltBarf.boltBarfPrefab": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Scrapper_BoltBarf.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "Scrapper_BoltBarf.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Scrapper_BoltBarf.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Scrapper_BoltBarf.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": true
+  },
+  "Scrapper_BoltBarf.useDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Barf Duration / Длительность извержения",
+   "_mult": true
+  },
+  "Scrapper_BurpForce.burpForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Burp Force / Сила выхлопа",
+   "_mult": false
+  },
+  "Scrapper_BurpForce.burpInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Scrapper_CoilSprings.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "Scrapper_FireJetpack.firePerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire / Огонь",
+   "_mult": false
+  },
+  "Scrapper_FireJetpack.fuelOnIgnite": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fuel Refunded / Восстановление топлива",
+   "_mult": true
+  },
+  "Scrapper_FireJetpack.height": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Distance / Расстояние",
+   "_mult": true
+  },
+  "Scrapper_FireJetpack.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Scrapper_HealthScrap.damagePerStack": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Stack / Урон на заряд",
+   "_mult": true
+  },
+  "Scrapper_HealthScrap.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "Scrapper_HealthScrap.maxStacks": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Stacks / Максимум зарядов",
+   "_mult": false
+  },
+  "Scrapper_HealthScrap.stackDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Scrapper_JetpackForce.forwardForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Forward Speed / Скорость движения вперёд",
+   "_mult": true
+  },
+  "Scrapper_JetpackForce.initialForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Initial Force / Исходная сила",
+   "_mult": true
+  },
+  "Scrapper_JetpackForce.jetpackForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "Scrapper_JetpackForce.maxInitialSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Scrapper_JetpackRecharge.jetpackDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Jetpack Duration / Продолжительность работы реактивного ранца",
+   "_mult": true
+  },
+  "Scrapper_JetpackRecharge.rechargeDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "Scrapper_ScrapJetpack.scrapPerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Scrap Per Second / Использование лома в секунду",
+   "_mult": false
+  },
+  "Scrapper_ScrapSpeed.decayInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Decay Interval / Интервал распада",
+   "_mult": true
+  },
+  "Scrapper_ScrapSpeed.speedPerStack": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed Per Stack / Скорость за заряд",
+   "_mult": true
+  },
+  "ShieldProjector_Aggro.cooldown": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "ShieldProjector_Aggro.damageResist": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Resistance / Сопротивление урону",
+   "_mult": true
+  },
+  "ShieldProjector_Aggro.distance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Distance / Расстояние",
+   "_mult": false
+  },
+  "ShieldProjector_Aggro.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "ShieldProjector_Aggro.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": false
+  },
+  "ShieldProjector_BackBoost.backBoost": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "ShieldProjector_BlastDamage.blastArea": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Blast Area / Зона открытия щита",
+   "_mult": false
+  },
+  "ShieldProjector_BlastDamage.blastDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Blast Damage / Урон при открытии щита",
+   "_mult": true
+  },
+  "ShieldProjector_BlastDamage.blastEffect": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": false
+  },
+  "ShieldProjector_DiveShieldDmg.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "ShieldProjector_DiveShieldDmg.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "ShieldProjector_DiveShieldDmg.emDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ShieldProjector_DiveShieldDmg.finishCharge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "ShieldProjector_Duration.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "ShieldProjector_Overhealth.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Overshield Radius / Радиус защитного экрана",
+   "_mult": true
+  },
+  "ShieldProjector_Prison.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "ShieldProjector_Prison.emDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ShieldProjector_Prison.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "ShieldProjector_PushForce.blastForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Blast Force / Сила открытия щита",
+   "_mult": true
+  },
+  "ShieldProjector_PushForce.forceDepth": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Shield Push Range / Дистанция отталкивания щита",
+   "_mult": true
+  },
+  "ShieldProjector_PushForce.outwardForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ShieldProjector_PushForce.pushForce": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Shield Push Force / Сила отталкивания щита",
+   "_mult": true
+  },
+  "ShieldProjector_ShieldPrefab.shield": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ShieldProjector_ShieldPrefab.uniformSvale": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ShieldProjector_Size.raiseFromGround": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ShieldProjector_Size.sizeX": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Horizontal Size / Размер по горизонтали",
+   "_mult": true
+  },
+  "ShieldProjector_Size.sizeY": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Vertical Size / Размер по вертикали",
+   "_mult": true
+  },
+  "Shocklance_AugerDmgSiphon.augerChargeMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Speed / Скорость зарядки",
+   "_mult": true
+  },
+  "Shocklance_AugerDmgSiphon.damageResist": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Resistance / Сопротивление урону",
+   "_mult": true
+  },
+  "Shocklance_AugerDmgSiphon.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Shocklance_AugerTurn.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Shocklance_ChargeDmg.baseMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Shocklance_ChargeDmg.maxDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "Shocklance_ChargeDmg.maxRangeMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Range / Максимальная дальность",
+   "_mult": true
+  },
+  "Shocklance_ChargeDmg.maxSizeMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Size / Максимальный размер",
+   "_mult": true
+  },
+  "Shocklance_ChargeSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Shocklance_FShot.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Shocklance_FShot.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Shocklance_ForwardBoost.chargeDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Time / Время зарядки",
+   "_mult": false
+  },
+  "Shocklance_ForwardBoost.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Shocklance_ForwardBoost.damageRadius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": false
+  },
+  "Shocklance_ForwardBoost.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Shocklance_ForwardBoost.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": false
+  },
+  "Shocklance_InversePierce.pierceDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Pierce Damage / Урон при пробивании",
+   "_mult": false
+  },
+  "Shocklance_LayCable.abilityRecharge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "Shocklance_LayCable.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Shocklance_LayCable.damageResist": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Taken / Получаемый урон",
+   "_mult": true
+  },
+  "Shocklance_LayCable.maxDistance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Distance / Расстояние",
+   "_mult": true
+  },
+  "Shocklance_LingerDamage.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Shocklance_LingerDamage.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Shocklance_LingerDamage.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Linger Size / Размер стрелки",
+   "_mult": false
+  },
+  "Shocklance_LingerSpeed.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Shocklance_LingerSpeed.size": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Linger Size / Размер стрелки",
+   "_mult": false
+  },
+  "Shocklance_LingerSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Shocklance_MagDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Shocklance_MagDamage.sizeMultSubtract": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Shocklance_MeleeBoost.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Shocklance_MeleeBoost.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Shocklance_MeleeBoost.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Shocklance_PassiveCharge.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Speed / Скорость зарядки",
+   "_mult": false
+  },
+  "Shocklance_PierceDmgUp.damageIncrease": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Shocklance_PierceDmgUp.maxCount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": true
+  },
+  "SpawnObject.prefab": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "SpawnObject.spawnMode": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Spread.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Spread.spreadSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Spread / Разброс",
+   "_mult": true
+  },
+  "Spread.spreadType": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Spread.stackMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "StoredAmmoEfficiency.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "StoredAmmoEfficiency.storedAmmoCollectMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Efficiency / Эффективность патронов",
+   "_mult": false
+  },
+  "SwarmGun_AimRange.addedRange": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": false
+  },
+  "SwarmGun_AirSpawn.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Spin Up Speed / Скорость разгона оружия",
+   "_mult": false
+  },
+  "SwarmGun_AirSpawn.minInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Fire Rate / Максимальная скорость стрельбы",
+   "_mult": true
+  },
+  "SwarmGun_AutoRegen.interval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Second / Добавлено патронов в секунду",
+   "_mult": true
+  },
+  "SwarmGun_DamageIncrease.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "SwarmGun_DamageIncrease.maxDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Damage / Максимальный урон",
+   "_mult": false
+  },
+  "SwarmGun_FireMoveSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "SwarmGun_FriendFire.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Extra Pellet Damage / Дополнительный урон от дроби",
+   "_mult": false
+  },
+  "SwarmGun_FriendFire.interval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "SwarmGun_FriendFire.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Radius / Радиус",
+   "_mult": false
+  },
+  "SwarmGun_GrenadeSiphon.ammoPerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Second / Добавлено патронов в секунду",
+   "_mult": false
+  },
+  "SwarmGun_GrenadeSiphon.chargePerAmmo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Per Second / Заряда в секунду",
+   "_mult": false
+  },
+  "SwarmGun_HealPlayers.healing": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Healing / Лечение",
+   "_mult": true
+  },
+  "SwarmGun_HealSiphon.ammoPerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Second / Добавлено патронов в секунду",
+   "_mult": false
+  },
+  "SwarmGun_HealSiphon.healthPerAmmo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": false
+  },
+  "SwarmGun_MeleeSiphon.maxSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Size / Максимальный размер",
+   "_mult": false
+  },
+  "SwarmGun_MeleeSiphon.sizePerSecond": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size Per Second / Область поражения на секунду",
+   "_mult": false
+  },
+  "SwarmGun_Mitosis.ammoCost": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Cost / Стоимость в патронах",
+   "_mult": false
+  },
+  "SwarmGun_Mitosis.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance Per Pellet / Шанс на дробинку",
+   "_mult": true
+  },
+  "SwarmGun_Mitosis.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Mitosis Damage / Урон при митозе",
+   "_mult": false
+  },
+  "SwarmGun_Mitosis.stackAmmoMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Cost / Стоимость в патронах",
+   "_mult": true
+  },
+  "SwarmGun_Mitosis.turboAmmoCostMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Cost / Стоимость в патронах",
+   "_mult": false
+  },
+  "SwarmGun_ReloadMoveSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "SwarmGun_ShockReload.speedMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Reload Speed / Скорость перезарядки",
+   "_mult": false
+  },
+  "SwarmGun_SpeedRelease.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "SwarmGun_SpeedRelease.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": false
+  },
+  "SwarmGun_TouchingMagSize.bullets": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Per Upgrade / Патронов за улучшение",
+   "_mult": false
+  },
+  "ThrowableCooldown.chargesStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ThrowableCooldown.emCooldownMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ThrowableCooldown.maxCharges": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charges / Заряды",
+   "_mult": true
+  },
+  "ThrowableCooldown.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "ThrowableCooldown.rechargeDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recharge Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "ThrowableCooldown.rechargeStackModifier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Trident_AcidSatDamage.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Trident_AcidSatDamage.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Trident_AimDamage.damageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "Trident_AimFireInterval.fireInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": false
+  },
+  "Trident_AimSpread.spreadSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Horizontal Spread / Горизонтальный разброс",
+   "_mult": false
+  },
+  "Trident_Ammo.ammoCapacity": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Capacity / Количество патронов",
+   "_mult": false
+  },
+  "Trident_Ammo.magazineSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Magazine Size / Размер магазина",
+   "_mult": false
+  },
+  "Trident_Ammo.modifyFromPatternSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Trident_Broadside.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Trident_Broadside.stackMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Trident_CoreRefund.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": true
+  },
+  "Trident_CoreRefund.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Trident_CorrodedDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "Trident_DamageRecoil.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage Per Cell / Урон на ячейку",
+   "_mult": false
+  },
+  "Trident_DamageRecoil.recoil": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Recoil Per Cell / Отдача на ячейку",
+   "_mult": false
+  },
+  "Trident_EnergyArc.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "Trident_EnergyArc.stackMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Trident_EnergyArc.width": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Trident_HornetHunting.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "Trident_HornetHunting.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": false
+  },
+  "Trident_IgnitionFireRate.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Trident_IgnitionFireRate.fireIntervalMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": true
+  },
+  "Trident_KillRefund.ammo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Refunded / Восстановлено патронов",
+   "_mult": false
+  },
+  "Trident_KillSlide.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": false
+  },
+  "Trident_KillSlide.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Slide Speed / Скорость скольжения",
+   "_mult": false
+  },
+  "Trident_LastShotDamage.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "Trident_Lightspeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Trident_Lightspeed.stackMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "Trident_Lightspeed.useSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Trident_MaxAbilityCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "Trident_MaxAbilityCharge.lowestCharge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "Trident_Smite.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Trident_Smite.count": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Smite Count / Количество молний",
+   "_mult": true
+  },
+  "Trident_Smite.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Smite Radius / Радиус шторма",
+   "_mult": true
+  },
+  "Trident_Smite.soakChance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Trident_Spinner.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Trident_Spinner.fireIntervalMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Max Fire Rate / Максимальная скорость стрельбы",
+   "_mult": true
+  },
+  "Trident_Spinner.turboAmmo": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Ammo Capacity / Количество патронов",
+   "_mult": false
+  },
+  "Trident_WetReload.emptyReloadSpeed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Reload Speed / Скорость перезарядки",
+   "_mult": false
+  },
+  "Trident_WetReload.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": false
+  },
+  "TurbochargeUpgradeFlag.flags": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "TurbochargeUpgradeFlag.statID": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "TurbochargeUpgradeFlag.statIDIndex": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "UpgradeFlag.flags": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "VoltaicGrenade_ChargeOnOverload.chargeOnOverload": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Electrocute Charge / Заряд от электрошока",
+   "_mult": true
+  },
+  "VoltaicGrenade_CritCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": false
+  },
+  "VoltaicGrenade_DoubleJump.up": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": false
+  },
+  "VoltaicGrenade_Force.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "VoltaicGrenade_GrenadeJump.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "VoltaicGrenade_IgnitedExplosion.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "VoltaicGrenade_LightningStrike.interval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Interval / Интервал",
+   "_mult": false
+  },
+  "VoltaicGrenade_LightningStrike.turboDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Lightning Damage / Урон от молнии",
+   "_mult": false
+  },
+  "VoltaicGrenade_Livewire.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "VoltaicGrenade_Livewire.explodeInterval": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Interval / Интервал взрывов",
+   "_mult": false
+  },
+  "VoltaicGrenade_Livewire.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "VoltaicGrenade_LivewireSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "VoltaicGrenade_Magnetic.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "VoltaicGrenade_PocketGrenade.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": false
+  },
+  "VoltaicGrenade_PocketGrenade.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": false
+  },
+  "VoltaicGrenade_PocketGrenade.rechargeDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "VoltaicGrenade_PocketGrenade.stackDamage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "VoltaicGrenade_PocketGrenade.stackSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "VoltaicGrenade_RechargeRun.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "VoltaicGrenade_SlideCharge.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge Per Second / Заряда в секунду",
+   "_mult": true
+  },
+  "Wrangler_Bounty.cooldownDuration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Cooldown / Перезарядка",
+   "_mult": false
+  },
+  "Wrangler_Bounty.damageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bonus Damage / Бонусный урон",
+   "_mult": true
+  },
+  "Wrangler_Bounty.emDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Wrangler_Bounty.turboDamageMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Bonus Damage / Бонусный урон",
+   "_mult": true
+  },
+  "Wrangler_ChargeDashOnSaturate.charge": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Charge / Заряд",
+   "_mult": true
+  },
+  "Wrangler_DashIgnite.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Wrangler_DashPush.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "Wrangler_DashPush.radius": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Size / Величина",
+   "_mult": true
+  },
+  "Wrangler_DashValues.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Wrangler_EyePopper.chance": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Chance / Шанс",
+   "_mult": true
+  },
+  "Wrangler_EyePopper.damage": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Damage / Урон",
+   "_mult": true
+  },
+  "Wrangler_EyePopper.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Wrangler_EyePopper.health": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": true
+  },
+  "Wrangler_EyePopper.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Wrangler_EyePopper.turboHealth": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Health / Здоровье",
+   "_mult": false
+  },
+  "Wrangler_LowHealth.fireRateMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Fire Rate / Скорость стрельбы",
+   "_mult": true
+  },
+  "Wrangler_LowHealth.reloadSpeedMult": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Reload Speed / Скорость перезарядки",
+   "_mult": true
+  },
+  "Wrangler_MeleeJump.explosionSize": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Explosion Size / Зона поражения взрывом",
+   "_mult": true
+  },
+  "Wrangler_MeleeJump.force": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Force / Сила",
+   "_mult": true
+  },
+  "Wrangler_MomentumConversion.efficiency": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Efficiency / Эффективность",
+   "_mult": true
+  },
+  "Wrangler_MomentumConversion.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Wrangler_RollSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Speed / Скорость",
+   "_mult": true
+  },
+  "Wrangler_SlideReload.duration": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Duration / Длительность",
+   "_mult": true
+  },
+  "Wrangler_SlideReload.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Wrangler_SlideSpeed.dash": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Wrangler_SlideSpeed.emMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "Wrangler_SlideSpeed.speed": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Slide Speed / Скорость скольжения",
+   "_mult": true
+  },
+  "_Trident_AimRange.maxFalloffDamageMultiplier": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "",
+   "_mult": false
+  },
+  "_Trident_AimRange.range": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Range / Дальность",
+   "_mult": false
+  }
+ }
+}

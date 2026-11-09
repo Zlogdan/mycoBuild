@@ -1,0 +1,104 @@
+/** Game data model (mirrors public/data/game.json produced by extractor/extract.py). */
+
+export type Lang = 'en' | 'ru';
+export type Loc = Partial<Record<Lang, string>>;
+
+/** enum Rarity: Standard, Rare, Epic, Exotic, Oddity, Contraband */
+export type Rarity = 0 | 1 | 2 | 3 | 4 | 5;
+
+export type GearCategory = 'character' | 'primary' | 'heavy' | 'throwable' | 'special' | 'global';
+export type UpgradeRole = 'normal' | 'gridExpander' | 'ability';
+
+/** Raw pattern as stored by the game: offset (odd-q) cells inside a w×h box. [x, y, connectionBits] */
+export interface RawPattern {
+  w: number;
+  h: number;
+  cells: [number, number, number][];
+}
+
+export interface UpgradeProp {
+  type: string;
+  data: Record<string, unknown>;
+}
+
+export interface Upgrade {
+  id: string;
+  key: string;
+  asset?: string;
+  class: string;
+  name: Loc;
+  desc: Loc | null;
+  rarity: Rarity;
+  flags: string[];
+  effect: string;
+  source: string;
+  icon: string | null;
+  role: UpgradeRole;
+  pattern: RawPattern;
+  altPatterns?: RawPattern[];
+  props: UpgradeProp[];
+  gears: string[];
+}
+
+export interface Gear {
+  id: string;
+  key: string;
+  asset?: string;
+  category: GearCategory;
+  name: Loc;
+  icon: string | null;
+  grid: string;
+  color?: string | null;
+  ability?: string | null;
+  upgrades: string[];
+}
+
+export interface GridSizeEntry {
+  level: number;
+  w: number;
+  h: number;
+}
+
+export interface RarityInfo {
+  id: Rarity;
+  key: string;
+  color: string;
+  name: Loc;
+}
+
+export interface Keyword {
+  key: string;
+  color: string | null;
+  words: Partial<Record<Lang, string[]>>;
+}
+
+export interface StatLabel {
+  key: string | null;
+  label: Loc | null;
+  multiplier: boolean;
+  inverse: boolean;
+  patternScaled: boolean;
+}
+
+export interface StatOverride {
+  en?: string;
+  ru?: string;
+  format?: '' | 'percent' | 'multiplier' | 'seconds' | 'number' | 'hidden';
+}
+
+export interface GameData {
+  meta: {
+    game: string;
+    appInfo: string | null;
+    unity: string;
+    extractedAt: string;
+    langs: Lang[];
+  };
+  rarities: RarityInfo[];
+  effects: Record<string, Loc>;
+  keywords: Keyword[];
+  gridProfiles: Record<string, GridSizeEntry[]>;
+  gears: Gear[];
+  upgrades: Record<string, Upgrade>;
+  statLabels: Record<string, StatLabel>;
+}

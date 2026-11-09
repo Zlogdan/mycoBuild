@@ -1,0 +1,6 @@
+{
+  "_readme": "Manual edits on top of game.json. upgrades/gears are merged by id; gears[id].addUpgrades/removeUpgrades edit lists; remove.upgrades/remove.gears delete entries. See docs/03-architecture.md",
+  "upgrades": {},
+  "gears": {},
+  "remove": { "upgrades": [], "gears": [] }
+}
