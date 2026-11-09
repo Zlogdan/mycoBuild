@@ -13,6 +13,7 @@ import { loc, translate, type TKey } from '../i18n';
 import { boardContext, newUid, useBuild, useGearLevel, usePlacements, useCurrentGear } from '../store/build';
 import { useAutofill } from '../store/autofill';
 import { useT } from './hooks';
+import { SaveImportButton } from './SaveImport';
 
 /* ---------------- logic ---------------- */
 
@@ -150,6 +151,7 @@ export function BuildIOButtons() {
       <button onClick={onLink} disabled={!gear}>
         🔗 {t('ioLink')}
       </button>
+      <SaveImportButton />
     </div>
   );
 }

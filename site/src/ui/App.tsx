@@ -11,6 +11,7 @@ import { PatternPreview } from './PatternPreview';
 import { useT } from './hooks';
 import { useDragController } from './useDragController';
 import { BuildIOButtons, BuildIODialogs, useBuildFromHash } from './BuildIO';
+import { SaveImportDialog } from './SaveImport';
 
 export function App() {
   const data = useBuild((s) => s.data);
@@ -51,6 +52,7 @@ function Main() {
       <DragLayer />
       <Toast />
       <BuildIODialogs />
+      <SaveImportDialog />
     </div>
   );
 }
