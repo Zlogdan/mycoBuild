@@ -1,5 +1,10 @@
 # MycoBuild — конструктор билдов Mycopunk
 
+**Сайт:** https://zlogdan.github.io/mycoBuild/ · страница всех модов: https://zlogdan.github.io/mycoBuild/#/mods
+
+Публикация: каждый push в `main` собирает, тестирует и выкладывает сайт на GitHub Pages (`.github/workflows/pages.yml`).
+Комментарии к модам: правьте на странице «Все моды», затем «Скачать comments.json» → замените `site/public/data/comments.json` и сделайте push.
+
 Веб-конструктор раскладок модификаций на гексагональной сетке. Данные берутся напрямую из файлов игры.
 
 ## Структура
