@@ -8,6 +8,8 @@ import { useDrag } from '../store/drag';
 import { PatternPreview } from './PatternPreview';
 import { rarityColor } from './colors';
 import { useBoardContext, useT } from './hooks';
+import { useAutofill } from '../store/autofill';
+import { AutofillPanel } from './AutofillPanel';
 
 type Group = 'all' | 'own' | 'common' | 'expanders';
 
@@ -24,6 +26,9 @@ export function Catalog() {
   const [rarities, setRarities] = useState<Set<number>>(new Set());
   const [element, setElement] = useState('');
   const [group, setGroup] = useState<Group>('all');
+  const [tab, setTab] = useState<'catalog' | 'autofill'>('catalog');
+  const afSelection = useAutofill((s) => (gear ? s.selections[gear.id] : undefined));
+  const afIds = useMemo(() => new Set((afSelection ?? []).map((e) => e.upgradeId)), [afSelection]);
 
   const pool = useMemo(() => (data && gear ? upgradePool(data, gear) : null), [data, gear]);
 
@@ -69,12 +74,18 @@ export function Catalog() {
 
   return (
     <section className="panel catalog">
-      <header className="panel-head">
-        <h2>{t('catalog')}</h2>
-        <span className="muted">
-          {t('shown')}: {list.length}
-        </span>
-      </header>
+      <div className="tabs">
+        <button className={tab === 'catalog' ? 'on' : ''} onClick={() => setTab('catalog')}>
+          {t('tabCatalog')} <span className="muted small">{list.length}</span>
+        </button>
+        <button className={tab === 'autofill' ? 'on' : ''} onClick={() => setTab('autofill')}>
+          {t('tabAutofill')} {afIds.size > 0 && <span className="count">{afIds.size}</span>}
+        </button>
+      </div>
+      {tab === 'autofill' ? (
+        <AutofillPanel />
+      ) : (
+      <>
       <input className="search" placeholder={t('search')} value={query} onChange={(e) => setQuery(e.target.value)} />
       <div className="filters">
         <div className="seg">
@@ -120,9 +131,13 @@ export function Catalog() {
             locked={!canRotate(u.rarity, accountLevel)}
             active={inspectedId === u.id}
             onQuickPlace={quickPlace}
+            inAutofill={afIds.has(u.id)}
+            onToggleAutofill={() => useAutofill.getState().toggle(gear.id, u.id)}
           />
         ))}
       </ul>
+      </>
+      )}
     </section>
   );
 }
@@ -133,12 +148,16 @@ const UpgradeCard = memo(function UpgradeCard({
   locked,
   active,
   onQuickPlace,
+  inAutofill,
+  onToggleAutofill,
 }: {
   u: Upgrade;
   placed: number;
   locked: boolean;
   active: boolean;
   onQuickPlace: (u: Upgrade) => void;
+  inAutofill: boolean;
+  onToggleAutofill: () => void;
 }) {
   const { t, l } = useT();
   const color = rarityColor(u.rarity);
@@ -152,6 +171,7 @@ const UpgradeCard = memo(function UpgradeCard({
       onDoubleClick={() => onQuickPlace(u)}
       onPointerDown={(e) => {
         if (e.button !== 0) return;
+        useAutofill.getState().setPreview(null);
         useDrag.getState().begin({
           upgradeId: u.id,
           uid: newUid(),
@@ -176,6 +196,18 @@ const UpgradeCard = memo(function UpgradeCard({
         </div>
       </div>
       <PatternPreview upgrade={u} size={6} className="mini-pattern" />
+      <button
+        className={`af-toggle ${inAutofill ? 'on' : ''}`}
+        title={inAutofill ? t('afRemove') : t('afAdd')}
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleAutofill();
+        }}
+        onDoubleClick={(e) => e.stopPropagation()}
+      >
+        {inAutofill ? '✓' : '+'}
+      </button>
     </li>
   );
 });

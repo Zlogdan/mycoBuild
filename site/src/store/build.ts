@@ -31,6 +31,7 @@ interface BuildState {
   upsertPlacement: (p: Placement) => void;
   removePlacement: (uid: string) => void;
   clearBuild: () => void;
+  setPlacements: (list: Placement[]) => void;
   select: (uid: string | null) => void;
   inspect: (upgradeId: string | null) => void;
   notify: (text: string) => void;
@@ -85,6 +86,10 @@ export const useBuild = create<BuildState>()(
       clearBuild: () => {
         const id = get().gearId;
         if (id) set({ builds: { ...get().builds, [id]: [] }, selectedUid: null });
+      },
+      setPlacements: (list) => {
+        const id = get().gearId;
+        if (id) set({ builds: { ...get().builds, [id]: list }, selectedUid: null });
       },
       select: (selectedUid) => set({ selectedUid }),
       inspect: (inspectedId) => set({ inspectedId }),

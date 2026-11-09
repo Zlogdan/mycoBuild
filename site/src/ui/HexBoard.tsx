@@ -6,6 +6,8 @@ import { iconCellIndex, patternLinks } from '../core/pattern';
 import { iconUrl } from '../data/load';
 import { useBuild, usePlacements } from '../store/build';
 import { useDrag } from '../store/drag';
+import { useAutofill } from '../store/autofill';
+import { applyVariant } from './autofillActions';
 import { rarityColor } from './colors';
 import { useBoardContext, useT } from './hooks';
 
@@ -19,7 +21,12 @@ const ICON = 0.78;
 
 export function HexBoard() {
   const ctx = useBoardContext();
-  const placements = usePlacements();
+  const buildPlacements = usePlacements();
+  // auto-fill preview: show a variant instead of the build (read-only)
+  const previewIdx = useAutofill((s) => s.preview);
+  const previewPlacements = useAutofill((s) => (s.preview !== null ? s.variants[s.preview] : undefined));
+  const readOnly = !!previewPlacements;
+  const placements = previewPlacements ?? buildPlacements;
   const selectedUid = useBuild((s) => s.selectedUid);
   const select = useBuild((s) => s.select);
   const inspect = useBuild((s) => s.inspect);
@@ -102,6 +109,10 @@ export function HexBoard() {
 
   const startMove = (e: React.PointerEvent, p: Placement, cellIndex: number) => {
     if (e.button !== 0) return;
+    if (readOnly) {
+      inspect(p.upgradeId);
+      return;
+    }
     e.preventDefault();
     select(p.uid);
     inspect(p.upgradeId);
@@ -124,7 +135,16 @@ export function HexBoard() {
   const issueText = target && !target.ok && target.issues[0] ? t(`issue_${target.issues[0].code}`, { level: target.issues[0].level ?? '' }) : '';
 
   return (
-    <div className="board-wrap">
+    <div className={`board-wrap ${readOnly ? 'previewing' : ''}`}>
+      {readOnly && previewIdx !== null && (
+        <div className="preview-bar">
+          <span>{t('afPreview', { n: previewIdx + 1 })}</span>
+          <button className="primary" onClick={() => applyVariant(previewIdx)}>
+            {t('afApply')}
+          </button>
+          <button onClick={() => useAutofill.getState().setPreview(null)}>{t('afClose')}</button>
+        </div>
+      )}
       <svg
         ref={svgRef}
         className={`board ${drag.active ? 'dragging' : ''}`}
