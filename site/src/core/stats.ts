@@ -41,26 +41,30 @@ function invert(v: number | Range): number | Range {
 }
 
 /**
- * Display format for a stat, following how the game applies it:
- *   OverrideType.Multiply (or a plain value marked WithMultiplier) -> "+5%" delta of the multiplier
- *   OverrideType.Add       -> signed number ("+0.1"), or signed percent for multiplier stats
- *   OverrideType.Override  -> "= value"
- *   CreateInverse          -> the multiplier is inverted first (fire interval ×1.3 -> fire rate −23%)
+ * Display format for a stat, following StatData.GetValueString in the game:
+ *   OverrideType.Add       -> "+value" (with a "%" C# format: "+value×100%")
+ *   OverrideType.Multiply  -> "+(value-1)×100%" / "-(1-value)×100%"
+ *   OverrideType.Override  -> "value"
+ * The type is the one passed to StatData.Create (statLabels[].overrideType) or, for OverrideData<T>
+ * fields, the data's own method. StatData.CreateInverse shows a multiplier inverted (fire interval -> rate).
  */
-function autoFormat(nv: NumericValue, label: StatLabel | undefined): { value: number | Range; format: string; prefix: string } {
-  const inverse = !!label?.inverse;
-  const mult = !!label?.multiplier;
-  switch (nv.method) {
-    case OverrideType.Multiply:
-      return { value: inverse ? invert(nv.value) : nv.value, format: 'multiplier', prefix: '' };
+function autoFormat(nv: NumericValue, label: StatLabel | undefined): { value: number | Range; format: string; prefix: string } | null {
+  const type = label?.overrideType ?? nv.method;
+  const pct = !!label?.format && label.format.includes('%');
+  switch (type) {
     case OverrideType.Add:
-      return { value: nv.value, format: mult ? 'signedPercent' : 'signed', prefix: '' };
+      return { value: nv.value, format: pct ? 'signedPercent' : 'signed', prefix: '' };
+    case OverrideType.Multiply:
+      return { value: label?.inverse ? invert(nv.value) : nv.value, format: 'multiplier', prefix: '' };
     case OverrideType.Override:
     case OverrideType.OverrideThenAdd:
-      return { value: nv.value, format: 'number', prefix: '= ' };
+      return { value: nv.value, format: pct ? 'percent' : 'number', prefix: '' };
+    case OverrideType.None:
+      return null; // not applied in game
     default:
-      if (mult || inverse) return { value: inverse ? invert(nv.value) : nv.value, format: 'multiplier', prefix: '' };
-      return { value: nv.value, format: 'number', prefix: '' };
+      // no type known (plain value without OverrideData): CreateInverse values are multipliers
+      if (label?.inverse) return { value: invert(nv.value), format: 'multiplier', prefix: '' };
+      return { value: nv.value, format: pct ? 'percent' : 'number', prefix: '' };
   }
 }
 
@@ -125,9 +129,10 @@ export function statRows(
       if (ov?.format === 'hidden') continue;
       const nv = numericValue(raw);
       if (nv === null) continue;
-      // OverrideType.None: the value is not applied in game -> nothing to show
-      if (nv.method === OverrideType.None && !ov?.format) continue;
       const gl = labels[path];
+      const auto = autoFormat(nv, gl);
+      // OverrideType.None: the value is not applied in game -> nothing to show
+      if (!auto && !ov?.format) continue;
       const ovLabel = ov?.[lang] || '';
       let label = '';
       let labelSource: StatRow['labelSource'] = 'auto';
@@ -141,8 +146,7 @@ export function statRows(
         if (!showAll) continue;
         label = humanize(field);
       }
-      const auto = autoFormat(nv, gl);
-      const value = ov?.format ? formatValue(nv.value, ov.format) : auto.prefix + formatValue(auto.value, auto.format);
+      const value = ov?.format ? formatValue(nv.value, ov.format) : auto!.prefix + formatValue(auto!.value, auto!.format);
       rows.push({ path, label, value, labelSource });
     }
   }

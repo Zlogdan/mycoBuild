@@ -77,9 +77,15 @@ export interface Keyword {
 export interface StatLabel {
   key: string | null;
   label: Loc | null;
+  /** StatData.WithMultiplier was applied: only adds a stacking note in game, does NOT change the format */
   multiplier: boolean;
+  /** StatData.CreateInverse: the value is shown inverted (e.g. fire interval -> fire rate) */
   inverse: boolean;
   patternScaled: boolean;
+  /** OverrideType passed explicitly to StatData.Create (1 Add, 2 Multiply, 3 Override); null = from OverrideData.method */
+  overrideType?: number | null;
+  /** C# number format passed to StatData.Create (e.g. "0.0%") */
+  format?: string | null;
 }
 
 export interface StatOverride {

@@ -423,9 +423,10 @@ class Extractor:
         for path in sorted(used):
             ptype, field = path.split(".", 1)
             hit = next((s for s in smap.get(ptype, []) if s["field"] == field), None)
-            entry = {"key": None, "label": None, "multiplier": False, "inverse": False, "patternScaled": False}
+            entry = {"key": None, "label": None, "multiplier": False, "inverse": False, "patternScaled": False,
+                     "overrideType": None, "format": None}
             if hit:
-                entry.update({k: hit[k] for k in ("key", "multiplier", "inverse", "patternScaled")})
+                entry.update({k: hit.get(k) for k in ("key", "multiplier", "inverse", "patternScaled", "overrideType", "format")})
                 entry["label"] = self.loc(hit["key"]) if hit["key"] else None
                 if entry["label"]:
                     mapped += 1

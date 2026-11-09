@@ -12,8 +12,9 @@ const rows = (key: string) =>
 describe('stat rows (real data)', () => {
   it('GlobPuddle «Каплешарики»: ranges, OverrideType.Multiply, inverse fire rate, hidden None', () => {
     expect(rows('GlobPuddle')).toEqual({
-      'Длительность': '-20% … +20%',
-      'Величина': '-10% … +20%',
+      // Globbler_Puddle: StatData.Create(..., overrideType: Add) -> "+value", not a percentage
+      'Длительность': '+0.8 … +1.2',
+      'Величина': '+0.9 … +1.2',
       'Урон': '-30% … -25%', // damage ×0.7…0.75
       'Зона поражения взрывом': '-40% … -20%', // hitForce ×0.6…0.8
       'Скорость стрельбы': '-24.2% … -21.9%', // fireInterval ×1.28…1.32 shown inverted (CreateInverse)
@@ -25,9 +26,13 @@ describe('stat rows (real data)', () => {
     expect(rows('AKillRate')).toEqual({
       'Скорость стрельбы': '+5% … +6%',
       'Скорость перезарядки': '+6% … +9.3%',
-      'Длительность': '2.9 … 3.1',
+      'Длительность': '+2.9 … +3.1',
       'Максимум зарядов': '4',
     });
+  });
+
+  it('GrabHeight «Всплеск роста»: additive value, shown like the game (+9.77 in game is within 8…10)', () => {
+    expect(rows('GrabHeight')).toEqual({ 'Высота': '+8 … +10' });
   });
 
   it('no game label is attached to helper fields', () => {

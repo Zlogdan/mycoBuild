@@ -65,6 +65,14 @@ def build_stat_map(dll_path: str) -> dict:
         for m in t.MethodList:
             method_owner[m.row_index] = t.TypeName.value
 
+    # parameter names of every method (to know whether a StatData.Create overload takes overrideType / format)
+    params = {}
+    for idx, m in enumerate(T.MethodDef, start=1):
+        try:
+            params[idx] = [p.row.Name.value for p in m.ParamList]
+        except Exception:  # noqa: BLE001
+            params[idx] = []
+
     enclosing = {}
     for nc in T.NestedClass or []:
         enclosing[nc.NestedClass.row_index] = nc.EnclosingClass.row_index
@@ -104,20 +112,33 @@ def build_stat_map(dll_path: str) -> dict:
         # later loads are helpers: GetStackingModifier(stackModifier), Modify*FromPatternSize(..., modifyFromPatternSize),
         # ApplyEMMultiplier(emMultiplier) ...
         stats, loaded, key, pending_key, value_field = [], [], None, None, None
+        # constants pushed after the label (TextBlocks.GetString) and before StatData.Create*
+        after_label_ints, after_label_strs, seen_label = [], [], False
         for ins in body.instructions:
             op = ins.operand
             name = ins.opcode.name
+            if seen_label and name.startswith("ldc.i4"):
+                if name == "ldc.i4.m1":
+                    after_label_ints.append(-1)
+                elif name in ("ldc.i4", "ldc.i4.s"):
+                    after_label_ints.append(int(op))
+                else:
+                    after_label_ints.append(int(name.rsplit(".", 1)[1]))
             if name in ("ldfld", "ldflda") and isinstance(op, Token):
                 n = member_name(op)
                 cls, _, fld = n.partition(".")
                 if cls.startswith("UpgradeProperty") and fld and not fld.startswith("<"):
                     loaded.append(fld)
             elif name == "ldstr" and isinstance(op, StringToken):
-                pending_key = pe.net.user_strings.get(op.rid).value
+                v = pe.net.user_strings.get(op.rid).value
+                if seen_label:
+                    after_label_strs.append(v)
+                pending_key = v
             elif name in ("call", "callvirt") and isinstance(op, Token):
                 n = member_name(op)
                 if n == "TextBlocks::GetString" and pending_key is not None:
                     key, pending_key = pending_key, None
+                    seen_label, after_label_ints, after_label_strs = True, [], []
                 elif n == "UpgradeProperty::GetStackingModifier" and loaded:
                     loaded.pop()  # its argument is the stackModifier field, not a displayed value
                 elif "FromPatternSize" in n and value_field is None:
@@ -126,14 +147,22 @@ def build_stat_map(dll_path: str) -> dict:
                     value_field = vals[-1] if vals else None
                 elif n.startswith("StatData::Create"):
                     candidates = [f for f in loaded if not _is_helper(f)]
+                    pnames = params.get(op.rid, []) if op.table == MetadataTables.MethodDef.value else []
+                    # overloads with an explicit OverrideType: it is the first int constant after the label
+                    # (name, range, upgrade and rand are loads); otherwise the type comes from OverrideData.method
+                    override_type = after_label_ints[0] if "overrideType" in pnames and after_label_ints else None
+                    fmt = next((x for x in after_label_strs if "0" in x or "%" in x or "#" in x), None) if "format" in pnames else None
                     stats.append({
                         "field": value_field or (candidates[0] if candidates else None),
                         "key": key,
                         "multiplier": False,
                         "inverse": "Inverse" in n,
                         "patternScaled": False,
+                        "overrideType": override_type,
+                        "format": fmt,
                     })
                     loaded, key, value_field = [], None, None
+                    seen_label, after_label_ints, after_label_strs = False, [], []
                 elif n == "StatData::WithMultiplier" and stats:
                     stats[-1]["multiplier"] = True
                 elif n == "StatData::WithPatternRatio" and stats:
