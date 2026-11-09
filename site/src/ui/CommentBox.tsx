@@ -4,6 +4,7 @@ import { effectiveComment, useComments } from '../store/comments';
 import { useBuild } from '../store/build';
 import { RichText } from './RichText';
 import { useT } from './hooks';
+import { EDITOR_MODE } from './editor';
 
 /** "How to obtain" line, composed from the game's collection source texts. */
 export function SourceLine({ u }: { u: Upgrade }) {
@@ -22,7 +23,8 @@ export function CommentBox({ u, compact = false }: { u: Upgrade; compact?: boole
   const { t } = useT();
   const shared = useBuild((s) => s.data?.comments ?? { upgrades: {} });
   const local = useComments((s) => s.local);
-  const { comment, edited } = effectiveComment(shared, local, u.id);
+  // visitors see only published comments; local edits are shown in editor mode only
+  const { comment, edited } = EDITOR_MODE ? effectiveComment(shared, local, u.id) : { comment: shared.upgrades[u.id] ?? null, edited: false };
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState('');
 
@@ -58,6 +60,8 @@ export function CommentBox({ u, compact = false }: { u: Upgrade; compact?: boole
       </div>
     );
 
+  if (!comment && !EDITOR_MODE) return null;
+
   if (!comment)
     return compact ? (
       <button className="link small add-comment" onClick={start}>
@@ -76,9 +80,11 @@ export function CommentBox({ u, compact = false }: { u: Upgrade; compact?: boole
       <div className="comment-head">
         <span className="muted small">💬 {t('cmTitle')}</span>
         {edited && <span className="warn small">· {t('cmLocal')}</span>}
-        <button className="link small" onClick={start}>
-          {t('cmEdit')}
-        </button>
+        {EDITOR_MODE && (
+          <button className="link small" onClick={start}>
+            {t('cmEdit')}
+          </button>
+        )}
       </div>
       <p className="comment-text">
         <RichText text={comment.text} />

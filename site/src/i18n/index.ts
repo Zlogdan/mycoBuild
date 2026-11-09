@@ -169,6 +169,8 @@ const ru = {
   src_DropsFromSource: 'Определённый источник',
   src_LevelUp: 'Повышение уровня',
   src_Resources: 'За ресурсы',
+  edMode: 'Режим редактора',
+  edHint: 'Видны правка комментариев и выгрузка comments.json. Выключить: откройте сайт с ?edit=0',
   langSwitch: 'EN',
 } as const;
 
@@ -343,6 +345,8 @@ const en: Record<TKey, string> = {
   src_DropsFromSource: 'Specific source',
   src_LevelUp: 'Level up',
   src_Resources: 'For resources',
+  edMode: 'Editor mode',
+  edHint: 'Comment editing and comments.json download are visible. Turn off: open the site with ?edit=0',
   langSwitch: 'RU',
 };
 

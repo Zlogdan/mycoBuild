@@ -14,6 +14,7 @@ import { BuildIOButtons, BuildIODialogs, useBuildFromHash } from './BuildIO';
 import { SaveImportDialog } from './SaveImport';
 import { ModsPage } from './ModsPage';
 import { navigate, useRoute } from './route';
+import { EDITOR_MODE } from './editor';
 
 export function App() {
   const data = useBuild((s) => s.data);
@@ -97,6 +98,11 @@ function TopBar() {
       </label>
       {route === 'builder' && <BuildIOButtons />}
       <span className="muted small grow">{meta && t('dataInfo', { date: meta.extractedAt.slice(0, 10) })}</span>
+      {EDITOR_MODE && (
+        <span className="editor-badge" title={t('edHint')}>
+          ✎ {t('edMode')}
+        </span>
+      )}
       <button className="lang" onClick={() => useBuild.getState().setLang(lang === 'ru' ? 'en' : 'ru')}>
         {t('langSwitch')}
       </button>

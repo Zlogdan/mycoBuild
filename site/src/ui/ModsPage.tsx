@@ -11,6 +11,7 @@ import { RichText } from './RichText';
 import { rarityColor } from './colors';
 import { useT } from './hooks';
 import { navigate } from './route';
+import { EDITOR_MODE } from './editor';
 
 type Cat = 'all' | Exclude<GearCategory, 'global'> | 'common' | 'expanders';
 type Sort = 'rarity' | 'name' | 'gear';
@@ -67,9 +68,9 @@ export function ModsPage() {
       if (cells && String(u.pattern.cells.length) !== cells && !(cells === '7+' && u.pattern.cells.length >= 7)) return false;
       if (onlyStack && !isStackable(u)) return false;
       if (onlySpatial && !isSpatial(u)) return false;
-      if (onlyCommented && !effectiveComment(data.comments, local, u.id).comment) return false;
+      if (onlyCommented && !(EDITOR_MODE ? effectiveComment(data.comments, local, u.id).comment : data.comments.upgrades[u.id])) return false;
       if (q) {
-        const c = effectiveComment(data.comments, local, u.id).comment?.text ?? '';
+        const c = (EDITOR_MODE ? effectiveComment(data.comments, local, u.id).comment : data.comments.upgrades[u.id])?.text ?? '';
         const hay = [l(u.name), u.name.en, u.key, l(u.desc), l(u.sourceInfo?.text), c, ...gs.map((g) => l(g.name))].join(' ').toLowerCase();
         if (!hay.includes(q)) return false;
       }
@@ -183,10 +184,12 @@ export function ModsPage() {
           <option value="name">{t('mpSort')}: {t('mpSortName')}</option>
           <option value="gear">{t('mpSort')}: {t('mpSortGear')}</option>
         </select>
-        <button onClick={downloadComments} title={t('cmExportHint')}>
-          ⭳ {t('cmExport')}
-        </button>
-        {localCount > 0 && (
+        {EDITOR_MODE && (
+          <button onClick={downloadComments} title={t('cmExportHint')}>
+            ⭳ {t('cmExport')}
+          </button>
+        )}
+        {EDITOR_MODE && localCount > 0 && (
           <span className="warn small">
             {t('cmLocalCount', { n: localCount })}{' '}
             <button className="link small" onClick={() => window.confirm(t('cmDiscard') + '?') && useComments.getState().clearLocal()}>
