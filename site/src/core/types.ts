@@ -38,6 +38,8 @@ export interface Upgrade {
   altPatterns?: RawPattern[];
   props: UpgradeProp[];
   gears: string[];
+  /** how the upgrade is obtained (composed like Upgrade.GetCollectionSource in game) */
+  sourceInfo?: { kind: string; text: Loc | null; from?: Loc | null; after?: string };
 }
 
 export interface Gear {

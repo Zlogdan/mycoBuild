@@ -17,9 +17,20 @@ export interface StatOverrides {
   fields: Record<string, StatOverride>;
 }
 
+export interface UpgradeComment {
+  key?: string;
+  text: string;
+}
+
+export interface CommentsFile {
+  upgrades: Record<string, UpgradeComment>;
+}
+
 export interface LoadedData {
   game: GameData;
   overrides: StatOverrides;
+  /** shared comments from public/data/comments.json */
+  comments: CommentsFile;
   issues: DataIssue[];
 }
 
@@ -68,15 +79,16 @@ async function fetchJson<T>(url: string, optional: boolean): Promise<T | null> {
 export const DATA_BASE = `${import.meta.env.BASE_URL}data/`;
 
 export async function loadData(): Promise<LoadedData> {
-  const [game, patches, overrides] = await Promise.all([
+  const [game, patches, overrides, comments] = await Promise.all([
     fetchJson<GameData>(`${DATA_BASE}game.json`, false),
     fetchJson<DataPatches>(`${DATA_BASE}patches.json`, true),
     fetchJson<StatOverrides>(`${DATA_BASE}stats.overrides.json`, true),
+    fetchJson<CommentsFile>(`${DATA_BASE}comments.json`, true),
   ]);
   const merged = normalizeIds(applyPatches(normalizeIds(game!), patches));
   const issues = validateGameData(merged);
   for (const i of issues) (i.level === 'error' ? console.error : console.warn)(`[data] ${i.where}: ${i.message}`);
-  return { game: merged, overrides: overrides ?? { fields: {} }, issues };
+  return { game: merged, overrides: overrides ?? { fields: {} }, comments: { upgrades: comments?.upgrades ?? {} }, issues };
 }
 
 export const iconUrl = (icon: string | null | undefined) => (icon ? `${DATA_BASE}icons/${icon}` : undefined);

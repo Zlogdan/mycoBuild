@@ -12,6 +12,8 @@ import { useT } from './hooks';
 import { useDragController } from './useDragController';
 import { BuildIOButtons, BuildIODialogs, useBuildFromHash } from './BuildIO';
 import { SaveImportDialog } from './SaveImport';
+import { ModsPage } from './ModsPage';
+import { navigate, useRoute } from './route';
 
 export function App() {
   const data = useBuild((s) => s.data);
@@ -39,6 +41,16 @@ function Main() {
   useDragController();
   useBuildFromHash();
   const dragging = useDrag((s) => s.active);
+  const route = useRoute();
+  if (route === 'mods')
+    return (
+      <div className="app mods">
+        <TopBar />
+        <ModsPage />
+        <Toast />
+        <BuildIODialogs />
+      </div>
+    );
   return (
     <div className={`app ${dragging ? 'is-dragging' : ''}`}>
       <TopBar />
@@ -63,6 +75,7 @@ function TopBar() {
   const lang = useBuild((s) => s.lang);
   const meta = useBuild((s) => s.data?.game.meta);
   const { t } = useT();
+  const route = useRoute();
   return (
     <header className="topbar">
       <div className="brand">
@@ -70,11 +83,19 @@ function TopBar() {
         <b>{t('appTitle')}</b>
         <span className="muted">{t('appSubtitle')}</span>
       </div>
+      <nav className="seg nav">
+        <button className={route === 'builder' ? 'on' : ''} onClick={() => navigate('builder')}>
+          {t('navBuilder')}
+        </button>
+        <button className={route === 'mods' ? 'on' : ''} onClick={() => navigate('mods')}>
+          {t('navMods')}
+        </button>
+      </nav>
       <label className="level" title={t('accountLevelHint')}>
         <span>{t('accountLevel')}</span>
         <input type="number" min={1} max={999} value={accountLevel} onChange={(e) => setAccountLevel(Number(e.target.value))} />
       </label>
-      <BuildIOButtons />
+      {route === 'builder' && <BuildIOButtons />}
       <span className="muted small grow">{meta && t('dataInfo', { date: meta.extractedAt.slice(0, 10) })}</span>
       <button className="lang" onClick={() => useBuild.getState().setLang(lang === 'ru' ? 'en' : 'ru')}>
         {t('langSwitch')}

@@ -5,6 +5,7 @@ import { iconUrl } from '../data/load';
 import { useBuild, usePlacements } from '../store/build';
 import { PatternPreview } from './PatternPreview';
 import { RichText } from './RichText';
+import { CommentBox, SourceLine } from './CommentBox';
 import { rarityColor } from './colors';
 import { useT } from './hooks';
 
@@ -57,6 +58,8 @@ export function Details() {
           <RichText text={l(u.desc)} />
         </p>
       )}
+      <SourceLine u={u} />
+      <CommentBox u={u} />
 
       <ul className="tags">
         <li>⬡ {u.pattern.cells.length} {t('cells')}</li>

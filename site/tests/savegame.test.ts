@@ -8,7 +8,7 @@ import { upgradePattern, evaluate } from '../src/core/placement';
 import { boardContext } from '../src/store/build';
 
 const data: GameData = JSON.parse(readFileSync(resolve(__dirname, '../public/data/game.json'), 'utf-8'));
-const loaded = { game: data, overrides: { fields: {} }, issues: [] };
+const loaded = { game: data, overrides: { fields: {} }, comments: { upgrades: {} }, issues: [] };
 
 describe('game anchor convention (GearData.CanEquipUpgrade port)', () => {
   it('for every pattern, rotation and position the game footprint equals the site shape', () => {

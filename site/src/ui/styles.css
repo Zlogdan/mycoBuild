@@ -164,6 +164,41 @@ input[type='number'] { width: 70px; }
 .seg button { border-radius: 6px; padding: 3px 8px; font-size: 12px; }
 .seg button.on { background: var(--accent); color: #0b0f0e; border-color: var(--accent); }
 
+/* navigation */
+.nav button { font-size: 14px; padding: 5px 12px; }
+
+/* source + comments */
+.source-line { margin: 4px 0; }
+.comment { border: 1px dashed var(--line); border-radius: 8px; padding: 6px 8px; margin-top: 6px; background: color-mix(in srgb, var(--panel2) 60%, transparent); }
+.comment.empty { border: none; padding: 0; background: none; }
+.comment-head { display: flex; gap: 6px; align-items: baseline; }
+.comment-head .link { margin-left: auto; }
+.comment-text { margin: 4px 0 0; white-space: pre-wrap; }
+.comment textarea { width: 100%; background: var(--bg2); border: 1px solid var(--line); border-radius: 6px; color: var(--text); font: inherit; padding: 6px; resize: vertical; }
+.comment-actions { display: flex; gap: 6px; margin-top: 4px; }
+.add-comment { padding: 0; }
+
+/* all upgrades page */
+.app.mods { grid-template-columns: 1fr; grid-template-areas: 'top' 'page'; }
+.mods-page { grid-area: page; overflow: auto; min-height: 0; display: flex; flex-direction: column; gap: 12px; }
+.mods-filters { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 10px; position: sticky; top: 0; z-index: 5; }
+.mods-filters .search { width: 260px; }
+.mods-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px; }
+.mod-card { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--rc); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.mod-head { display: flex; gap: 10px; align-items: center; }
+.mod-head .icon img { width: 44px; height: 44px; object-fit: contain; display: block; }
+.mod-title { flex: 1; min-width: 0; }
+.mod-title h3 { font-size: 18px; color: var(--rc); overflow-wrap: anywhere; }
+.mod-pattern { flex: none; }
+.mod-gears { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 2px 8px; border-radius: 12px; background: var(--panel2); border: 1px solid var(--line); }
+.chip img { width: 18px; height: 18px; object-fit: contain; }
+.mod-card .desc { margin: 4px 0; }
+.mod-stats { width: 100%; border-collapse: collapse; }
+.mod-stats td { padding: 2px 4px; border-bottom: 1px solid var(--line); }
+.mod-stats .val { text-align: right; color: var(--accent); white-space: nowrap; }
+.more { align-self: center; padding: 8px 20px; }
+
 /* import / export */
 .io-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
 .io-buttons button { font-size: 13px; white-space: nowrap; }

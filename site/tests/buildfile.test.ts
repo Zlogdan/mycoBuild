@@ -8,7 +8,7 @@ import { prepareSolve, solutionToPlacements } from '../src/core/solver/prepare';
 import { boardContext } from '../src/store/build';
 
 const data: GameData = JSON.parse(readFileSync(resolve(__dirname, '../public/data/game.json'), 'utf-8'));
-const loaded = { game: data, overrides: { fields: {} }, issues: [] };
+const loaded = { game: data, overrides: { fields: {} }, comments: { upgrades: {} }, issues: [] };
 let n = 0;
 const ictx: ImportContext = {
   data,

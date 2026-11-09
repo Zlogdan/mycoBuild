@@ -7574,6 +7574,13 @@
    "format": "",
    "_game": "Range / Дальность",
    "_mult": false
+  },
+  "Player_Elementalist.amount": {
+   "en": "",
+   "ru": "",
+   "format": "",
+   "_game": "Element / Стихия",
+   "_mult": false
   }
  }
 }

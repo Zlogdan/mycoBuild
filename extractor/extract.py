@@ -121,6 +121,13 @@ def install_ref_resolver(tt: TypeTrees):
     TTH.get_ref_type_node = resolve
 
 
+def strip_tags(loc):
+    """Names may carry rich-text markup (e.g. <font=H>Green Prism</font>); names are shown as plain text."""
+    if not loc:
+        return loc
+    return {k: re.sub(r"<[^>]*>", "", v).strip() for k, v in loc.items()}
+
+
 def clean(v):
     """Make typetree output JSON friendly and compact."""
     if isinstance(v, float):
@@ -290,6 +297,79 @@ class Extractor:
                     cells.append([x, y, n.get("connections", 0)])
         return {"w": hexmap.get("width", 0), "h": hexmap.get("height", 0), "cells": cells}
 
+    def _sub(self, template, value):
+        """TextBlocks templates use '<>' for the inserted name."""
+        if not template:
+            return None
+        out = {}
+        for lang, s in template.items():
+            v = (value or {}).get(lang) or (value or {}).get("en") or "???"
+            out[lang] = s.replace("<>", v)
+        return out
+
+    def source_info(self, k, d):
+        """How an upgrade is obtained, composed like Upgrade.GetCollectionSource in the game:
+        Contraband -> 'ouro_exc'; WorldPool -> 'col_worldpool' or 'col_afterother' (MustBeUnlockedFirst);
+        UpgradeTree -> 'col_tree'; DropsFromSource -> the loot source (enemy / 2FA codes / pipelines / ...);
+        LevelUp -> 'col_lvl'; Resources -> 'col_resource'. Other sources have no text in game."""
+        src = k[0]
+        cs = d.get("collectionSource", 0)
+        rarity = d.get("<Rarity>k__BackingField", 0)
+        info = {"kind": COLLECTION_SOURCES.get(cs, str(cs)), "text": None, "from": None}
+        if rarity == 5:
+            info.update(kind="Ouroboros", text=self.loc("ouro_exc"))
+            return info
+        if cs == 0:
+            first = self.resolve(src, d.get("<MustBeUnlockedFirst>k__BackingField", {}))
+            fd = self.parse(first) if first else None
+            if fd:
+                name = strip_tags(self.loc(fd.get("_name"))) or {"en": fd.get("_name")}
+                info.update(kind="AfterOther", text=self._sub(self.loc("col_afterother"), name), after=str(fd.get("id")))
+            else:
+                info["text"] = self.loc("col_worldpool")
+        elif cs == 2:
+            info["text"] = self.loc("col_tree")
+        elif cs == 7:
+            info["text"] = self.loc("col_lvl")
+        elif cs == 8:
+            info["text"] = self.loc("col_resource")
+        elif cs == 3:
+            ck = self.resolve(src, d.get("collectionSourceContext", {}))
+            cls = self.scripts.get(ck, (None, None, None))[2] if ck else None
+            cd = self.parse(ck) if cls else None
+            obj = self.by_key.get(ck) if ck else None
+            if cls == "EnemyClass" and cd:
+                name = self.loc(cd.get("_name")) or {"en": cd.get("m_Name")}
+                info.update(text=self._sub(self.loc("col_source"), name), **{"from": name})
+            elif cls == "AuthItem":
+                info.update(kind="Ouroboros", text=self.loc("src_codes"))
+            elif cls == "PipelineEncounter":
+                info["text"] = self.loc("pipe_src")
+            elif cls == "FlyingRingsEncounter":
+                info["text"] = self.loc("ring_src")
+            elif cls == "CausticBluffObjective":
+                # CausticBluffObjective.GetLootSourceName: 'col_source' with the 'containment' mission name
+                name = self.loc("containment")
+                info.update(text=self._sub(self.loc("col_source"), name), **{"from": name})
+            elif ck is None:
+                # no context: the game prints 'col_source' with '???'
+                info["text"] = self._sub(self.loc("col_source"), {"en": "???"})
+            elif obj is not None:
+                name = None
+                try:
+                    name = obj.read(check_read=False).m_Name
+                except Exception:
+                    pass
+                if name and "CausticBluff" in name:
+                    # CausticBluffObjective.GetLootSourceName: 'col_source' with the 'containment' mission name
+                    cname = self.loc("containment")
+                    info.update(text=self._sub(self.loc("col_source"), cname), **{"from": cname})
+                    return info
+                # scene objects used as sources are Ouroboros shop/rooms in this build
+                info.update(kind="Ouroboros" if name and "Ouro" in name else info["kind"],
+                            text=self._sub(self.loc("col_source"), {"en": name or "???"}))
+        return info
+
     def upgrade(self, k, d):
         src = k[0]
         name_key = d.get("_name") or d.get("m_Name")
@@ -313,12 +393,13 @@ class Extractor:
             "key": name_key,
             "asset": d.get("m_Name"),
             "class": self.scripts[k][2],
-            "name": self.loc(name_key) or {"en": name_key},
+            "name": strip_tags(self.loc(name_key)) or {"en": name_key},
             "desc": desc,
             "rarity": d.get("<Rarity>k__BackingField", 0),
             "flags": [n for b, n in UPGRADE_FLAGS.items() if flags & b],
             "effect": EFFECT_TYPES.get(d.get("effectType", 0), str(d.get("effectType"))),
             "source": COLLECTION_SOURCES.get(d.get("collectionSource", 0), str(d.get("collectionSource"))),
+            "sourceInfo": self.source_info(k, d),
             "priority": d.get("<Priority>k__BackingField", 0),
             "limit": f"{limit[0]}:{limit[1]}" if limit else None,
             "icon": self.export_icon(src, d.get("icon")),
@@ -404,7 +485,10 @@ class Extractor:
         log(f"Upgrades: {len(upgrades)} (skipped {dict(skipped)})")
 
         # Ouroboros-only upgrades (UpgradeFlags.OnlyInOuroboros) use different grid rules -> excluded.
-        ouro = {uid for uid, u in upgrades.items() if "OnlyInOuroboros" in u["flags"]}
+        # Ouroboros-only: flag OnlyInOuroboros, rarity Contraband (game shows 'ouro_exc' for it),
+        # or a loot source that exists only in Ouroboros (2FA codes, Ouroboros shop).
+        ouro = {uid for uid, u in upgrades.items()
+                if "OnlyInOuroboros" in u["flags"] or u["rarity"] == 5 or u["sourceInfo"]["kind"] == "Ouroboros"}
         if not self.include_ouroboros:
             for uid in ouro:
                 upgrades.pop(uid)

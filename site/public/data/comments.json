@@ -1,0 +1,4 @@
+{
+  "_readme": "Comments on upgrades shown on the site. Key = upgrade id; \"key\" is the internal name for readability. Edit here or in the site (then use \"Download comments.json\" and replace this file).",
+  "upgrades": {}
+}
