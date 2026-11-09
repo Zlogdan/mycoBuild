@@ -107,6 +107,7 @@ export function ModsPage() {
   return (
     <div className="mods-page">
       <div className="mods-filters panel">
+        <div className="mods-found">{t('mpFound', { n: list.length })}</div>
         <input className="search" placeholder={t('search')} value={query} onChange={(e) => (setQuery(e.target.value), reset())} />
         <select value={cat} onChange={(e) => (setCat(e.target.value as Cat), setGearId(''), reset())} title={t('mpCategory')}>
           {CATS.map((c) => (
@@ -182,7 +183,6 @@ export function ModsPage() {
           <option value="name">{t('mpSort')}: {t('mpSortName')}</option>
           <option value="gear">{t('mpSort')}: {t('mpSortGear')}</option>
         </select>
-        <span className="muted small grow">{t('mpFound', { n: list.length })}</span>
         <button onClick={downloadComments} title={t('cmExportHint')}>
           ⭳ {t('cmExport')}
         </button>
@@ -196,6 +196,7 @@ export function ModsPage() {
         )}
       </div>
 
+      <div className="mods-results">
       <ul className="mods-grid">
         {list.slice(0, limit).map((u) => (
           <ModCard key={u.id} u={u} gears={u.gears.map((id) => gearsById.get(id)).filter((g): g is Gear => !!g)} />
@@ -206,6 +207,7 @@ export function ModsPage() {
           {t('mpMore', { n: list.length - limit })}
         </button>
       )}
+      </div>
     </div>
   );
 }

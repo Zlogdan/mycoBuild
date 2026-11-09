@@ -180,9 +180,15 @@ input[type='number'] { width: 70px; }
 
 /* all upgrades page */
 .app.mods { grid-template-columns: 1fr; grid-template-areas: 'top' 'page'; }
-.mods-page { grid-area: page; overflow: auto; min-height: 0; display: flex; flex-direction: column; gap: 12px; }
-.mods-filters { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 10px; position: sticky; top: 0; z-index: 5; }
-.mods-filters .search { width: 260px; }
+.mods-page { grid-area: page; min-height: 0; display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 12px; }
+/* filters: own scrolling column, never overlaps the cards */
+.mods-filters { display: flex; flex-direction: column; gap: 8px; padding: 10px; overflow-y: auto; min-height: 0; }
+.mods-filters > * { min-width: 0; max-width: 100%; }
+.mods-filters .search, .mods-filters select { width: 100%; }
+.mods-filters label { display: flex; align-items: center; gap: 6px; }
+.mods-filters .rarity-filter { flex-wrap: wrap; }
+.mods-found { font-family: Rajdhani, sans-serif; font-size: 18px; font-weight: 600; color: var(--accent); }
+.mods-results { overflow-y: auto; min-height: 0; display: flex; flex-direction: column; gap: 12px; padding-right: 2px; }
 .mods-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px; }
 .mod-card { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--rc); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .mod-head { display: flex; gap: 10px; align-items: center; }
@@ -286,6 +292,11 @@ button.link { background: none; border: none; color: var(--accent); padding: 0 4
   position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
   background: #2a1a12; border: 1px solid var(--accent2); color: var(--accent2);
   padding: 8px 16px; border-radius: 8px; z-index: 60;
+}
+
+@media (max-width: 900px) {
+  .mods-page { grid-template-columns: 1fr; }
+  .mods-filters, .mods-results { overflow: visible; }
 }
 
 @media (max-width: 1100px) {
