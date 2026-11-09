@@ -71,6 +71,13 @@ export const useAutofill = create<AutofillState>()(
       name: 'mycobuild-autofill-v1',
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({ selections: s.selections, options: s.options }),
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<AutofillState>;
+        const selections = Object.fromEntries(
+          Object.entries(p.selections ?? {}).map(([g, list]) => [g, list.map((e) => ({ ...e, upgradeId: String(e.upgradeId) }))]),
+        );
+        return { ...current, ...p, selections, options: { ...current.options, ...(p.options ?? {}) } };
+      },
     },
   ),
 );

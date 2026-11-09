@@ -10,6 +10,7 @@ import { HexBoard } from './HexBoard';
 import { PatternPreview } from './PatternPreview';
 import { useT } from './hooks';
 import { useDragController } from './useDragController';
+import { BuildIOButtons, BuildIODialogs, useBuildFromHash } from './BuildIO';
 
 export function App() {
   const data = useBuild((s) => s.data);
@@ -35,6 +36,7 @@ export function App() {
 
 function Main() {
   useDragController();
+  useBuildFromHash();
   const dragging = useDrag((s) => s.active);
   return (
     <div className={`app ${dragging ? 'is-dragging' : ''}`}>
@@ -48,6 +50,7 @@ function Main() {
       <Catalog />
       <DragLayer />
       <Toast />
+      <BuildIODialogs />
     </div>
   );
 }
@@ -69,6 +72,7 @@ function TopBar() {
         <span>{t('accountLevel')}</span>
         <input type="number" min={1} max={999} value={accountLevel} onChange={(e) => setAccountLevel(Number(e.target.value))} />
       </label>
+      <BuildIOButtons />
       <span className="muted small grow">{meta && t('dataInfo', { date: meta.extractedAt.slice(0, 10) })}</span>
       <button className="lang" onClick={() => useBuild.getState().setLang(lang === 'ru' ? 'en' : 'ru')}>
         {t('langSwitch')}

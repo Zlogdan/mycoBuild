@@ -309,7 +309,7 @@ class Extractor:
                         if p["type"]["class"] == "UpgradeProperty_Pattern" and "pattern" in p.get("data", {})]
         limit = self.resolve(src, d.get("upgradeLimitProvider", {}))
         return {
-            "id": d.get("id"),
+            "id": str(d.get("id")),
             "key": name_key,
             "asset": d.get("m_Name"),
             "class": self.scripts[k][2],

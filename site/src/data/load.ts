@@ -23,6 +23,17 @@ export interface LoadedData {
   issues: DataIssue[];
 }
 
+/** Ids are strings everywhere (older game.json files stored upgrade ids as numbers). */
+export function normalizeIds(d: GameData): GameData {
+  for (const [key, u] of Object.entries(d.upgrades)) u.id = String(u.id ?? key);
+  for (const g of d.gears) {
+    g.id = String(g.id);
+    g.upgrades = g.upgrades.map(String);
+    if (g.ability != null) g.ability = String(g.ability);
+  }
+  return d;
+}
+
 export function applyPatches(base: GameData, patches: DataPatches | null): GameData {
   if (!patches) return base;
   const game: GameData = { ...base, upgrades: { ...base.upgrades }, gears: base.gears.map((g) => ({ ...g })) };
@@ -62,7 +73,7 @@ export async function loadData(): Promise<LoadedData> {
     fetchJson<DataPatches>(`${DATA_BASE}patches.json`, true),
     fetchJson<StatOverrides>(`${DATA_BASE}stats.overrides.json`, true),
   ]);
-  const merged = applyPatches(game!, patches);
+  const merged = normalizeIds(applyPatches(normalizeIds(game!), patches));
   const issues = validateGameData(merged);
   for (const i of issues) (i.level === 'error' ? console.error : console.warn)(`[data] ${i.where}: ${i.message}`);
   return { game: merged, overrides: overrides ?? { fields: {} }, issues };

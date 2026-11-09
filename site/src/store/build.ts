@@ -57,7 +57,11 @@ export const useBuild = create<BuildState>()(
         const ids = new Set(data.game.gears.map((g) => g.id));
         const cur = get().gearId;
         const first = data.game.gears.find((g) => g.category !== 'global');
-        set({ data, gearId: cur && ids.has(cur) ? cur : first?.id ?? null });
+        // builds saved by older versions may hold numeric upgrade ids
+        const builds = Object.fromEntries(
+          Object.entries(get().builds).map(([g, list]) => [g, list.map((p) => ({ ...p, upgradeId: String(p.upgradeId) }))]),
+        );
+        set({ data, builds, gearId: cur && ids.has(cur) ? cur : first?.id ?? null });
       },
       setLoadError: (loadError) => set({ loadError }),
       setLang: (lang) => set({ lang }),

@@ -62,15 +62,16 @@ input[type='number'] { width: 70px; }
 .topbar {
   grid-area: top;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 18px;
+  gap: 8px 18px;
   padding: 10px 4px;
   border-bottom: 1px solid var(--line);
 }
-.brand { display: flex; align-items: baseline; gap: 8px; font-family: Rajdhani, sans-serif; font-size: 20px; }
+.brand { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; font-family: Rajdhani, sans-serif; font-size: 20px; }
 .brand .logo { color: var(--accent); font-size: 22px; }
 .brand .muted { font-size: 14px; }
-.level { display: flex; align-items: center; gap: 8px; }
+.level { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .lang { min-width: 44px; }
 
 .panel {
@@ -162,6 +163,16 @@ input[type='number'] { width: 70px; }
 .seg { display: inline-flex; gap: 2px; flex-wrap: wrap; }
 .seg button { border-radius: 6px; padding: 3px 8px; font-size: 12px; }
 .seg button.on { background: var(--accent); color: #0b0f0e; border-color: var(--accent); }
+
+/* import / export */
+.io-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+.io-buttons button { font-size: 13px; white-space: nowrap; }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: grid; place-items: center; z-index: 100; }
+.modal { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; width: min(560px, calc(100vw - 32px)); display: flex; flex-direction: column; gap: 10px; box-shadow: 0 20px 60px #000; }
+.modal h3 { font-size: 20px; }
+.modal .messages { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; max-height: 50vh; overflow: auto; font-size: 13px; }
+.modal-actions { display: flex; gap: 8px; }
+.link-box { width: 100%; background: var(--bg2); border: 1px solid var(--line); border-radius: 8px; color: var(--text); font: 12px/1.4 ui-monospace, monospace; padding: 8px; resize: none; word-break: break-all; }
 
 /* right column tabs */
 .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
