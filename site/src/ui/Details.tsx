@@ -6,7 +6,7 @@ import { useBuild, usePlacements } from '../store/build';
 import { PatternPreview } from './PatternPreview';
 import { RichText } from './RichText';
 import { CommentBox, SourceLine } from './CommentBox';
-import { rarityColor } from './colors';
+import { elementColor, rarityColor } from './colors';
 import { useT } from './hooks';
 
 /** Details of the inspected upgrade (+ controls of the selected placement). */
@@ -65,6 +65,14 @@ export function Details() {
         <li>⬡ {u.pattern.cells.length} {t('cells')}</li>
         {isStackable(u) && <li>×∞ {t('stackable')}</li>}
         {isSpatial(u) && <li className="spatial">◈ {t('spatial')}</li>}
+        {u.elementChoice && (
+          <li title={t('elHint')}>
+            ◆ {t('elBadge')}:{' '}
+            {u.elementChoice.map((e) => (
+              <span key={e} className="el-dot" style={{ background: elementColor(e) }} title={l(data.game.effects[e]) || e} />
+            ))}
+          </li>
+        )}
         {!canRotate(u.rarity, accountLevel) && <li className="warn">⟲ {t('rotationLocked', { level: rotationUnlockLevel(u.rarity) })}</li>}
       </ul>
 
@@ -83,6 +91,31 @@ export function Details() {
             ))}
           </div>
           <p className="muted small">{t('expandHint')}</p>
+        </div>
+      )}
+
+      {placement && u.elementChoice && (
+        <div className="expander-ctl">
+          <span>{t('elChoice')}:</span>
+          <div className="seg">
+            {[undefined, ...u.elementChoice].map((e) => (
+              <button
+                key={e ?? '-'}
+                className={placement.element === e ? 'on' : ''}
+                style={e ? { ['--el' as string]: elementColor(e) } : undefined}
+                onClick={() => useBuild.getState().upsertPlacement({ ...placement, element: e })}
+              >
+                {e ? (
+                  <>
+                    <span className="el-dot" style={{ background: elementColor(e) }} /> {l(data.game.effects[e]) || e}
+                  </>
+                ) : (
+                  t('elNotSet')
+                )}
+              </button>
+            ))}
+          </div>
+          <p className="muted small">{t('elHint')}</p>
         </div>
       )}
 

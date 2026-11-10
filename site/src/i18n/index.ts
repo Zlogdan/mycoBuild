@@ -171,6 +171,11 @@ const ru = {
   src_Resources: 'За ресурсы',
   edMode: 'Режим редактора',
   edHint: 'Видны правка комментариев и выгрузка comments.json. Выключить: откройте сайт с ?edit=0',
+  elChoice: 'Стихия',
+  elNotSet: 'не указана',
+  elHint: 'В игре стихия этого мода выпадает случайно для каждого экземпляра. Укажите, какая у вашего.',
+  elBadge: 'стихия у экземпляра',
+  imp_badElement: 'Мод «{key}»: стихия «{element}» не подходит — пропущена',
   langSwitch: 'EN',
 } as const;
 
@@ -347,6 +352,11 @@ const en: Record<TKey, string> = {
   src_Resources: 'For resources',
   edMode: 'Editor mode',
   edHint: 'Comment editing and comments.json download are visible. Turn off: open the site with ?edit=0',
+  elChoice: 'Element',
+  elNotSet: 'not set',
+  elHint: 'In game this upgrade rolls a random element per instance. Choose the one yours has.',
+  elBadge: 'per-instance element',
+  imp_badElement: 'Upgrade “{key}”: element “{element}” is not valid — skipped',
   langSwitch: 'RU',
 };
 

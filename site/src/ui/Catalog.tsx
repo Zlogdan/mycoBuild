@@ -43,7 +43,7 @@ export function Catalog() {
     return items
       .filter((x) => group === 'all' || x.group === group)
       .filter((x) => !rarities.size || rarities.has(x.u.rarity))
-      .filter((x) => !element || x.u.effect === element)
+      .filter((x) => !element || x.u.effect === element || !!x.u.elementChoice?.includes(element))
       .filter((x) => {
         if (!q) return true;
         const hay = [l(x.u.name), x.u.name.en, x.u.key, l(x.u.desc)].join(' ').toLowerCase();
@@ -60,7 +60,7 @@ export function Catalog() {
 
   if (!data || !gear || !pool) return null;
 
-  const elements = [...new Set([...pool.own, ...pool.common].map((u) => u.effect))].sort();
+  const elements = [...new Set([...pool.own, ...pool.common].flatMap((u) => [u.effect, ...(u.elementChoice ?? [])]))].sort();
 
   const quickPlace = (u: Upgrade) => {
     if (!ctx) return;
@@ -69,6 +69,7 @@ export function Catalog() {
     if (spot) {
       useBuild.getState().upsertPlacement(spot);
       useBuild.getState().select(spot.uid);
+      useBuild.getState().inspect(u.id);
     } else useBuild.getState().notify(t('noFreeSpot', { name: l(u.name) }));
   };
 
@@ -191,6 +192,7 @@ const UpgradeCard = memo(function UpgradeCard({
           <span title={t('cells')}>⬡{u.pattern.cells.length}</span>
           {stack && <span title={t('stackable')}>×∞</span>}
           {isSpatial(u) && <span title={t('spatial')}>◈</span>}
+          {u.elementChoice && <span title={t('elHint')}>◆</span>}
           {locked && <span title={t('rotationLocked', { level: rotationUnlockLevel(u.rarity) })}>⟲🔒</span>}
           {placed > 0 && <span className="placed-badge" title={t('placed')}>✓{stack ? placed : ''}</span>}
         </div>

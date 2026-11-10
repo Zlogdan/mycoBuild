@@ -170,3 +170,78 @@ def build_stat_map(dll_path: str) -> dict:
         if stats:
             result.setdefault(owner.removeprefix("UpgradeProperty_"), []).extend(stats)
     return result
+
+
+# EffectType values (enum EffectType): Normal=0 Fire=1 Shock=2 Acid=3 Bees=8 Cryo=10
+_RANDOM_EFFECT_SETS = {
+    # UpgradeProperty.GetRandomEffect*: Random.Next(min, max) with exclusive max, remapped like the IL
+    "GetRandomEffect": [1, 2, 3],
+    "GetRandomEffectIncludingNormal": [0, 1, 2, 3],
+    "GetRandomEffectIncludingNormalAndCryo": [0, 1, 2, 3, 10],
+    "GetRandomEffectIncludingCryoAndBees": [1, 2, 3, 8, 10],
+}
+
+
+def build_element_map(dll_path: str) -> dict:
+    """UpgradeProperty_* classes whose element is rolled per upgrade instance (UpgradeProperty.GetRandomEffect*),
+    with the set of possible EffectType values. Scans the class's own methods and its nested iterator classes."""
+    pe = dnfile.dnPE(dll_path)
+    T = pe.net.mdtables
+    types = list(T.TypeDef)
+    method_owner = {}
+    for t in types:
+        for m in t.MethodList:
+            method_owner[m.row_index] = t.TypeName.value
+    enclosing = {nc.NestedClass.row_index: nc.EnclosingClass.row_index for nc in (T.NestedClass or [])}
+
+    def top_owner(type_idx):
+        while type_idx in enclosing:
+            type_idx = enclosing[type_idx]
+        return types[type_idx - 1].TypeName.value
+
+    def callee(tok):
+        if tok.table == MetadataTables.MethodDef.value:
+            return method_owner.get(tok.rid, "?"), T.MethodDef[tok.rid - 1].Name.value
+        if tok.table == MetadataTables.MemberRef.value:
+            mr = T.MemberRef[tok.rid - 1]
+            cn = getattr(mr.Class.row, "TypeName", None)
+            return (cn.value if cn is not None else "?"), mr.Name.value
+        return "?", "?"
+
+    result: dict = {}
+    for i, t in enumerate(types, start=1):
+        owner = top_owner(i)
+        if not owner.startswith("UpgradeProperty_"):
+            continue
+        for m in t.MethodList:
+            row = m.row
+            if not row.Rva:
+                continue
+            try:
+                body = CilMethodBody(_Reader(pe, row))
+            except MethodBodyFormatError:
+                continue
+            last_int = None
+            for ins in body.instructions:
+                name = ins.opcode.name
+                if name.startswith("ldc.i4"):
+                    if name in ("ldc.i4", "ldc.i4.s"):
+                        last_int = int(ins.operand)
+                    elif name == "ldc.i4.m1":
+                        last_int = -1
+                    else:
+                        last_int = int(name.rsplit(".", 1)[1])
+                elif name in ("call", "callvirt") and isinstance(ins.operand, Token):
+                    cls, meth = callee(ins.operand)
+                    if cls != "UpgradeProperty" or not meth.startswith("GetRandomEffect"):
+                        continue
+                    if meth == "GetRandomEffectIncludingCryo":
+                        # two overloads: () -> Next(1,5), 4 => Cryo;  (count, ref rand) -> Next(1, count+2), count+1 => Cryo
+                        n = last_int if isinstance(last_int, int) and 1 <= last_int <= 6 else 3
+                        values = list(range(1, n + 1)) + [10]
+                    else:
+                        values = _RANDOM_EFFECT_SETS.get(meth)
+                    if values:
+                        key = owner.removeprefix("UpgradeProperty_")
+                        result[key] = sorted(set(result.get(key, [])) | set(values))
+    return result

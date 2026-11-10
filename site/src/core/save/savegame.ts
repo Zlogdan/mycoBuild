@@ -72,13 +72,65 @@ export function gameFootprint(raw: RawPattern, ex: { x: number; y: number; rotat
 
 /** The game's Random struct (state = seed; Next = hash step; NextBool = odd result). */
 export function gameRandomNextBool(seed: number): boolean {
-  let v = (seed ^ -1547330877) | 0;
-  v = Math.imul(v, -1640531527);
+  return (~new GameRandom(seed).next() & 1) === 0;
+}
+
+/* ---- game hashing (MathUtil / Random / Upgrade, ported from IL) ---- */
+
+const C1 = -1547330877; // 0xA3C59AC3
+const C2 = -1640531527; // 0x9E3779B9
+
+/** MathUtil.Hash(int) — also the step of Random.Next(). */
+export function gameHash(x: number): number {
+  let v = (x ^ C1) | 0;
+  v = Math.imul(v, C2);
   v ^= v >>> 16;
-  v = Math.imul(v, -1640531527);
+  v = Math.imul(v, C2);
   v ^= v >>> 16;
-  v = Math.imul(v, -1640531527);
-  return (~v & 1) === 0;
+  return Math.imul(v, C2);
+}
+
+/** MathUtil.Squirrel3Hash(int position, int seed). */
+export function squirrel3(a: number, b: number): number {
+  let v = (Math.imul(a, -1255572915) + b) | 0;
+  v ^= v >>> 8;
+  v = (v + 1759714724) | 0;
+  v ^= v << 8;
+  v = Math.imul(v, 458671337);
+  v ^= v >>> 8;
+  return Math.imul(v, C2);
+}
+
+/** Upgrade.ModifyPropertySeed(seed, index): seed of the property with 1-based index in Upgrade.properties. */
+export const modifyPropertySeed = (seed: number, index: number) => squirrel3(seed, Math.imul(gameHash(Math.imul(index + 384, 71)), 43874));
+
+/** The game's Random struct. */
+export class GameRandom {
+  constructor(public state: number) {}
+  next(): number {
+    this.state = gameHash(this.state);
+    return this.state;
+  }
+  /** Random.Next(min, max): ((uint)Next() * (uint)(max - min)) >> 32, + min (max exclusive). */
+  nextRange(min: number, max: number): number {
+    const r = BigInt(this.next() >>> 0) * BigInt((max - min) >>> 0);
+    return Number(r >> 32n) + min;
+  }
+}
+
+const EFFECT_KEYS: Record<number, string> = { 0: 'normal', 1: 'fire', 2: 'shock', 3: 'acid', 8: 'bees', 10: 'cryo' };
+
+/**
+ * Element of an upgrade instance when it can be derived exactly from the seed.
+ * UpgradeProperty_PhotonDisc_Attunement.Apply: element field 0 -> GetRandomEffect(ref rand) is the FIRST draw of the
+ * property's Random (seeded with ModifyPropertySeed(seed, index)), GetRandomEffect = (EffectType)Next(1, 4).
+ * Other random-element properties draw after several stat rolls and are not derived (yet).
+ */
+export function seededElement(u: Upgrade, seed: number): string | undefined {
+  const i = u.props.findIndex((p) => p.type === 'PhotonDisc_Attunement' && !p.data.element);
+  if (i < 0) return undefined;
+  const rand = new GameRandom(modifyPropertySeed(seed, i + 1));
+  return EFFECT_KEYS[rand.nextRange(1, 4)];
 }
 
 /** UpgradeProperty_GrowGrid.AffectsColumn: +1 column if true, else +1 row. */
@@ -237,6 +289,7 @@ export function convertEquips(
       rotation,
       anchor,
       ...(u.role === 'gridExpander' ? { expand: growGridDirection(inst.seed) } : {}),
+      ...(u.elementChoice && seededElement(u, inst.seed) ? { element: seededElement(u, inst.seed) } : {}),
     });
   }
   return { placements, issues };

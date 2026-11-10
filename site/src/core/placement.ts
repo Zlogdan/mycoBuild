@@ -13,6 +13,8 @@ export interface Placement {
   anchor: Axial;
   /** grid expanders only: which way this instance grows the grid (in game: decided by the instance seed) */
   expand?: ExpandDirection;
+  /** upgrades with a per-instance element (Upgrade.elementChoice): the chosen element key */
+  element?: string;
 }
 
 export type IssueCode =

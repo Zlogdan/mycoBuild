@@ -8,7 +8,7 @@ import { useBuild, usePlacements } from '../store/build';
 import { useDrag } from '../store/drag';
 import { useAutofill } from '../store/autofill';
 import { applyVariant } from './autofillActions';
-import { rarityColor } from './colors';
+import { elementColor, rarityColor } from './colors';
 import { useBoardContext, useT } from './hooks';
 
 const S = 34; // hex radius
@@ -279,6 +279,9 @@ export function HexBoard() {
                 centers.map((c, i) => (
                   <polygon key={`b${i}`} className="bad-outline" points={hexPolygon(c.x, c.y, S * 0.9)} />
                 ))}
+              {p.element && u.elementChoice?.includes(p.element) && (
+                <circle className="el-marker" cx={cx - S * 0.45} cy={cy - S * 0.5} r={S * 0.16} fill={elementColor(p.element)} />
+              )}
               {bad && (
                 <g className="bad-badge" transform={`translate(${cx + S * 0.45}, ${cy - S * 0.55})`}>
                   <circle r={S * 0.28} />

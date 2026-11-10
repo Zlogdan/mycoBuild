@@ -30,6 +30,8 @@ export interface BuildFileV1 {
     y: number;
     rotation: number;
     expand?: ExpandDirection;
+    /** element of an upgrade with a per-instance element (Upgrade.elementChoice) */
+    element?: string;
   }[];
   autofill?: {
     selection: { upgradeId: string; key: string; weight: number; count: number }[];
@@ -74,6 +76,7 @@ export function exportBuild(data: GameData, ctx: BoardContext, snap: BuildSnapsh
         y: o.y,
         rotation: p.rotation,
         ...(p.expand ? { expand: p.expand } : {}),
+        ...(p.element ? { element: p.element } : {}),
       };
     }),
     autofill: {
@@ -97,7 +100,8 @@ export type ImportMessageCode =
   | 'upgradeByKey'
   | 'notInPool'
   | 'placementIssue'
-  | 'otherGameData';
+  | 'otherGameData'
+  | 'badElement';
 
 export interface ImportMessage {
   level: 'error' | 'warning';
@@ -167,7 +171,8 @@ export function importBuild(input: string | unknown, ictx: ImportContext): Impor
       !isInt(p.rotation) ||
       p.rotation < 0 ||
       p.rotation > 5 ||
-      (p.expand !== undefined && p.expand !== 'column' && p.expand !== 'row')
+      (p.expand !== undefined && p.expand !== 'column' && p.expand !== 'row') ||
+      (p.element !== undefined && typeof p.element !== 'string')
     )
       return fail('badField', { field: `placed[${i}]` });
   }
@@ -202,6 +207,8 @@ export function importBuild(input: string | unknown, ictx: ImportContext): Impor
   for (const raw of d.placed as BuildFileV1['placed']) {
     const u = resolve(raw, 'placed');
     if (!u) continue;
+    if (raw.element && !u.elementChoice?.includes(raw.element))
+      messages.push({ level: 'warning', code: 'badElement', params: { key: u.key, id: u.id, element: raw.element } });
     if (ctx.pool && !ctx.pool.has(u.id)) messages.push({ level: 'warning', code: 'notInPool', params: { key: u.key, id: u.id } });
     placements.push({
       uid: ictx.newUid(),
@@ -209,6 +216,7 @@ export function importBuild(input: string | unknown, ictx: ImportContext): Impor
       rotation: raw.rotation,
       anchor: offsetToAxial(raw.x, raw.y),
       ...(raw.expand ? { expand: raw.expand } : {}),
+      ...(raw.element && u.elementChoice?.includes(raw.element) ? { element: raw.element } : {}),
     });
   }
   // the build is restored exactly; rule violations are reported (and shown on the board), not "fixed"

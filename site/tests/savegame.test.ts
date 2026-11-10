@@ -82,3 +82,18 @@ describe.skipIf(!SAVE || !existsSync(SAVE))('real save file', () => {
     expect(fatal).toEqual([]);
   });
 });
+
+describe('seeded element (PhotonDisc_Attunement: first draw of the property Random)', () => {
+  it('is one of fire/shock/acid and deterministic', async () => {
+    const { seededElement } = await import('../src/core/save/savegame');
+    const u = Object.values(data.upgrades).find((x) => x.props.some((p) => p.type === 'PhotonDisc_Attunement'))!;
+    const seen = new Set<string>();
+    for (let s = -300; s < 300; s++) {
+      const e = seededElement(u, s)!;
+      expect(['fire', 'shock', 'acid']).toContain(e);
+      expect(seededElement(u, s)).toBe(e);
+      seen.add(e);
+    }
+    expect(seen.size).toBe(3);
+  });
+});

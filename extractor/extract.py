@@ -33,7 +33,7 @@ from UnityPy.helpers.TypeTreeNode import TypeTreeNode
 from TypeTreeGeneratorAPI import TypeTreeGenerator
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from statmap import build_stat_map  # noqa: E402
+from statmap import build_element_map, build_stat_map  # noqa: E402
 
 # The C accelerated reader does not route [SerializeReference] lookups through
 # get_ref_type_node, so force the pure Python reader (fast enough for ~1000 objects).
@@ -380,7 +380,12 @@ class Extractor:
                 desc = self.loc(f"{name_key}{suffix}")
         flags = d.get("<Flags>k__BackingField", 0) & 0xFFFFFFFF
         props = []
-        for ref in d.get("references", {}).get("RefIds", []):
+        # Keep the order of Upgrade.properties (the game seeds property i with ModifyPropertySeed(seed, i+1)),
+        # which is not necessarily the order of the SerializeReference registry.
+        refs = {r["rid"]: r for r in d.get("references", {}).get("RefIds", [])}
+        order = [x.get("rid") for x in d.get("properties", {}).get("properties", [])]
+        ordered = [refs[r] for r in order if r in refs] + [r for rid, r in refs.items() if rid not in order]
+        for ref in ordered:
             cls = ref["type"]["class"]
             if not cls:
                 continue
@@ -566,6 +571,18 @@ class Extractor:
 
         stat_labels = self.stat_labels(upgrades)
 
+        # Upgrades whose element is rolled per instance (UpgradeProperty.GetRandomEffect*): possible values
+        emap = build_element_map(os.path.join(self.data_dir, "Managed", "Assembly-CSharp.dll"))
+        n_choice = 0
+        for u in upgrades.values():
+            # a property with its own non-zero 'element' field uses that fixed element (e.g. PhotonDisc_Attunement)
+            opts = sorted({v for p in u["props"] if not p["data"].get("element")
+                           for v in emap.get(p["type"], [])})
+            if opts:
+                u["elementChoice"] = [EFFECT_TYPES[v] for v in opts if v in EFFECT_TYPES]
+                n_choice += 1
+        log(f"Upgrades with a per-instance element: {n_choice}")
+
         limits = {}
         for k, d in self.of_class("UpgradeLimitProvider"):
             limits[f"{k[0]}:{k[1]}"] = clean({x: v for x, v in d.items() if x not in MB_HEADER})
@@ -585,7 +602,11 @@ class Extractor:
                     rarities[i]["colorSource"] = "Global.Rarities"
             rarity_patterns = [self.pattern(p) for p in g.get("RarityPatterns", [])]
             break
-        effects = {v: (self.loc(v) or {"en": v.title()}) for v in EFFECT_TYPES.values()}
+        # display names of elements: TextBlocks 'el_*' (the bare keys like 'fire' are keyword synonym lists)
+        el_keys = {"normal": "el_normal", "fire": "el_fire", "shock": "el_shock", "acid": "el_acid",
+                   "decay": "el_decay", "immunity": "el_immune", "yellowresource": "el_yeuco", "rot": "el_rot",
+                   "bees": "el_bee", "water": "el_water", "cryo": "el_cryo"}
+        effects = {v: (self.loc(el_keys.get(v, v)) or {"en": v.title()}) for v in EFFECT_TYPES.values()}
         ui = {k: self.loc(k) for k in ("upgrade", "upgrades", "Heavy", "normal") if self.loc(k)}
 
         version = None

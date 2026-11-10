@@ -8,7 +8,7 @@ import { effectiveComment, mergedComments, useComments } from '../store/comments
 import { CommentBox, SourceLine } from './CommentBox';
 import { PatternPreview } from './PatternPreview';
 import { RichText } from './RichText';
-import { rarityColor } from './colors';
+import { elementColor, rarityColor } from './colors';
 import { useT } from './hooks';
 import { navigate } from './route';
 import { EDITOR_MODE } from './editor';
@@ -63,7 +63,7 @@ export function ModsPage() {
       if (cat !== 'all' && cat !== 'expanders' && cat !== 'common' && !gs.some((g) => g.category === cat)) return false;
       if (gearId && !u.gears.includes(gearId)) return false;
       if (rarities.size && !rarities.has(u.rarity)) return false;
-      if (element && u.effect !== element) return false;
+      if (element && u.effect !== element && !u.elementChoice?.includes(element)) return false;
       if (source && u.sourceInfo?.kind !== source) return false;
       if (cells && String(u.pattern.cells.length) !== cells && !(cells === '7+' && u.pattern.cells.length >= 7)) return false;
       if (onlyStack && !isStackable(u)) return false;
@@ -86,7 +86,7 @@ export function ModsPage() {
   }, [data, all, query, cat, gearId, rarities, element, source, cells, onlyStack, onlySpatial, onlyCommented, sort, gearsById, local, l, lang]);
 
   if (!data) return null;
-  const elements = [...new Set(all.map((u) => u.effect))].sort();
+  const elements = [...new Set(all.flatMap((u) => [u.effect, ...(u.elementChoice ?? [])]))].sort();
   const localCount = Object.keys(local).length;
   const reset = () => setLimit(PAGE);
 
@@ -242,6 +242,14 @@ const ModCard = memo(function ModCard({ u, gears }: { u: Upgrade; gears: Gear[] 
             <span className="muted"> · ⬡{u.pattern.cells.length}</span>
             {isStackable(u) && <span title={t('stackable')}> · ×∞</span>}
             {isSpatial(u) && <span title={t('spatial')}> · ◈</span>}
+            {u.elementChoice && (
+              <span title={t('elHint')}>
+                {' · '}
+                {u.elementChoice.map((e) => (
+                  <span key={e} className="el-dot" style={{ background: elementColor(e) }} title={l(data.game.effects[e]) || e} />
+                ))}
+              </span>
+            )}
           </div>
         </div>
         <PatternPreview upgrade={u} size={9} className="mod-pattern" />

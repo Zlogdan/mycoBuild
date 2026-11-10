@@ -106,3 +106,19 @@ describe('build file v1', () => {
     expect(res.messages[0]).toMatchObject({ level: 'warning', code: 'otherGameData' });
   });
 });
+
+describe('per-instance element', () => {
+  it('is exported and restored; an invalid element is dropped with a warning', () => {
+    const gear = data.gears.find((g) => g.key === 'photondisc')!;
+    const ctx = boardContext(loaded, gear, 30, 10);
+    const u = [...ctx.pool!].map((id) => data.upgrades[id]).find((x) => x.elementChoice?.includes('acid'))!;
+    const snap = { gear, accountLevel: 30, gearLevel: 10, autofill: [], placements: [{ uid: 'e1', upgradeId: u.id, rotation: 0, anchor: { q: 0, r: 0 }, element: 'acid' }] };
+    const file = exportBuild(data, ctx, snap);
+    expect(file.placed[0].element).toBe('acid');
+    const res = importBuild(JSON.stringify(file), ictx);
+    expect(res.build!.placements[0].element).toBe('acid');
+    const bad = importBuild({ ...file, placed: [{ ...file.placed[0], element: 'water' }] }, ictx);
+    expect(bad.build!.placements[0].element).toBeUndefined();
+    expect(bad.messages.some((m) => m.code === 'badElement')).toBe(true);
+  });
+});
