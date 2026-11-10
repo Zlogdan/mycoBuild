@@ -29,8 +29,8 @@ export function SaveImportButton() {
   };
   return (
     <>
-      <button onClick={() => ref.current?.click()} title={t('svHint')}>
-        🎮 {t('svButton')}
+      <button onClick={() => ref.current?.click()} title={`${t('svButton')} — ${t('svHint')}`}>
+        🎮<span className="io-label">{t('svButton')}</span>
       </button>
       <input ref={ref} type="file" accept=".saxon" hidden onChange={(e) => onFile(e.target.files?.[0])} />
     </>

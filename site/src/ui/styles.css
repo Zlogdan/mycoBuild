@@ -62,12 +62,22 @@ input[type='number'] { width: 70px; }
 .topbar {
   grid-area: top;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 8px 18px;
+  gap: 8px 14px;
   padding: 10px 4px;
   border-bottom: 1px solid var(--line);
+  min-width: 0;
 }
+.topbar > * { flex: none; }
+.topbar .grow { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.io-buttons { flex-wrap: nowrap !important; }
+.io-label { margin-left: 4px; }
+/* progressively compact header (labels go to tooltips) */
+@media (max-width: 1750px) { .brand .muted { display: none; } }
+@media (max-width: 1550px) { .io-label { display: none; } .io-buttons button { padding: 5px 9px; } }
+@media (max-width: 1250px) { .topbar .grow { visibility: hidden; } .tg-text { display: none; } }
+@media (max-width: 1400px) { .grows { display: none; } }
 .brand { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; font-family: Rajdhani, sans-serif; font-size: 20px; }
 .brand .logo { color: var(--accent); font-size: 22px; }
 .brand .muted { font-size: 14px; }
@@ -101,16 +111,31 @@ input[type='number'] { width: 70px; }
 .workspace { grid-area: work; display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow: auto; }
 /* children must keep their natural height; the workspace scrolls instead of squeezing panels */
 .workspace > * { flex-shrink: 0; }
-.build-header { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+.build-header { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+/* row 1: gear, level, ability */
+.build-top { display: flex; align-items: center; gap: 12px 20px; min-width: 0; }
+.gear-title { flex: none; }
+.gear-title h1 { white-space: nowrap; }
+.gear-level { flex: none; }
+.grid-info { white-space: nowrap; }
+/* row 2: loadout slots on the left, actions on the right */
+.build-controls { display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; min-width: 0; }
 .gear-title { display: flex; align-items: center; gap: 10px; }
 .gear-title img { width: 48px; height: 48px; object-fit: contain; }
 .gear-title h1 { font-size: 26px; }
-.ability { display: flex; gap: 8px; max-width: 340px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
+.ability { display: flex; gap: 8px; flex: 1 1 240px; min-width: 0; max-width: 560px; margin-left: auto; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
+.ability > div { min-width: 0; }
+.ability-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ability img { width: 32px; height: 32px; }
 .ability-name { font-weight: 600; }
-.ability-desc { color: var(--muted); }
-.toolbar { display: flex; gap: 6px; margin-left: auto; }
-.slots { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ability-desc { color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.toolbar { display: flex; gap: 6px; margin-left: auto; flex-wrap: nowrap; }
+.toolbar button { white-space: nowrap; }
+.tb-label { margin-left: 5px; }
+
+.slots { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; min-width: 0; }
+.slots .seg { flex-wrap: nowrap; }
+.slots .seg button { white-space: nowrap; }
 .slots .seg button { font-size: 13px; padding: 4px 10px; }
 .slots select { font-size: 13px; }
 .slot-count { margin-left: 5px; font-size: 11px; background: var(--panel); color: var(--muted); border-radius: 8px; padding: 0 5px; }
@@ -351,4 +376,14 @@ button.link { background: none; border: none; color: var(--accent); padding: 0 4
   .app { grid-template-columns: 1fr; grid-template-areas: 'top' 'gear' 'work' 'cat'; height: auto; }
   .gear-picker { max-height: 220px; }
   .catalog { max-height: 70vh; }
+}
+
+/* compact builder header on narrower screens (must stay after the base rules) */
+@media (max-width: 1600px) {
+  .tb-label { display: none; }
+  .slots select { max-width: 104px; }
+  .slots, .toolbar { gap: 4px; }
+  .build-controls { gap: 6px; }
+  .slots .seg button { padding: 4px 8px; font-size: 12.5px; }
+  .app:not(.mods) { grid-template-columns: 210px minmax(480px, 1fr) 340px; }
 }

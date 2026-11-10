@@ -112,7 +112,7 @@ function TopBar() {
             d="M9.04 15.6 8.9 19.4c.4 0 .58-.17.8-.38l1.92-1.84 3.98 2.92c.73.4 1.25.19 1.44-.68l2.61-12.24c.25-1.08-.4-1.5-1.1-1.24L3.16 9.8c-1.05.41-1.04.99-.18 1.25l3.92 1.22 9.1-5.74c.43-.28.82-.12.5.16z"
           />
         </svg>
-        @zlogdan
+        <span className="tg-text">@zlogdan</span>
       </a>
       <button className="lang" onClick={() => useBuild.getState().setLang(lang === 'ru' ? 'en' : 'ru')}>
         {t('langSwitch')}

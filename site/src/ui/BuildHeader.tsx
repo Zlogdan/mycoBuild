@@ -28,6 +28,7 @@ export function BuildHeader() {
 
   return (
     <div className="build-header">
+      <div className="build-top">
       <div className="gear-title">
         {gear.icon && <img src={iconUrl(gear.icon)} alt="" />}
         <div>
@@ -36,12 +37,12 @@ export function BuildHeader() {
         </div>
       </div>
 
-      <label className="level" title={t('gearLevelHint')}>
+      <label className="level gear-level" title={t('gearLevelHint')}>
         <span>{t('gearLevel')}</span>
         <input type="number" min={0} max={999} value={gearLevel} onChange={(e) => setGearLevel(Number(e.target.value))} />
-        <span className="muted small">
+        <span className="muted small grid-info">
           {t('gridSize')} {size.w}×{size.h}
-          {growth.length > 0 && ` · ${t('grows')} ${growth.join(', ')}`}
+          {growth.length > 0 && <span className="grows"> · {t('grows')} {growth.join(', ')}</span>}
         </span>
       </label>
 
@@ -58,6 +59,9 @@ export function BuildHeader() {
         </div>
       )}
 
+      </div>
+
+      <div className="build-controls">
       <div className="slots" title={t('slotHint')}>
         <div className="seg">
           {SLOTS.map((n) => {
@@ -98,7 +102,7 @@ export function BuildHeader() {
 
       <div className="toolbar">
         <button disabled={!placements.length} onClick={() => useShowcase.getState().set(true)} title={t('scButtonHint')}>
-          📸 {t('scButton')}
+          📸<span className="tb-label">{t('scButton')}</span>
         </button>
         <button disabled={!selectedUid || !ctx} onClick={() => ctx && rotateSelected(ctx, placements)} title={t('rotate')}>
           ⟳
@@ -113,8 +117,9 @@ export function BuildHeader() {
           }}
           title={t('clear')}
         >
-          {t('clear')}
+          🗑<span className="tb-label">{t('clear')}</span>
         </button>
+      </div>
       </div>
     </div>
   );

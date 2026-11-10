@@ -142,14 +142,14 @@ export function BuildIOButtons() {
   return (
     <div className="io-buttons">
       <button onClick={onExport} disabled={!gear} title={`${t('ioExport')} (${placements.length})`}>
-        ⭳ {t('ioExport')}
+        ⭳<span className="io-label">{t('ioExport')}</span>
       </button>
-      <button onClick={() => fileRef.current?.click()} title={t('ioDropHint')}>
-        ⭱ {t('ioImport')}
+      <button onClick={() => fileRef.current?.click()} title={`${t('ioImport')} — ${t('ioDropHint')}`}>
+        ⭱<span className="io-label">{t('ioImport')}</span>
       </button>
       <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={(e) => onFile(e.target.files?.[0])} />
-      <button onClick={onLink} disabled={!gear}>
-        🔗 {t('ioLink')}
+      <button onClick={onLink} disabled={!gear} title={t('ioLink')}>
+        🔗<span className="io-label">{t('ioLink')}</span>
       </button>
       <SaveImportButton />
     </div>
