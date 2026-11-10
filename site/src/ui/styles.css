@@ -110,6 +110,11 @@ input[type='number'] { width: 70px; }
 .ability-name { font-weight: 600; }
 .ability-desc { color: var(--muted); }
 .toolbar { display: flex; gap: 6px; margin-left: auto; }
+.slots { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.slots .seg button { font-size: 13px; padding: 4px 10px; }
+.slots select { font-size: 13px; }
+.slot-count { margin-left: 5px; font-size: 11px; background: var(--panel); color: var(--muted); border-radius: 8px; padding: 0 5px; }
+.slots .seg button.on .slot-count { background: #0b0f0e; color: var(--accent); }
 
 .board-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .board { touch-action: none; user-select: none; width: min(100%, 820px, calc((100vh - 260px) * 1.15)); min-width: 360px; height: auto; }

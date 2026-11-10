@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { evaluate } from '../core/placement';
 import { accountLevelFromMask, convertEquips, readSave, type SaveData, type SaveEquip } from '../core/save/savegame';
 import { iconUrl } from '../data/load';
-import { boardContext, newUid, useBuild } from '../store/build';
+import { SLOTS, boardContext, buildKey, newUid, useBuild } from '../store/build';
 import { useAutofill } from '../store/autofill';
 import { useT } from './hooks';
 
@@ -39,6 +39,8 @@ export function SaveImportButton() {
 
 interface BuildOption {
   label: string;
+  /** target slot on the site: 0 = current (equipped), 1..3 = loadouts */
+  slot: number;
   equips: SaveEquip[];
   issues: number;
 }
@@ -59,8 +61,8 @@ export function SaveImportDialog() {
         if (!gear || gear.category === 'global') return null;
         const ctx = boardContext(data, gear, account, g.level);
         const options: BuildOption[] = [
-          { label: t('svEquipped'), equips: g.equipped },
-          ...g.loadouts.map((lo, i) => ({ label: t('svLoadout', { n: i + 1 }), equips: lo })),
+          { label: t('svEquipped'), equips: g.equipped, slot: 0 },
+          ...g.loadouts.slice(0, 3).map((lo, i) => ({ label: t('svLoadout', { n: i + 1 }), equips: lo, slot: i + 1 })),
         ]
           .filter((o) => o.equips.length > 0)
           .map((o) => {
@@ -89,7 +91,8 @@ export function SaveImportDialog() {
       gearId,
       gearLevels,
       accountLevel: applyLevels ? account : b.accountLevel,
-      builds: { ...b.builds, [gearId]: placements },
+      builds: { ...b.builds, [buildKey(gearId, opt.slot)]: placements },
+      slots: { ...b.slots, [gearId]: opt.slot },
       selectedUid: null,
       inspectedId: null,
     });
@@ -98,11 +101,53 @@ export function SaveImportDialog() {
     close();
   };
 
+  /** Everything at once: levels, the current layout and all loadouts of every gear in the save. */
+  const loadAll = () => {
+    const nBuilds = rows.reduce((s, r) => s + r.options.length, 0);
+    if (!window.confirm(t('svLoadAllConfirm', { n: rows.length, b: nBuilds }))) return;
+    const b = useBuild.getState();
+    const builds = { ...b.builds };
+    const slots = { ...b.slots };
+    const gearLevels = { ...b.gearLevels };
+    for (const sg of save.gears) gearLevels[sg.gearId] = sg.level;
+    for (const r of rows) {
+      const sg = save.gears.find((x) => x.gearId === r.gear.id)!;
+      // every slot of this gear is replaced, empty slots in the save become empty on the site
+      const lists = [sg.equipped, ...sg.loadouts.slice(0, 3)];
+      for (const slot of SLOTS) {
+        const equips = lists[slot] ?? [];
+        builds[buildKey(r.gear.id, slot)] = convertEquips(equips, save, (id) => data.game.upgrades[id], newUid).placements;
+      }
+      // show the current layout if it has upgrades, otherwise the first non-empty loadout
+      slots[r.gear.id] = lists.findIndex((x) => x && x.length > 0) === -1 ? 0 : lists.findIndex((x) => x && x.length > 0);
+    }
+    useBuild.setState({
+      builds,
+      slots,
+      gearLevels,
+      accountLevel: account,
+      gearId: rows[0]?.gear.id ?? b.gearId,
+      selectedUid: null,
+      inspectedId: null,
+    });
+    useAutofill.setState({ preview: null });
+    b.notify(t('svLoadedAll', { n: rows.length, b: nBuilds }));
+    close();
+  };
+
   return (
     <div className="modal-backdrop" onClick={close}>
       <div className="modal wide" role="dialog" aria-label={t('svTitle')} onClick={(e) => e.stopPropagation()}>
         <h3>{t('svTitle')}</h3>
         <p className="muted small">{t('svAccount', { level: account })}</p>
+        {rows.length > 0 && (
+          <div className="modal-actions">
+            <button className="primary" onClick={loadAll} title={t('svLoadAllHint')}>
+              ⭳ {t('svLoadAll')}
+            </button>
+            <span className="muted small">{t('svLoadAllHint')}</span>
+          </div>
+        )}
         <label className="small">
           <input type="checkbox" checked={applyLevels} onChange={(e) => setApplyLevels(e.target.checked)} /> {t('svApplyLevels')}
         </label>

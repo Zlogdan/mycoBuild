@@ -6,6 +6,12 @@ import type { BoardContext, Placement } from '../core/placement';
 import { gridSizeForLevel } from '../core/rules';
 
 export const DEFAULT_ACCOUNT_LEVEL = 30;
+
+/** Build slots of every gear, like in game: 0 = current (equipped), 1..3 = loadouts. */
+export const SLOTS = [0, 1, 2, 3] as const;
+export type Slot = (typeof SLOTS)[number];
+/** Storage key of a slot. Slot 0 keeps the plain gear id (compatible with builds saved before slots existed). */
+export const buildKey = (gearId: string, slot: number) => (slot ? `${gearId}#L${slot}` : gearId);
 export const DEFAULT_GEAR_LEVEL = 10;
 
 interface BuildState {
@@ -16,8 +22,10 @@ interface BuildState {
   gearId: string | null;
   accountLevel: number;
   gearLevels: Record<string, number>;
-  /** placements per gear id, so switching gear keeps each build */
+  /** placements per slot key (buildKey), so switching gear / slot keeps each build */
   builds: Record<string, Placement[]>;
+  /** active slot per gear id */
+  slots: Record<string, number>;
   selectedUid: string | null;
   inspectedId: string | null;
   toast: { text: string; at: number } | null;
@@ -32,6 +40,9 @@ interface BuildState {
   removePlacement: (uid: string) => void;
   clearBuild: () => void;
   setPlacements: (list: Placement[]) => void;
+  setSlot: (slot: number) => void;
+  /** copy the active slot of the current gear into another slot */
+  copySlotTo: (slot: number) => void;
   select: (uid: string | null) => void;
   inspect: (upgradeId: string | null) => void;
   notify: (text: string) => void;
@@ -49,6 +60,7 @@ export const useBuild = create<BuildState>()(
       accountLevel: DEFAULT_ACCOUNT_LEVEL,
       gearLevels: {},
       builds: {},
+      slots: {},
       selectedUid: null,
       inspectedId: null,
       toast: null,
@@ -72,7 +84,7 @@ export const useBuild = create<BuildState>()(
         if (id) set({ gearLevels: { ...get().gearLevels, [id]: clampLevel(n) } });
       },
       upsertPlacement: (p) => {
-        const id = get().gearId;
+        const id = activeKey(get());
         if (!id) return;
         const list = get().builds[id] ?? [];
         const i = list.findIndex((x) => x.uid === p.uid);
@@ -80,7 +92,7 @@ export const useBuild = create<BuildState>()(
         set({ builds: { ...get().builds, [id]: next } });
       },
       removePlacement: (uid) => {
-        const id = get().gearId;
+        const id = activeKey(get());
         if (!id) return;
         set({
           builds: { ...get().builds, [id]: (get().builds[id] ?? []).filter((x) => x.uid !== uid) },
@@ -88,12 +100,23 @@ export const useBuild = create<BuildState>()(
         });
       },
       clearBuild: () => {
-        const id = get().gearId;
+        const id = activeKey(get());
         if (id) set({ builds: { ...get().builds, [id]: [] }, selectedUid: null });
       },
       setPlacements: (list) => {
-        const id = get().gearId;
+        const id = activeKey(get());
         if (id) set({ builds: { ...get().builds, [id]: list }, selectedUid: null });
+      },
+      setSlot: (slot) => {
+        const g = get().gearId;
+        if (g) set({ slots: { ...get().slots, [g]: slot }, selectedUid: null });
+      },
+      copySlotTo: (slot) => {
+        const g = get().gearId;
+        const from = activeKey(get());
+        if (!g || !from) return;
+        const list = (get().builds[from] ?? []).map((p) => ({ ...p, anchor: { ...p.anchor }, uid: newUid() }));
+        set({ builds: { ...get().builds, [buildKey(g, slot)]: list } });
       },
       select: (selectedUid) => set({ selectedUid }),
       inspect: (inspectedId) => set({ inspectedId }),
@@ -114,10 +137,16 @@ export const useBuild = create<BuildState>()(
         accountLevel: s.accountLevel,
         gearLevels: s.gearLevels,
         builds: s.builds,
+        slots: s.slots,
       }),
     },
   ),
 );
+
+/** Storage key of the active slot of the current gear. */
+export function activeKey(s: Pick<BuildState, 'gearId' | 'slots'>): string | null {
+  return s.gearId ? buildKey(s.gearId, s.slots[s.gearId] ?? 0) : null;
+}
 
 let uidCounter = 0;
 export const newUid = () => `u${Date.now().toString(36)}${(uidCounter++).toString(36)}`;
@@ -130,7 +159,14 @@ export function useCurrentGear(): Gear | null {
 
 const EMPTY: Placement[] = [];
 export function usePlacements(): Placement[] {
-  return useBuild((s) => (s.gearId ? s.builds[s.gearId] ?? EMPTY : EMPTY));
+  return useBuild((s) => {
+    const k = activeKey(s);
+    return k ? s.builds[k] ?? EMPTY : EMPTY;
+  });
+}
+
+export function useSlot(): number {
+  return useBuild((s) => (s.gearId ? s.slots[s.gearId] ?? 0 : 0));
 }
 
 export function useGearLevel(): number {

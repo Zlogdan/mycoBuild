@@ -40,7 +40,8 @@ export function startAutofill(gearId: string, ctx: BoardContext, placements: rea
   }
   const keep = af.options.keepPlaced;
   const toVariants = (sols: Solution[]) => sols.map((s) => solutionToPlacements(s, placements, keep, newUid));
-  const key = autofillKey(gearId, ctx, placements, selection, af.options);
+  const b = useBuild.getState();
+  const key = autofillKey(`${gearId}#${b.slots[gearId] ?? 0}`, ctx, placements, selection, af.options);
 
   const run = runSolver(input, (progress) =>
     useAutofill.setState({ progress, variants: toVariants(progress.solutions) }),

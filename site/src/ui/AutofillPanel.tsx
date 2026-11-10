@@ -3,7 +3,7 @@ import type { Upgrade } from '../core/types';
 import { isGridExpander, isStackable } from '../core/rules';
 import { iconUrl } from '../data/load';
 import { useAutofill } from '../store/autofill';
-import { useBuild, useCurrentGear, usePlacements } from '../store/build';
+import { useBuild, useCurrentGear, usePlacements, useSlot } from '../store/build';
 import { applyVariant, autofillKey, startAutofill } from './autofillActions';
 import { rarityColor } from './colors';
 import { useBoardContext, useT } from './hooks';
@@ -14,14 +14,15 @@ export function AutofillPanel() {
   const data = useBuild((s) => s.data);
   const gear = useCurrentGear();
   const placements = usePlacements();
+  const slot = useSlot();
   const ctx = useBoardContext();
   const { t, l } = useT();
   const af = useAutofill();
   const selection = (gear && af.selections[gear.id]) || EMPTY;
 
   const currentKey = useMemo(
-    () => (gear && ctx ? autofillKey(gear.id, ctx, placements, selection, af.options) : ''),
-    [gear, ctx, placements, selection, af.options],
+    () => (gear && ctx ? autofillKey(`${gear.id}#${slot}`, ctx, placements, selection, af.options) : ''),
+    [gear, ctx, placements, selection, af.options, slot],
   );
   const stale = af.status === 'done' && af.resultKey !== currentKey;
 

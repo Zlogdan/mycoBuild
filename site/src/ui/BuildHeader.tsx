@@ -1,10 +1,11 @@
 import { gridGrowthLevels, gridSizeForLevel } from '../core/rules';
 import { iconUrl } from '../data/load';
-import { useBuild, useCurrentGear, useGearLevel, usePlacements } from '../store/build';
+import { SLOTS, buildKey, useBuild, useCurrentGear, useGearLevel, usePlacements, useSlot } from '../store/build';
 import { RichText } from './RichText';
 import { useBoardContext, useT } from './hooks';
 import { removeSelected, rotateSelected } from './actions';
 import { useShowcase } from './Showcase';
+import { useAutofill } from '../store/autofill';
 
 export function BuildHeader() {
   const data = useBuild((s) => s.data);
@@ -13,6 +14,8 @@ export function BuildHeader() {
   const setGearLevel = useBuild((s) => s.setGearLevel);
   const selectedUid = useBuild((s) => s.selectedUid);
   const placements = usePlacements();
+  const slot = useSlot();
+  const builds = useBuild((s) => s.builds);
   const { t, l } = useT();
   const ctx = useBoardContext();
   if (!data || !gear) return null;
@@ -54,6 +57,44 @@ export function BuildHeader() {
           </div>
         </div>
       )}
+
+      <div className="slots" title={t('slotHint')}>
+        <div className="seg">
+          {SLOTS.map((n) => {
+            const count = builds[buildKey(gear.id, n)]?.length ?? 0;
+            return (
+              <button key={n} className={slot === n ? 'on' : ''} onClick={() => {
+                  useAutofill.getState().setPreview(null);
+                  useBuild.getState().setSlot(n);
+                }}>
+                {n ? t('slotLoadout', { n }) : t('slotCurrent')}
+                {count > 0 && <span className="slot-count">{count}</span>}
+              </button>
+            );
+          })}
+        </div>
+        <select
+          value=""
+          disabled={!placements.length}
+          onChange={(e) => {
+            const to = Number(e.target.value);
+            e.target.value = '';
+            const name = to ? t('slotLoadout', { n: to }) : t('slotCurrent');
+            const target = builds[buildKey(gear.id, to)]?.length ?? 0;
+            if (target && !window.confirm(t('slotCopyConfirm', { slot: name }))) return;
+            useBuild.getState().copySlotTo(to);
+            useBuild.getState().notify(t('slotCopied', { slot: name }));
+          }}
+          title={t('slotCopy')}
+        >
+          <option value="">⧉ {t('slotCopy')}</option>
+          {SLOTS.filter((n) => n !== slot).map((n) => (
+            <option key={n} value={n}>
+              {n ? t('slotLoadout', { n }) : t('slotCurrent')}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div className="toolbar">
         <button disabled={!placements.length} onClick={() => useShowcase.getState().set(true)} title={t('scButtonHint')}>

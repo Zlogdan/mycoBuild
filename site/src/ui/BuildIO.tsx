@@ -10,7 +10,7 @@ import {
   type ImportResult,
 } from '../core/buildfile';
 import { loc, translate, type TKey } from '../i18n';
-import { boardContext, newUid, useBuild, useGearLevel, usePlacements, useCurrentGear } from '../store/build';
+import { boardContext, buildKey, newUid, useBuild, useGearLevel, usePlacements, useCurrentGear } from '../store/build';
 import { useAutofill } from '../store/autofill';
 import { useT } from './hooks';
 import { SaveImportButton } from './SaveImport';
@@ -29,7 +29,7 @@ function currentFile(): BuildFileV1 | null {
     gear,
     accountLevel: b.accountLevel,
     gearLevel,
-    placements: b.builds[gear.id] ?? [],
+    placements: b.builds[buildKey(gear.id, b.slots[gear.id] ?? 0)] ?? [],
     autofill: af.selections[gear.id] ?? [],
     autofillOptions: af.options,
   });
@@ -49,7 +49,7 @@ function runImport(input: string): ImportResult {
       gearId: gear.id,
       accountLevel,
       gearLevels: { ...b.gearLevels, [gear.id]: gearLevel },
-      builds: { ...b.builds, [gear.id]: placements },
+      builds: { ...b.builds, [buildKey(gear.id, b.slots[gear.id] ?? 0)]: placements },
       selectedUid: null,
       inspectedId: null,
     });

@@ -186,6 +186,16 @@ const ru = {
   scStats: 'характеристики',
   scDesc: 'описания',
   scHint: 'Esc — закрыть',
+  slotCurrent: 'Текущий',
+  slotLoadout: 'Лоадаут {n}',
+  slotHint: 'Как в игре: текущая раскладка и три сохранённых лоадаута у каждого оружия и персонажа',
+  slotCopy: 'Копировать в…',
+  slotCopied: 'Скопировано в «{slot}»',
+  slotCopyConfirm: 'Заменить содержимое «{slot}» текущей раскладкой?',
+  svLoadAll: 'Загрузить всё',
+  svLoadAllHint: 'Уровни, текущие раскладки и все лоадауты всех снаряжений из сохранения',
+  svLoadAllConfirm: 'Загрузить из сохранения всё? Снаряжений: {n}, билдов: {b}. Билды этих снаряжений на сайте будут заменены.',
+  svLoadedAll: 'Загружено из сохранения — снаряжений: {n}, билдов: {b}',
   langSwitch: 'EN',
 } as const;
 
@@ -377,6 +387,16 @@ const en: Record<TKey, string> = {
   scStats: 'stats',
   scDesc: 'descriptions',
   scHint: 'Esc — close',
+  slotCurrent: 'Current',
+  slotLoadout: 'Loadout {n}',
+  slotHint: 'Like in game: the current layout and three saved loadouts for every weapon and character',
+  slotCopy: 'Copy to…',
+  slotCopied: 'Copied to “{slot}”',
+  slotCopyConfirm: 'Replace “{slot}” with the current layout?',
+  svLoadAll: 'Load everything',
+  svLoadAllHint: 'Levels, current layouts and all loadouts of every gear from the save',
+  svLoadAllConfirm: 'Load everything from the save: {n} gear, {b} builds? The site builds of these gear will be replaced.',
+  svLoadedAll: 'Loaded from the save: {n} gear, {b} builds',
   langSwitch: 'RU',
 };
 
