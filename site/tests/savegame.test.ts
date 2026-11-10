@@ -59,6 +59,7 @@ describe.skipIf(!SAVE || !existsSync(SAVE))('real save file', () => {
     const report: string[] = [];
     const fatal: string[] = [];
     let builds = 0;
+    let infused = 0;
     for (const g of save.gears) {
       const gear = data.gears.find((x) => x.id === g.gearId);
       if (!gear) continue;
@@ -68,7 +69,10 @@ describe.skipIf(!SAVE || !existsSync(SAVE))('real save file', () => {
         if (!s.list.length) continue;
         builds++;
         const { placements, issues } = convertEquips(s.list, save, (id) => data.upgrades[id], () => `s${n++}`);
-        for (const i of issues) fatal.push(`${gear.key}/${s.name}: ${i.reason} ${i.upgradeId ?? i.instanceId}`);
+        // excluded (Ouroboros-only) upgrades are not in the site data -> reported; a shape mismatch is always fatal
+        for (const i of issues)
+          (i.reason === 'shapeMismatch' || (s.name === 'equipped' && i.reason !== 'unknownUpgrade') ? fatal : report).push(`${gear.key}/${s.name}: ${i.reason} ${i.upgradeId ?? i.instanceId}`);
+        infused += placements.filter((p) => p.patternFrom).length;
         const st = evaluate(ctx, placements);
         for (const [uid, list] of st.issues) {
           const p = placements.find((x) => x.uid === uid)!;
@@ -77,7 +81,7 @@ describe.skipIf(!SAVE || !existsSync(SAVE))('real save file', () => {
         }
       }
     }
-    console.log(`account level ${account}, builds checked: ${builds}\n` + (report.join('\n') || 'no issues'));
+    console.log(`account level ${account}, builds checked: ${builds}, infused: ${infused}\n` + (report.join('\n') || 'no issues'));
     expect(builds).toBeGreaterThan(0);
     expect(fatal).toEqual([]);
   });

@@ -37,6 +37,9 @@ export function AutofillPanel() {
   const result = af.result;
   const solutions = running ? af.progress?.solutions ?? [] : result?.solutions ?? [];
   const maxScore = result?.maxScore ?? totalWeight;
+  const inf = af.options.infuser;
+  const setInf = (o: Partial<typeof inf>) => af.setOptions({ infuser: { ...inf, ...o } });
+  const cellsOf = (id: string) => U[id]?.pattern.cells.length ?? 0;
 
   return (
     <div className="autofill">
@@ -115,6 +118,22 @@ export function AutofillPanel() {
         </label>
       </div>
 
+      <fieldset className="af-infuser">
+        <legend>{t('piBlock')}</legend>
+        <label title={t('piBlockHint')}>
+          <input type="checkbox" checked={inf.enabled} onChange={(e) => setInf({ enabled: e.target.checked })} /> {t('piEnable')}
+        </label>
+        <label className={inf.enabled ? '' : 'disabled'} title={t('piNeutralOnlyHint')}>
+          <input type="checkbox" disabled={!inf.enabled} checked={inf.neutralOnly} onChange={(e) => setInf({ neutralOnly: e.target.checked })} />{' '}
+          {t('piNeutralOnly')}
+        </label>
+        <label className={inf.enabled ? '' : 'disabled'} title={t('piForceHint')}>
+          <input type="checkbox" disabled={!inf.enabled} checked={inf.forceShrink} onChange={(e) => setInf({ forceShrink: e.target.checked })} />{' '}
+          {t('piForce')}
+        </label>
+        {inf.enabled && <p className="muted small">{t('piBlockHint')}</p>}
+      </fieldset>
+
       <div className="af-run">
         {running ? (
           <button className="primary" onClick={() => af.cancel?.()}>
@@ -148,6 +167,9 @@ export function AutofillPanel() {
                   <b>{t('afVariant', { n: i + 1 })}</b>
                   <span>{t('afScore', { score: s.score, max: maxScore })}</span>
                   <span className="muted">{t('afPlacedN', { a: placedN, b: total })}</span>
+                  {s.placements.some((p) => p.patternFrom) && (
+                    <span className="muted">{t('piUsed', { n: s.placements.filter((p) => p.patternFrom).length })}</span>
+                  )}
                   {i === 0 && !running && result && (
                     <span
                       className={result.optimal ? 'badge ok' : 'badge warn'}
@@ -170,6 +192,20 @@ export function AutofillPanel() {
                     <p className="small muted">
                       {t('afPlaced')}: {s.placements.map((p) => l(U[p.upgradeId]?.name)).join(', ')}
                     </p>
+                    {s.placements.some((p) => p.patternFrom) && (
+                      <ul className="small pi-list">
+                        {s.placements
+                          .filter((p) => p.patternFrom)
+                          .map((p, k) => (
+                            <li key={k}>
+                              {t('piArrow', { target: l(U[p.upgradeId]?.name), donor: l(U[p.patternFrom!]?.name), n: cellsOf(p.patternFrom!) })}
+                              {U[p.upgradeId]?.patternScaled && cellsOf(p.patternFrom!) !== cellsOf(p.upgradeId) && (
+                                <span className="warn"> · {t('piLoss')}</span>
+                              )}
+                            </li>
+                          ))}
+                      </ul>
+                    )}
                     {!running && (
                       <button className="primary" onClick={() => applyVariant(i)}>
                         {t('afApply')}

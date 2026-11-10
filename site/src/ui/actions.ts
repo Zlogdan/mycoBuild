@@ -1,4 +1,4 @@
-import { checkPlacement, upgradePattern, type BoardContext, type Placement } from '../core/placement';
+import { checkPlacement, placementPattern, type BoardContext, type Placement } from '../core/placement';
 import { canRotate, rotationUnlockLevel } from '../core/rules';
 import { translate } from '../i18n';
 import { useBuild } from '../store/build';
@@ -18,11 +18,11 @@ export function rotateSelected(ctx: BoardContext, placements: readonly Placement
     b.notify(t('rotationLocked', { level: rotationUnlockLevel(u.rarity) }));
     return;
   }
-  const cur = upgradePattern(u, p.rotation).cells[0];
+  const cur = placementPattern(ctx.getUpgrade, u, p.rotation, p.patternFrom).cells[0];
   const abs = { q: p.anchor.q + cur.q, r: p.anchor.r + cur.r };
   for (let step = 1; step < 6; step++) {
     const rotation = (((p.rotation + dir * step) % 6) + 6) % 6;
-    const nc = upgradePattern(u, rotation).cells[0];
+    const nc = placementPattern(ctx.getUpgrade, u, rotation, p.patternFrom).cells[0];
     const cand = { ...p, rotation, anchor: { q: abs.q - nc.q, r: abs.r - nc.r } };
     if (checkPlacement(ctx, placements, cand).ok) {
       b.upsertPlacement(cand);

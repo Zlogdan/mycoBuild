@@ -15,6 +15,8 @@ export interface Placement {
   expand?: ExpandDirection;
   /** upgrades with a per-instance element (Upgrade.elementChoice): the chosen element key */
   element?: string;
+  /** Pattern Infuser: id of the upgrade whose pattern this instance uses (UpgradeInstance.overriddenPatternID) */
+  patternFrom?: string;
 }
 
 export type IssueCode =
@@ -24,7 +26,8 @@ export type IssueCode =
   | 'overlap'
   | 'rotationLocked'
   | 'duplicate'
-  | 'expanderInactive';
+  | 'expanderInactive'
+  | 'badInfusion';
 
 export interface Issue {
   code: IssueCode;
@@ -65,6 +68,54 @@ export function upgradePattern(u: Upgrade, rotation: number): Pattern {
     patternCache.set(u.id, rots);
   }
   return rots[((rotation % 6) + 6) % 6];
+}
+
+/**
+ * Pattern Infuser rule (PatternInfuserWindow): the donor must be another upgrade of the same gear and the same rarity.
+ * (In game the donor instance is consumed; any such upgrade is accepted here.)
+ */
+export function canInfuse(target: Upgrade, donor: Upgrade | undefined): boolean {
+  return (
+    !!donor &&
+    donor.id !== target.id &&
+    donor.role === 'normal' &&
+    donor.rarity === target.rarity &&
+    donor.rarity !== 5 &&
+    donor.pattern.cells.length > 0 &&
+    donor.gears.some((g) => target.gears.includes(g))
+  );
+}
+
+/** Possible donors of an upgrade, smallest patterns first. */
+export function infuseDonors(target: Upgrade, all: Iterable<Upgrade>): Upgrade[] {
+  return [...all]
+    .filter((d) => canInfuse(target, d))
+    .sort((a, b) => a.pattern.cells.length - b.pattern.cells.length || a.key.localeCompare(b.key));
+}
+
+/** Shape of a placement: its own pattern, or the donor's pattern when infused. */
+export function placementPattern(getUpgrade: (id: string) => Upgrade | undefined, u: Upgrade, rotation: number, patternFrom?: string): Pattern {
+  const donor = patternFrom ? getUpgrade(patternFrom) : undefined;
+  return upgradePattern(donor && canInfuse(u, donor) ? donor : u, rotation);
+}
+
+/**
+ * UpgradeProperty.GetPatternSizeRatio(currentCells, defaultCells, invert): multiplier applied by the game to
+ * pattern-size dependent stats. Smaller: (1 + r) / 2; bigger: 0.85 r + 0.15, capped at 1 + diff / 7.5 and 2; min 0.2.
+ * `invert` is used by stats where less is better (the ratio is computed with the sizes swapped).
+ */
+export function patternSizeRatio(currentCells: number, defaultCells: number, invert = false): number {
+  let a = currentCells;
+  let b = defaultCells;
+  if (a === b || b <= 0) return 1;
+  if (invert) [a, b] = [b, a];
+  let r = a / b;
+  if (r >= 1) r = Math.min(r, 1 + Math.min((a - b) / 7.5, 1));
+  r = Math.min(r, 2);
+  let smaller = r < 1;
+  if (invert) smaller = !smaller;
+  r = r + (1 - r) * (smaller ? 0.5 : 0.15);
+  return Math.max(r, 0.2);
 }
 
 export function clearPatternCache() {
@@ -114,7 +165,8 @@ export function evaluate(ctx: BoardContext, placements: readonly Placement[]): B
       continue;
     }
     known.push({ p, u });
-    cells.set(p.uid, footprint(upgradePattern(u, p.rotation), p.anchor));
+    if (p.patternFrom && !canInfuse(u, ctx.getUpgrade(p.patternFrom))) addIssue(p.uid, { code: 'badInfusion' });
+    cells.set(p.uid, footprint(placementPattern(ctx.getUpgrade, u, p.rotation, p.patternFrom), p.anchor));
     if (ctx.pool && !ctx.pool.has(u.id)) addIssue(p.uid, { code: 'notInPool' });
     if (p.rotation % 6 !== 0 && !canRotate(u.rarity as Rarity, ctx.accountLevel))
       addIssue(p.uid, { code: 'rotationLocked', level: rotationUnlockLevel(u.rarity) });
@@ -207,7 +259,7 @@ export function validGrabPositions(
 ): Axial[] {
   const u = ctx.getUpgrade(candidate.upgradeId);
   if (!u) return [];
-  const pat = upgradePattern(u, candidate.rotation);
+  const pat = placementPattern(ctx.getUpgrade, u, candidate.rotation, candidate.patternFrom);
   const grab = pat.cells[Math.min(grabIndex, pat.cells.length - 1)] ?? { q: 0, r: 0 };
   const out: Axial[] = [];
   for (let x = 0; x < maxSize.w; x++) {

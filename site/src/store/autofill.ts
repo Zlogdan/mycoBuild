@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import type { AutofillEntry } from '../core/solver/prepare';
+import type { AutofillEntry, InfuserOptions } from '../core/solver/prepare';
 import type { SolveProgress, SolveResult } from '../core/solver/solve';
 import type { Placement } from '../core/placement';
 
@@ -10,6 +10,7 @@ export interface AutofillOptions {
   keepPlaced: boolean;
   timeLimitMs: number;
   topK: number;
+  infuser: InfuserOptions;
 }
 
 interface AutofillState {
@@ -40,7 +41,7 @@ export const useAutofill = create<AutofillState>()(
   persist(
     (set, get) => ({
       selections: {},
-      options: { keepPlaced: false, timeLimitMs: 3000, topK: 5 },
+      options: { keepPlaced: false, timeLimitMs: 3000, topK: 5, infuser: { enabled: false, neutralOnly: true, forceShrink: false } },
       status: 'idle',
       error: null,
       progress: null,
@@ -76,7 +77,9 @@ export const useAutofill = create<AutofillState>()(
         const selections = Object.fromEntries(
           Object.entries(p.selections ?? {}).map(([g, list]) => [g, list.map((e) => ({ ...e, upgradeId: String(e.upgradeId) }))]),
         );
-        return { ...current, ...p, selections, options: { ...current.options, ...(p.options ?? {}) } };
+        const options = { ...current.options, ...(p.options ?? {}) };
+        options.infuser = { ...current.options.infuser, ...(p.options?.infuser ?? {}) };
+        return { ...current, ...p, selections, options };
       },
     },
   ),

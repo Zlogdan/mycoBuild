@@ -1,5 +1,5 @@
 import { axialKey, axialToPixel, directionVector, hexPolygon, offsetToAxial, SQRT3 } from '../core/hex';
-import { evaluate, upgradePattern, type BoardContext, type Placement } from '../core/placement';
+import { evaluate, placementPattern, type BoardContext, type Placement } from '../core/placement';
 import { iconCellIndex, patternLinks } from '../core/pattern';
 import { isGridExpander } from '../core/rules';
 import { iconUrl } from '../data/load';
@@ -42,7 +42,7 @@ export function StaticBoard({ ctx, placements, size: S = 40 }: { ctx: BoardConte
         const u = ctx.getUpgrade(p.upgradeId);
         const abs = state.cells.get(p.uid);
         if (!u || !abs) return null;
-        const pat = upgradePattern(u, p.rotation);
+        const pat = placementPattern(ctx.getUpgrade, u, p.rotation, p.patternFrom);
         const color = rarityColor(u.rarity);
         const centers = abs.map((c) => px(c.q, c.r));
         const ic = centers[iconCellIndex(pat)];

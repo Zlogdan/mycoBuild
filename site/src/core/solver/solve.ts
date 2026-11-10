@@ -9,6 +9,10 @@
  *  - copies of the same upgrade are placed in increasing position order (no permutation duplicates);
  *  - grid expanders: outer loop over (unused | +column | +row) for each selected expander. A used
  *    expander is a mandatory unit restricted to the grid that exists without it.
+ *  - Pattern Infuser: an orientation may use a donor's pattern (`patternFrom`) and carry a small
+ *    `penalty`; the objective is weight − penalties (penalties < 1 in total, weights are integers),
+ *    so shapes are only changed when that places more weight, or - with "force" penalties
+ *    proportional to the area - to make the layout as compact as possible.
  * Variants: the K best solutions that differ either in the set of upgrades or, for the same set,
  * in at least half of the positions (so "everything fits" still yields genuinely different layouts).
  * Pure TypeScript, no DOM: runs in a Web Worker and in unit tests.
@@ -21,6 +25,10 @@ export interface SolveOrientation {
   rotation: number;
   /** normalised axial cells of this rotation */
   cells: Axial[];
+  /** Pattern Infuser: donor upgrade whose pattern these cells are */
+  patternFrom?: string;
+  /** secondary objective: subtracted from the score (sum over a solution must stay < 1) */
+  penalty?: number;
 }
 
 export interface SolveItem {
@@ -53,10 +61,14 @@ export interface SolvedPlacement {
   rotation: number;
   anchor: Axial;
   expand?: ExpandDirection;
+  patternFrom?: string;
 }
 
 export interface Solution {
+  /** sum of weights of the placed upgrades */
   score: number;
+  /** score − penalties (what the solver maximises) */
+  objective: number;
   placements: SolvedPlacement[];
   /** upgradeId -> copies that could not be placed */
   unplaced: Record<string, number>;
@@ -108,6 +120,9 @@ interface Option {
   rotation: number;
   anchor: Axial;
   key: string; // rotation@anchor, for diversity comparison
+  size: number;
+  penalty: number;
+  patternFrom?: string;
 }
 
 
@@ -137,7 +152,15 @@ export function enumerateOptions(
         const mk = mask.join(',');
         if (seen.has(mk)) continue;
         seen.add(mk);
-        out.push({ mask, rotation: o.rotation, anchor, key: `${o.rotation}@${anchor.q},${anchor.r}` });
+        out.push({
+          mask,
+          rotation: o.rotation,
+          anchor,
+          key: `${o.rotation}@${anchor.q},${anchor.r}`,
+          size: o.cells.length,
+          penalty: o.penalty ?? 0,
+          ...(o.patternFrom ? { patternFrom: o.patternFrom } : {}),
+        });
       }
     }
   }
@@ -146,7 +169,7 @@ export function enumerateOptions(
 
 const signatureOf = (s: Solution) =>
   s.placements
-    .map((p) => p.upgradeId + (p.expand ? `:${p.expand}` : ''))
+    .map((p) => p.upgradeId + (p.expand ? `:${p.expand}` : '') + (p.patternFrom ? `<${p.patternFrom}` : ''))
     .sort()
     .join('|');
 
@@ -182,7 +205,11 @@ export function solve(input: SolveInput): SolveResult {
   let nodes = 0;
   let complete = true;
   let lastProgress = t0;
-  const worst = () => (solutions.length < topK ? -Infinity : solutions[solutions.length - 1].score);
+  const worst = () => (solutions.length < topK ? -Infinity : solutions[solutions.length - 1].objective);
+  const minPenalty = (it: SolveItem) => Math.min(...it.orientations.map((o) => o.penalty ?? 0));
+  /** best objective achievable at all: everything placed with the smallest penalties */
+  const maxObjective = items.reduce((s, i) => s + (i.weight - minPenalty(i)) * i.count, 0);
+  const hasPenalties = items.some((i) => i.orientations.some((o) => o.penalty));
   /** While variants are still being collected, equal-score branches are explored (other layouts);
    *  once K variants exist, branches that cannot beat the weakest one are cut. */
   const pruned = (b: number) => solutions.length >= topK && b <= worst() + 1e-9;
@@ -191,16 +218,18 @@ export function solve(input: SolveInput): SolveResult {
     // a better solution replaces similar weaker ones; a similar-or-worse one is ignored
     for (let i = 0; i < solutions.length; i++) {
       if (tooSimilar(sol, solutions[i]) || tooSimilar(solutions[i], sol)) {
-        if (sol.score > solutions[i].score) {
+        if (sol.objective > solutions[i].objective) {
           solutions.splice(i, 1);
           i--;
         } else return;
       }
     }
     solutions.push(sol);
-    solutions.sort((a, b) => b.score - a.score);
+    solutions.sort((a, b) => b.objective - a.objective);
     // everything placed = optimal; spend at most a short extra time collecting layout variants
-    if (sol.score >= maxScore) deadline = Math.min(deadline, Date.now() + VARIANT_GRACE_MS);
+    // (with penalties: only once nothing better is possible at all - otherwise keep looking for fewer infusions)
+    if (sol.score >= maxScore && (!hasPenalties || sol.objective >= maxObjective - 1e-9))
+      deadline = Math.min(deadline, Date.now() + VARIANT_GRACE_MS);
     if (solutions.length > topK) solutions.length = topK;
   };
 
@@ -229,12 +258,22 @@ export function solve(input: SolveInput): SolveResult {
     interface Slot {
       item: number;
       weight: number;
+      /** weight minus the smallest penalty: upper bound of what one copy adds to the objective */
+      value: number;
+      /** smallest footprint among the orientations (for the bound) */
       size: number;
       rem: number;
       mandatory: boolean;
       expand?: ExpandDirection;
       /** options indexed by their lowest cell (row-major) - used by first-free-cell branching */
       byMin: Option[][];
+      /** options with a penalty > 0 somewhere: all options, smallest penalty first (for polishing) */
+      cheapest?: Option[];
+      /** size of the own shape when it costs nothing (Infinity: no free option, e.g. "force" mode) */
+      ownSize: number;
+      /** cells saved by the smallest shape, and the smallest penalty of a shape with a penalty */
+      saving: number;
+      infPen: number;
     }
     const indexByMin = (opts: Option[]) => {
       const by: Option[][] = Array.from({ length: totalCells }, () => []);
@@ -252,9 +291,13 @@ export function solve(input: SolveInput): SolveResult {
       slots.push({
         item: expanderIdx[k],
         weight: it.weight,
-        size: it.orientations[0].cells.length,
+        value: it.weight - minPenalty(it),
+        size: Math.min(...it.orientations.map((o) => o.cells.length)),
         rem: 1,
         mandatory: true,
+        ownSize: Infinity,
+        saving: 0,
+        infPen: 0,
         expand: d,
         // an expander must stand inside the grid that exists without its own expansion
         byMin: indexByMin(enumerateOptions(it.orientations, size, (x, y) => x < baseW && y < baseH)),
@@ -265,32 +308,68 @@ export function solve(input: SolveInput): SolveResult {
       slots.push({
         item: idx,
         weight: it.weight,
-        size: it.orientations[0].cells.length,
+        value: it.weight - minPenalty(it),
+        size: Math.min(...it.orientations.map((o) => o.cells.length)),
         rem: it.count,
         mandatory: false,
+        ownSize: Infinity,
+        saving: 0,
+        infPen: 0,
         byMin: indexByMin(enumerateOptions(it.orientations, size)),
       });
     }
+    for (const sl of slots) {
+      const opts = sl.byMin.flat();
+      if (opts.some((o) => o.penalty)) sl.cheapest = opts.sort((a, b) => a.penalty - b.penalty);
+      const it = items[sl.item];
+      const free = it.orientations.filter((o) => !o.penalty).map((o) => o.cells.length);
+      sl.ownSize = free.length ? Math.min(...free) : Infinity;
+      sl.saving = sl.ownSize - sl.size;
+      const pens = it.orientations.filter((o) => o.penalty).map((o) => o.penalty!);
+      sl.infPen = pens.length ? Math.min(...pens) : 0;
+    }
+    // Pattern Infuser bound: when everything left must fit, the cells missing for the own shapes need
+    // at least k shrunk units (largest savings first), each costing at least its penalty.
+    const infuseBound = hasPenalties && slots.every((sl) => sl.ownSize < Infinity);
+    const bySaving = slots.filter((sl) => sl.saving > 0).sort((a, b) => b.saving - a.saving);
+    const baseOcc = occ.slice();
     // heaviest first when branching (good solutions early), densest first for the bound
     const byWeight = slots.slice().sort((a, b) => b.weight - a.weight || b.size - a.size);
-    const byDensity = slots.slice().sort((a, b) => b.weight / b.size - a.weight / a.size);
+    const byDensity = slots.slice().sort((a, b) => b.value / b.size - a.value / a.size);
     let remaining = slots.reduce((n, sl) => n + sl.rem, 0);
     let mandatoryLeft = slots.filter((sl) => sl.mandatory).length;
     let decided = used; // occupied + deliberately empty cells
 
     /** current score + fractional knapsack of the remaining copies over the undecided cells */
     const bound = (score: number) => {
-      let free = totalCells - decided;
+      const avail = totalCells - decided;
+      let free = avail;
       let b = score;
+      let allFit = true;
       for (const sl of byDensity) {
-        if (free <= 0) break;
         if (!sl.rem) continue;
+        if (free <= 0) {
+          allFit = false;
+          break;
+        }
         const fit = Math.min(sl.rem, Math.floor(free / sl.size));
-        b += fit * sl.weight;
+        b += fit * sl.value;
         free -= fit * sl.size;
-        if (fit < sl.rem && free > 0) {
-          b += (sl.weight * free) / sl.size;
+        if (fit < sl.rem) {
+          allFit = false;
+          if (free > 0) b += (sl.value * free) / sl.size;
           free = 0;
+        }
+      }
+      if (infuseBound && allFit) {
+        let need = -avail;
+        for (const sl of slots) need += sl.ownSize * sl.rem;
+        for (const sl of bySaving) {
+          if (need <= 0) break;
+          for (let k = 0; k < sl.rem && need > 0; k++) {
+            need -= sl.saving;
+            b -= sl.infPen;
+          }
         }
       }
       return b;
@@ -298,11 +377,42 @@ export function solve(input: SolveInput): SolveResult {
 
     const chosen: { slot: Slot; opt: Option }[] = [];
 
-    const recordCurrent = (score: number) => {
+    /**
+     * Local improvement of a found layout: every placement with a penalty (donor shape, or area in
+     * "force" mode) is moved to the cheapest option that fits in the free cells, while others stay.
+     */
+    const polish = (list: { slot: Slot; opt: Option }[]): number => {
+      let gain = 0;
+      if (!slots.some((sl) => sl.cheapest)) return gain;
+      const used = baseOcc.slice();
+      for (const c of list) toggle(used, c.opt.mask);
+      let changed = true;
+      while (changed) {
+        changed = false;
+        for (const c of list) {
+          if (!c.opt.penalty || !c.slot.cheapest) continue;
+          toggle(used, c.opt.mask);
+          const better = c.slot.cheapest.find((o) => o.penalty < c.opt.penalty - 1e-12 && !intersects(o.mask, used));
+          if (better) {
+            gain += c.opt.penalty - better.penalty;
+            c.opt = better;
+            changed = true;
+          }
+          toggle(used, c.opt.mask);
+        }
+      }
+      return gain;
+    };
+
+    const recordCurrent = (found: number) => {
       if (mandatoryLeft > 0) return;
-      if (solutions.length >= topK && score < worst()) return;
+      const list = chosen.map((c) => ({ ...c }));
+      const objective = found + polish(list);
+      if (solutions.length >= topK && objective < worst()) return;
+      let score = 0;
+      for (const c of list) score += c.slot.weight;
       const placed = new Map<number, number>();
-      for (const c of chosen) placed.set(c.slot.item, (placed.get(c.slot.item) ?? 0) + 1);
+      for (const c of list) placed.set(c.slot.item, (placed.get(c.slot.item) ?? 0) + 1);
       const unplaced: Record<string, number> = {};
       items.forEach((it, idx) => {
         const missing = it.count - (placed.get(idx) ?? 0);
@@ -310,13 +420,15 @@ export function solve(input: SolveInput): SolveResult {
       });
       record({
         score,
+        objective,
         size: { ...size },
         unplaced,
-        placements: chosen.map((c) => ({
+        placements: list.map((c) => ({
           upgradeId: items[c.slot.item].upgradeId,
           rotation: c.opt.rotation,
           anchor: c.opt.anchor,
           ...(c.slot.expand ? { expand: c.slot.expand } : {}),
+          ...(c.opt.patternFrom ? { patternFrom: c.opt.patternFrom } : {}),
         })),
       });
     };
@@ -342,7 +454,7 @@ export function solve(input: SolveInput): SolveResult {
         }
       }
       // all K variants already place everything requested: nothing better can exist
-      if (solutions.length >= topK && worst() >= maxScore) return true;
+      if (solutions.length >= topK && worst() >= maxObjective - 1e-9) return true;
       let cell = from;
       while (cell < totalCells && isSet(cell)) cell++;
       if (remaining === 0 || cell >= totalCells) {
@@ -356,17 +468,17 @@ export function solve(input: SolveInput): SolveResult {
         for (const opt of sl.byMin[cell]) {
           if (intersects(opt.mask, occ)) continue;
           toggle(occ, opt.mask);
-          decided += sl.size;
+          decided += opt.size;
           sl.rem--;
           remaining--;
           if (sl.mandatory) mandatoryLeft--;
           chosen.push({ slot: sl, opt });
-          const stop = search(cell + 1, score + sl.weight);
+          const stop = search(cell + 1, score + sl.weight - opt.penalty);
           chosen.pop();
           if (sl.mandatory) mandatoryLeft++;
           remaining++;
           sl.rem++;
-          decided -= sl.size;
+          decided -= opt.size;
           toggle(occ, opt.mask);
           if (stop) return true;
           if (pruned(bound(score))) return false;

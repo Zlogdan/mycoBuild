@@ -371,3 +371,60 @@ def build_element_rules(dll_path: str) -> dict:
                                                             "cond": cond, "steps": steps, "method": row.Name.value}
             break
     return rules
+
+
+def build_pattern_rules(dll_path: str) -> dict:
+    """For UpgradeProperty_* classes: the pattern-size scaling calls made in Apply
+    (UpgradeProperty.Modify*FromPatternSize / GetPatternSizeRatio) and the property field that guards each call
+    (e.g. `if (modifyFromPatternSize) ...`). {PropertyType: [{"guard": field|None, "func": name}]}.
+    Classes without such calls are not affected by Pattern Infuser."""
+    pe = dnfile.dnPE(dll_path)
+    T = pe.net.mdtables
+    types = list(T.TypeDef)
+    field_owner, method_owner = {}, {}
+    for t in types:
+        for f in t.FieldList:
+            field_owner[f.row_index] = t.TypeName.value
+        for m in t.MethodList:
+            method_owner[m.row_index] = t.TypeName.value
+
+    def callee(tok):
+        if tok.table == MetadataTables.MethodDef.value:
+            return method_owner.get(tok.rid, "?"), T.MethodDef[tok.rid - 1].Name.value
+        if tok.table == MetadataTables.MemberRef.value:
+            mr = T.MemberRef[tok.rid - 1]
+            cn = getattr(mr.Class.row, "TypeName", None)
+            return (cn.value if cn is not None else "?"), mr.Name.value
+        return "?", "?"
+
+    rules: dict = {}
+    for t in types:
+        owner = t.TypeName.value
+        if not owner.startswith("UpgradeProperty_"):
+            continue
+        apply = next((m.row for m in t.MethodList if m.row.Name.value == "Apply" and m.row.Rva), None)
+        if apply is None:
+            continue
+        try:
+            ins = list(CilMethodBody(_Reader(pe, apply)).instructions)
+        except MethodBodyFormatError:
+            continue
+        calls = []
+        for i, x in enumerate(ins):
+            if x.opcode.name not in ("call", "callvirt") or not isinstance(x.operand, Token):
+                continue
+            cls, meth = callee(x.operand)
+            if cls != "UpgradeProperty" or not ("FromPatternSize" in meth or meth == "GetPatternSizeRatio"):
+                continue
+            guard = None
+            for j in range(i - 1, max(0, i - 40), -1):
+                y = ins[j]
+                if y.opcode.name == "ldfld" and isinstance(y.operand, Token) and y.operand.table == MetadataTables.Field.value \
+                        and field_owner.get(y.operand.rid) == owner and j + 1 < len(ins) \
+                        and ins[j + 1].opcode.name.startswith(("brfalse", "brtrue")):
+                    guard = T.Field[y.operand.rid - 1].Name.value
+                    break
+            calls.append({"guard": guard, "func": meth})
+        if calls:
+            rules[owner.removeprefix("UpgradeProperty_")] = calls
+    return rules

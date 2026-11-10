@@ -20,7 +20,10 @@ export function autofillKey(
     level: ctx.accountLevel,
     sel: selection.map((e) => [e.upgradeId, e.weight, e.count]),
     keep: options.keepPlaced,
-    placed: options.keepPlaced ? placements.map((p) => [p.upgradeId, p.rotation, p.anchor.q, p.anchor.r, p.expand ?? '']) : [],
+    inf: options.infuser.enabled ? [options.infuser.neutralOnly, options.infuser.forceShrink] : null,
+    placed: options.keepPlaced
+      ? placements.map((p) => [p.upgradeId, p.rotation, p.anchor.q, p.anchor.r, p.expand ?? '', p.patternFrom ?? ''])
+      : [],
   });
 }
 
@@ -32,6 +35,8 @@ export function startAutofill(gearId: string, ctx: BoardContext, placements: rea
     keepPlaced: af.options.keepPlaced,
     topK: af.options.topK,
     timeLimitMs: af.options.timeLimitMs,
+    infuser: af.options.infuser,
+    allUpgrades: Object.values(useBuild.getState().data?.game.upgrades ?? {}),
   });
   if (!input.items.length) {
     const b = useBuild.getState();

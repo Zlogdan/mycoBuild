@@ -8,8 +8,8 @@
  */
 import type { GameData, Gear, Upgrade } from './types';
 import { axialToOffset, offsetToAxial } from './hex';
-import { evaluate, type BoardContext, type ExpandDirection, type Placement } from './placement';
-import type { AutofillEntry } from './solver/prepare';
+import { canInfuse, evaluate, type BoardContext, type ExpandDirection, type Placement } from './placement';
+import type { AutofillEntry, InfuserOptions } from './solver/prepare';
 
 export const SCHEMA_VERSION = 1;
 export const APP_ID = 'mycobuild';
@@ -32,10 +32,12 @@ export interface BuildFileV1 {
     expand?: ExpandDirection;
     /** element of an upgrade with a per-instance element (Upgrade.elementChoice) */
     element?: string;
+    /** Pattern Infuser: upgrade whose pattern this instance uses */
+    patternFrom?: string;
   }[];
   autofill?: {
     selection: { upgradeId: string; key: string; weight: number; count: number }[];
-    options?: { keepPlaced?: boolean; timeLimitMs?: number; topK?: number };
+    options?: { keepPlaced?: boolean; timeLimitMs?: number; topK?: number; infuser?: InfuserOptions };
   };
 }
 
@@ -45,7 +47,7 @@ export interface BuildSnapshot {
   gearLevel: number;
   placements: Placement[];
   autofill: AutofillEntry[];
-  autofillOptions?: { keepPlaced: boolean; timeLimitMs: number; topK: number };
+  autofillOptions?: { keepPlaced: boolean; timeLimitMs: number; topK: number; infuser?: InfuserOptions };
 }
 
 /* ---------------- export ---------------- */
@@ -77,6 +79,7 @@ export function exportBuild(data: GameData, ctx: BoardContext, snap: BuildSnapsh
         rotation: p.rotation,
         ...(p.expand ? { expand: p.expand } : {}),
         ...(p.element ? { element: p.element } : {}),
+        ...(p.patternFrom ? { patternFrom: p.patternFrom } : {}),
       };
     }),
     autofill: {
@@ -101,7 +104,8 @@ export type ImportMessageCode =
   | 'notInPool'
   | 'placementIssue'
   | 'otherGameData'
-  | 'badElement';
+  | 'badElement'
+  | 'badInfusion';
 
 export interface ImportMessage {
   level: 'error' | 'warning';
@@ -172,7 +176,8 @@ export function importBuild(input: string | unknown, ictx: ImportContext): Impor
       p.rotation < 0 ||
       p.rotation > 5 ||
       (p.expand !== undefined && p.expand !== 'column' && p.expand !== 'row') ||
-      (p.element !== undefined && typeof p.element !== 'string')
+      (p.element !== undefined && typeof p.element !== 'string') ||
+      (p.patternFrom !== undefined && typeof p.patternFrom !== 'string')
     )
       return fail('badField', { field: `placed[${i}]` });
   }
@@ -210,6 +215,10 @@ export function importBuild(input: string | unknown, ictx: ImportContext): Impor
     if (raw.element && !u.elementChoice?.includes(raw.element))
       messages.push({ level: 'warning', code: 'badElement', params: { key: u.key, id: u.id, element: raw.element } });
     if (ctx.pool && !ctx.pool.has(u.id)) messages.push({ level: 'warning', code: 'notInPool', params: { key: u.key, id: u.id } });
+    const donor = raw.patternFrom ? data.upgrades[raw.patternFrom] : undefined;
+    const infused = donor && canInfuse(u, donor) ? donor.id : undefined;
+    if (raw.patternFrom && !infused)
+      messages.push({ level: 'warning', code: 'badInfusion', params: { key: u.key, id: u.id, donor: donor?.key ?? raw.patternFrom } });
     placements.push({
       uid: ictx.newUid(),
       upgradeId: u.id,
@@ -217,6 +226,7 @@ export function importBuild(input: string | unknown, ictx: ImportContext): Impor
       anchor: offsetToAxial(raw.x, raw.y),
       ...(raw.expand ? { expand: raw.expand } : {}),
       ...(raw.element && u.elementChoice?.includes(raw.element) ? { element: raw.element } : {}),
+      ...(infused ? { patternFrom: infused } : {}),
     });
   }
   // the build is restored exactly; rule violations are reported (and shown on the board), not "fixed"
@@ -248,6 +258,15 @@ export function importBuild(input: string | unknown, ictx: ImportContext): Impor
         ...(typeof o.keepPlaced === 'boolean' ? { keepPlaced: o.keepPlaced } : {}),
         ...(isInt(o.timeLimitMs) && o.timeLimitMs > 0 ? { timeLimitMs: o.timeLimitMs } : {}),
         ...(isInt(o.topK) && o.topK > 0 ? { topK: o.topK } : {}),
+        ...(isObj(o.infuser)
+          ? {
+              infuser: {
+                enabled: o.infuser.enabled === true,
+                neutralOnly: o.infuser.neutralOnly !== false,
+                forceShrink: o.infuser.forceShrink === true,
+              },
+            }
+          : {}),
       };
     }
   }

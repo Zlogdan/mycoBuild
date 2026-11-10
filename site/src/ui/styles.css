@@ -184,6 +184,8 @@ input[type='number'] { width: 70px; }
 .tags li { background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 2px 10px; font-size: 12px; }
 .tags .spatial { border-color: #ffe066; color: #ffe066; }
 .tags .warn { border-color: var(--accent2); color: var(--accent2); }
+.tags .ok { border-color: var(--ok); color: var(--ok); }
+.details .ok { color: var(--ok); }
 .stats-head { display: flex; justify-content: space-between; align-items: center; }
 .stats table { width: 100%; border-collapse: collapse; margin: 6px 0; }
 .stats td { padding: 3px 4px; border-bottom: 1px solid var(--line); }
@@ -319,6 +321,11 @@ button.link { background: none; border: none; color: var(--accent); padding: 0 4
 .af-list input[type='number'] { width: 52px; padding: 2px 4px; }
 .af-list .x { padding: 2px 6px; background: transparent; }
 .af-options { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 13px; }
+.af-infuser { border: 1px solid var(--line, #2a3533); border-radius: 6px; padding: 6px 10px 8px; margin: 8px 0 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.af-infuser legend { padding: 0 4px; font-weight: 600; }
+.af-infuser label.disabled { opacity: 0.5; }
+.af-infuser p { margin: 2px 0 0; }
+.pi-list { margin: 4px 0; padding-left: 18px; }
 .af-run { display: flex; align-items: center; gap: 10px; }
 .af-run .primary { padding: 7px 16px; }
 .af-variants { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }

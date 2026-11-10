@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { axialKey, axialToOffset, axialToPixel, directionVector, hexPolygon, neighbors, offsetToAxial, pixelToAxial, SQRT3 } from '../core/hex';
-import { checkPlacement, evaluate, inBounds, upgradePattern, validGrabPositions, type Placement } from '../core/placement';
+import { checkPlacement, evaluate, inBounds, placementPattern, validGrabPositions, type Placement } from '../core/placement';
 import { isGridExpander, isSpatial } from '../core/rules';
 import { iconCellIndex, patternLinks } from '../core/pattern';
 import { iconUrl } from '../data/load';
@@ -60,7 +60,7 @@ export function HexBoard() {
     if (!m) return;
     const local = pt.matrixTransform(m.inverse());
     const cell = pixelToAxial(local.x - PAD, local.y - PAD, S);
-    const pat = upgradePattern(dragUpgrade, drag.rotation);
+    const pat = placementPattern(ctx.getUpgrade, dragUpgrade, drag.rotation, drag.patternFrom);
     const grab = pat.cells[Math.min(drag.grabIndex, pat.cells.length - 1)];
     const anchor = { q: cell.q - grab.q, r: cell.r - grab.r };
     const res = checkPlacement(ctx, placements, {
@@ -69,9 +69,10 @@ export function HexBoard() {
       rotation: drag.rotation,
       anchor,
       expand: drag.expand,
+      patternFrom: drag.patternFrom,
     });
     useDrag.getState().setTarget({ anchor, ok: res.ok, issues: res.issues });
-  }, [drag.active, drag.x, drag.y, drag.rotation, drag.grabIndex, drag.uid, drag.expand, ctx, placements, dragUpgrade]);
+  }, [drag.active, drag.x, drag.y, drag.rotation, drag.grabIndex, drag.uid, drag.expand, drag.patternFrom, ctx, placements, dragUpgrade]);
 
   // available positions for the dragged shape (keyed by the grabbed cell)
   const available = useMemo(() => {
@@ -79,7 +80,7 @@ export function HexBoard() {
     return validGrabPositions(
       ctx,
       placements,
-      { uid: drag.uid, upgradeId: dragUpgrade.id, rotation: drag.rotation, expand: drag.expand },
+      { uid: drag.uid, upgradeId: dragUpgrade.id, rotation: drag.rotation, expand: drag.expand, patternFrom: drag.patternFrom },
       drag.grabIndex,
       view,
     );
@@ -123,6 +124,7 @@ export function HexBoard() {
       rotation: p.rotation,
       grabIndex: cellIndex,
       expand: p.expand,
+      patternFrom: p.patternFrom,
       x: e.clientX,
       y: e.clientY,
     });
@@ -131,7 +133,7 @@ export function HexBoard() {
   const freeCount = boardCells.length - boardCells.filter((c) => state.occupancy.has(axialKey(offsetToAxial(c.x, c.y)))).length;
   const target = drag.active ? drag.target : null;
   const targetCells =
-    target && dragUpgrade ? upgradePattern(dragUpgrade, drag.rotation).cells.map((c) => ({ q: c.q + target.anchor.q, r: c.r + target.anchor.r })) : [];
+    target && dragUpgrade ? placementPattern(ctx.getUpgrade, dragUpgrade, drag.rotation, drag.patternFrom).cells.map((c) => ({ q: c.q + target.anchor.q, r: c.r + target.anchor.r })) : [];
   const issueText = target && !target.ok && target.issues[0] ? t(`issue_${target.issues[0].code}`, { level: target.issues[0].level ?? '' }) : '';
 
   return (
@@ -201,7 +203,7 @@ export function HexBoard() {
           const u = ctx.getUpgrade(p.upgradeId);
           const cells = state.cells.get(p.uid);
           if (!u || !cells) return null;
-          const pat = upgradePattern(u, p.rotation);
+          const pat = placementPattern(ctx.getUpgrade, u, p.rotation, p.patternFrom);
           const color = rarityColor(u.rarity);
           const bad = (state.issues.get(p.uid)?.length ?? 0) > 0;
           const moving = drag.active && drag.uid === p.uid;
@@ -303,7 +305,7 @@ export function HexBoard() {
           return <polygon key={`g${i}`} className={`ghost ${target?.ok ? 'ok' : 'no'}`} points={hexPolygon(x, y, S * 0.9)} fill={target?.ok ? undefined : 'url(#hatch)'} />;
         })}
         {target && dragUpgrade && iconUrl(dragUpgrade.icon) && targetCells.length > 0 && (() => {
-          const ic = targetCells[iconCellIndex(upgradePattern(dragUpgrade, drag.rotation))];
+          const ic = targetCells[iconCellIndex(placementPattern(ctx.getUpgrade, dragUpgrade, drag.rotation, drag.patternFrom))];
           const { x: cx, y: cy } = px(ic.q, ic.r);
           return <image href={iconUrl(dragUpgrade.icon)} x={cx - S * 0.55} y={cy - S * 0.55} width={S * 1.1} height={S * 1.1} opacity={0.85} pointerEvents="none" />;
         })()}

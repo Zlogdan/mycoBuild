@@ -33,7 +33,7 @@ from UnityPy.helpers.TypeTreeNode import TypeTreeNode
 from TypeTreeGeneratorAPI import TypeTreeGenerator
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from statmap import build_element_map, build_element_rules, build_stat_map  # noqa: E402
+from statmap import build_element_map, build_element_rules, build_pattern_rules, build_stat_map  # noqa: E402
 
 # The C accelerated reader does not route [SerializeReference] lookups through
 # get_ref_type_node, so force the pure Python reader (fast enough for ~1000 objects).
@@ -628,6 +628,36 @@ class Extractor:
                 u["elementRoll"] = roll
                 n_roll += 1
         log(f"Upgrades with a per-instance element: {n_choice} (derivable from seed: {n_roll})")
+
+        # Pattern Infuser: does the upgrade lose/gain stats when its pattern size changes?
+        # A scaling call in Apply is active when its guard field (if any) is set in the upgrade's data and the property
+        # has a value that is really applied (OverrideData 'None' is not applied, 'Override' is not scaled).
+        prules = build_pattern_rules(dll)
+
+        def scalable_value(data):
+            for f, v in data.items():
+                if re.match(r"(modify|stack|em[A-Z]|turbocharged)", f) or isinstance(v, bool):
+                    continue
+                if isinstance(v, dict) and "method" in v:
+                    if v["method"] in (1, 2, 4):
+                        return True
+                elif isinstance(v, dict) and ("min" in v or "max" in v):
+                    if v.get("min") or v.get("max"):
+                        return True
+            return False
+
+        n_scaled = 0
+        for u in upgrades.values():
+            scaled = False
+            for p in u["props"]:
+                calls = prules.get(p["type"], [])
+                active = [c for c in calls if c["guard"] is None or p["data"].get(c["guard"]) not in (0, False, None)]
+                if active and scalable_value(p["data"]):
+                    scaled = True
+                    break
+            u["patternScaled"] = scaled
+            n_scaled += scaled
+        log(f"Upgrades whose stats depend on the pattern size: {n_scaled} of {len(upgrades)}")
 
         limits = {}
         for k, d in self.of_class("UpgradeLimitProvider"):

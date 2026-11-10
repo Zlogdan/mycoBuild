@@ -8,7 +8,7 @@
  */
 import type { RawPattern, Upgrade } from '../types';
 import { type Axial, offsetToAxial } from '../hex';
-import { upgradePattern, type Placement } from '../placement';
+import { canInfuse, placementPattern, type Placement } from '../placement';
 import { axialKey } from '../hex';
 import { parseNrbf, type NrbfObject, type NrbfValue } from './nrbf';
 
@@ -168,6 +168,8 @@ export interface SaveInstance {
   upgradeId: string;
   seed: number;
   gearId: string;
+  /** Pattern Infuser: upgrade id whose pattern this instance uses (UpgradeInstance.overriddenPatternID) */
+  patternFrom?: string;
 }
 
 export interface SaveEquip {
@@ -232,9 +234,12 @@ export function readSave(bytes: Uint8Array): SaveData {
         const ins = obj(insV);
         if (!ins) continue;
         const instanceId = num(ins.id);
+        const own = String(num(obj(ins.upgradeIDv2)?.ID) || upgradeId);
+        const over = num(ins.overriddenPatternID);
         instances.set(instanceId, {
           instanceId,
-          upgradeId: String(num(obj(ins.upgradeIDv2)?.ID) || upgradeId),
+          upgradeId: own,
+          ...(over && String(over) !== own ? { patternFrom: String(over) } : {}),
           seed: num(ins['<Seed>k__BackingField']),
           gearId: String(num(ins.gearID) || num(gearKey)),
         });
@@ -300,9 +305,11 @@ export function convertEquips(
       continue;
     }
     const rotation = ((e.rotation % 6) + 6) % 6;
-    const cells: Axial[] = gameFootprint(u.pattern, { ...e, rotation }).map((c) => offsetToAxial(c.x, c.y));
+    const donor = inst.patternFrom ? getUpgrade(inst.patternFrom) : undefined;
+    const patternFrom = donor && canInfuse(u, donor) ? donor.id : undefined;
+    const cells: Axial[] = gameFootprint((patternFrom ? donor! : u).pattern, { ...e, rotation }).map((c) => offsetToAxial(c.x, c.y));
     const anchor = { q: Math.min(...cells.map((c) => c.q)), r: Math.min(...cells.map((c) => c.r)) };
-    const ours = upgradePattern(u, rotation).cells.map((c) => axialKey({ q: c.q + anchor.q, r: c.r + anchor.r })).sort();
+    const ours = placementPattern(getUpgrade, u, rotation, patternFrom).cells.map((c) => axialKey({ q: c.q + anchor.q, r: c.r + anchor.r })).sort();
     const theirs = cells.map(axialKey).sort();
     if (ours.join(';') !== theirs.join(';')) {
       issues.push({ instanceId: e.instanceId, reason: 'shapeMismatch', upgradeId: u.id });
@@ -315,6 +322,7 @@ export function convertEquips(
       anchor,
       ...(u.role === 'gridExpander' ? { expand: growGridDirection(inst.seed) } : {}),
       ...(u.elementChoice && seededElement(u, inst.seed) ? { element: seededElement(u, inst.seed) } : {}),
+      ...(patternFrom ? { patternFrom } : {}),
     });
   }
   return { placements, issues };

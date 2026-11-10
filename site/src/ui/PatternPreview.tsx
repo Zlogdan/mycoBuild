@@ -11,11 +11,13 @@ interface Props {
   size?: number; // hex radius in px
   className?: string;
   highlightIndex?: number;
+  /** Pattern Infuser donor: its shape is drawn (in the colour of `upgrade`) */
+  patternOf?: Upgrade;
 }
 
 /** Small SVG rendering of an upgrade's hex pattern (with the game's connection lines). */
-export const PatternPreview = memo(function PatternPreview({ upgrade, rotation = 0, size = 7, className, highlightIndex }: Props) {
-  const pat = upgradePattern(upgrade, rotation);
+export const PatternPreview = memo(function PatternPreview({ upgrade, rotation = 0, size = 7, className, highlightIndex, patternOf }: Props) {
+  const pat = upgradePattern(patternOf ?? upgrade, rotation);
   if (!pat.cells.length) return null;
   const pts = pat.cells.map((c) => ({ ...axialToPixel(c.q, c.r, size), c: c.c }));
   const minX = Math.min(...pts.map((p) => p.px)) - size;

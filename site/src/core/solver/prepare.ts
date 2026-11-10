@@ -1,8 +1,8 @@
 import type { Upgrade } from '../types';
 import { fromRaw, uniqueOrientations } from '../pattern';
 import { allowedRotations, isGridExpander, isStackable } from '../rules';
-import { evaluate, type BoardContext, type Placement } from '../placement';
-import type { ExpandDirection, Solution, SolveInput, SolveItem } from './solve';
+import { evaluate, infuseDonors, type BoardContext, type Placement } from '../placement';
+import type { ExpandDirection, Solution, SolveInput, SolveItem, SolveOrientation } from './solve';
 
 /** One upgrade chosen by the user for auto-placement. */
 export interface AutofillEntry {
@@ -13,11 +13,61 @@ export interface AutofillEntry {
   count: number;
 }
 
+export interface InfuserOptions {
+  /** let the solver use other upgrades' patterns (Pattern Infuser); only same-size or smaller ones */
+  enabled: boolean;
+  /** only shapes that keep the stats: same cell count, or any size for upgrades whose stats do not depend on it */
+  neutralOnly: boolean;
+  /** minimise the occupied area even when everything already fits */
+  forceShrink: boolean;
+}
+
+/** penalty of using a donor's pattern (prefer the own shape); twice as much when the stats change */
+const INFUSE_PENALTY = 1e-5;
+/** per occupied cell in "force" mode (≤ 128 cells -> total < 1, below one unit of weight) */
+const CELL_PENALTY = 1e-3;
+
 export interface PrepareOptions {
   /** keep the current placements fixed and fill around them */
   keepPlaced: boolean;
   topK?: number;
   timeLimitMs?: number;
+  infuser?: InfuserOptions;
+  /** all upgrades (donor candidates); required for the infuser */
+  allUpgrades?: Iterable<Upgrade>;
+}
+
+/**
+ * Orientations of an upgrade for the solver: its own pattern and, with the infuser, the patterns of
+ * possible donors (never bigger than its own). Identical footprints are kept once, own shape first.
+ */
+export function solverOrientations(u: Upgrade, rotations: readonly number[], opts: PrepareOptions): SolveOrientation[] {
+  const inf = opts.infuser;
+  const own = u.pattern.cells.length;
+  const sources: { donor?: Upgrade; pattern: Upgrade['pattern'] }[] = [{ pattern: u.pattern }];
+  if (inf?.enabled && opts.allUpgrades && !isGridExpander(u)) {
+    for (const d of infuseDonors(u, opts.allUpgrades)) {
+      const n = d.pattern.cells.length;
+      if (n > own) continue;
+      if (inf.neutralOnly && u.patternScaled && n !== own) continue;
+      sources.push({ donor: d, pattern: d.pattern });
+    }
+  }
+  const out: SolveOrientation[] = [];
+  const seen = new Set<string>();
+  for (const src of sources) {
+    for (const o of uniqueOrientations(fromRaw(src.pattern), rotations)) {
+      const cells = o.pattern.cells.map(({ q, r }) => ({ q, r }));
+      const k = cells.map((c) => `${c.q},${c.r}`).sort().join(';');
+      if (seen.has(k)) continue;
+      seen.add(k);
+      const loss = !!src.donor && u.patternScaled && cells.length !== own;
+      const penalty =
+        (inf?.enabled && inf.forceShrink ? cells.length * CELL_PENALTY : 0) + (src.donor ? INFUSE_PENALTY * (loss ? 2 : 1) : 0);
+      out.push({ rotation: o.rotation, cells, ...(src.donor ? { patternFrom: src.donor.id } : {}), ...(penalty ? { penalty } : {}) });
+    }
+  }
+  return out;
 }
 
 /** Applies the game rules (rotation unlock, CanStack, expanders, kept placements) to build the solver input. */
@@ -39,10 +89,7 @@ export function prepareSolve(
     const wanted = isStackable(u) ? Math.max(0, Math.floor(e.count)) : 1;
     const count = Math.max(0, wanted - (keptCount.get(u.id) ?? 0));
     if (!count) continue;
-    const orientations = uniqueOrientations(fromRaw(u.pattern), allowedRotations(u.rarity, ctx.accountLevel)).map((o) => ({
-      rotation: o.rotation,
-      cells: o.pattern.cells.map(({ q, r }) => ({ q, r })),
-    }));
+    const orientations = solverOrientations(u, allowedRotations(u.rarity, ctx.accountLevel), opts);
     items.push({ upgradeId: u.id, weight: e.weight, count, orientations, expander: isGridExpander(u) });
   }
 
@@ -69,6 +116,7 @@ export function solutionToPlacements(
       rotation: p.rotation,
       anchor: { ...p.anchor },
       ...(p.expand ? { expand: p.expand } : {}),
+      ...(p.patternFrom ? { patternFrom: p.patternFrom } : {}),
     })),
   ];
 }

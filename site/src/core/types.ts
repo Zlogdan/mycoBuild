@@ -38,6 +38,8 @@ export interface Upgrade {
   altPatterns?: RawPattern[];
   props: UpgradeProp[];
   gears: string[];
+  /** stats depend on the pattern size (UpgradeProperty.Modify*FromPatternSize active in Apply): Pattern Infuser changes them */
+  patternScaled?: boolean;
   /** element rolled per instance (UpgradeProperty.GetRandomEffect*): possible EffectType keys */
   elementChoice?: string[];
   /** how the game rolls the element from the instance seed: property index (0-based), GetRandomEffect* variant,

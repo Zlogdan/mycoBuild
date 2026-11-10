@@ -45,12 +45,16 @@ export function useDragController() {
       if (!d.active || !d.upgradeId || !d.uid) return;
       const target = d.target;
       if (target?.ok) {
+        // keep every other field of a moved placement (element, pattern donor, …)
+        const existing = placements.find((x) => x.uid === d.uid);
         build().upsertPlacement({
+          ...(existing ?? {}),
           uid: d.uid,
           upgradeId: d.upgradeId,
           rotation: d.rotation,
           anchor: target.anchor,
           expand: d.expand,
+          ...(d.patternFrom ? { patternFrom: d.patternFrom } : {}),
         });
         build().select(d.uid);
         build().inspect(d.upgradeId);

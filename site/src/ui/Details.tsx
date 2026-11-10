@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { statRows } from '../core/stats';
 import { canRotate, isGridExpander, isSpatial, isStackable, rotationUnlockLevel } from '../core/rules';
+import { canInfuse, infuseDonors, patternSizeRatio } from '../core/placement';
 import { iconUrl } from '../data/load';
 import { useBuild, usePlacements } from '../store/build';
 import { PatternPreview } from './PatternPreview';
@@ -27,6 +28,8 @@ export function Details() {
     [u, data, lang, showAll, placement?.element],
   );
 
+  const donors = useMemo(() => (u && data && u.role === 'normal' ? infuseDonors(u, Object.values(data.game.upgrades)) : []), [u, data]);
+
   if (!data) return null;
   if (!u)
     return (
@@ -38,6 +41,10 @@ export function Details() {
 
   const rarity = data.game.rarities.find((r) => r.id === u.rarity);
   const color = rarityColor(u.rarity);
+  const donor = placement?.patternFrom ? data.game.upgrades[placement.patternFrom] : undefined;
+  const activeDonor = donor && canInfuse(u, donor) ? donor : undefined;
+  const ownCells = u.pattern.cells.length;
+  const curCells = activeDonor ? activeDonor.pattern.cells.length : ownCells;
 
   return (
     <section className="panel details" style={{ ['--rc' as string]: color }}>
@@ -51,7 +58,7 @@ export function Details() {
             <span className="muted"> · {u.key} · id {u.id}</span>
           </div>
         </div>
-        <PatternPreview upgrade={u} size={12} rotation={placement?.rotation ?? 0} className="details-pattern" />
+        <PatternPreview upgrade={u} patternOf={activeDonor} size={12} rotation={placement?.rotation ?? 0} className="details-pattern" />
       </div>
 
       {u.desc && (
@@ -63,7 +70,8 @@ export function Details() {
       <CommentBox u={u} />
 
       <ul className="tags">
-        <li>⬡ {u.pattern.cells.length} {t('cells')}</li>
+        <li>⬡ {curCells !== ownCells ? `${curCells} (${ownCells})` : ownCells} {t('cells')}</li>
+        {u.role === 'normal' && !u.patternScaled && <li className="ok" title={t('piNeutral')}>⬡⇄ {t('piNeutralShort')}</li>}
         {isStackable(u) && <li>×∞ {t('stackable')}</li>}
         {isSpatial(u) && <li className="spatial">◈ {t('spatial')}</li>}
         {u.elementChoice && (
@@ -92,6 +100,33 @@ export function Details() {
             ))}
           </div>
           <p className="muted small">{t('expandHint')}</p>
+        </div>
+      )}
+
+      {placement && donors.length > 0 && (
+        <div className="expander-ctl">
+          <span>{t('piPattern')}:</span>
+          <select
+            value={activeDonor?.id ?? ''}
+            onChange={(e) => useBuild.getState().upsertPlacement({ ...placement, patternFrom: e.target.value || undefined })}
+          >
+            <option value="">{t('piOwn', { n: ownCells })}</option>
+            {donors.map((d) => (
+              <option key={d.id} value={d.id}>
+                {t('piFrom', { name: l(d.name), n: d.pattern.cells.length })}
+              </option>
+            ))}
+          </select>
+          {activeDonor && (
+            <p className="small">
+              {!u.patternScaled || curCells === ownCells ? (
+                <span className="ok">{t('piUnchanged')}</span>
+              ) : (
+                <span className="warn">{t('piScaled', { r: patternSizeRatio(curCells, ownCells).toFixed(3).replace(/\.?0+$/, '') })}</span>
+              )}
+            </p>
+          )}
+          <p className="muted small">{t('piHint')}</p>
         </div>
       )}
 

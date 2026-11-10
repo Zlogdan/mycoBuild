@@ -20,6 +20,8 @@ export interface DragState {
   /** index of the pattern cell held under the cursor */
   grabIndex: number;
   expand?: ExpandDirection;
+  /** Pattern Infuser donor of the dragged placement (its shape is used) */
+  patternFrom?: string;
   startX: number;
   startY: number;
   x: number;
@@ -33,6 +35,7 @@ export interface DragState {
     rotation: number;
     grabIndex: number;
     expand?: ExpandDirection;
+    patternFrom?: string;
     x: number;
     y: number;
   }) => void;
@@ -51,6 +54,7 @@ const idle = {
   rotation: 0,
   grabIndex: 0,
   expand: undefined,
+  patternFrom: undefined,
   startX: 0,
   startY: 0,
   x: 0,
