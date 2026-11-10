@@ -97,3 +97,20 @@ describe('seeded element (PhotonDisc_Attunement: first draw of the property Rand
     expect(seen.size).toBe(3);
   });
 });
+
+describe('element roll rules from the game IL', () => {
+  const byName = (ru: string) => Object.values(data.upgrades).find((u) => u.name.ru === ru)!;
+  it('MycoGear_GrabDamage rolls an element only when effect == All (127) is applied', () => {
+    expect(byName('Экзотическая флора').elementRoll).toMatchObject({ func: 'GetRandomEffect', draws: 0 });
+    expect(byName('Шипы').elementChoice).toBeUndefined(); // effect not applied (method None)
+    expect(byName('Случайные ростки').elementChoice).toBeUndefined();
+  });
+  it('Killcode: two stat rolls before a 5-way element (incl. bees and cryo)', () => {
+    expect(byName('Код самоуничтожения').elementRoll).toMatchObject({ func: 'GetRandomEffectIncludingCryoAndBees', draws: 2 });
+    expect(byName('Код самоуничтожения').elementChoice).toEqual(['fire', 'shock', 'acid', 'bees', 'cryo']);
+  });
+  it('every upgrade with an element choice can be derived from the seed', () => {
+    const missing = Object.values(data.upgrades).filter((u) => u.elementChoice && !u.elementRoll).map((u) => u.key);
+    expect(missing).toEqual([]);
+  });
+});

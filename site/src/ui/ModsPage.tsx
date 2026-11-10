@@ -86,7 +86,9 @@ export function ModsPage() {
   }, [data, all, query, cat, gearId, rarities, element, source, cells, onlyStack, onlySpatial, onlyCommented, sort, gearsById, local, l, lang]);
 
   if (!data) return null;
-  const elements = [...new Set(all.flatMap((u) => [u.effect, ...(u.elementChoice ?? [])]))].sort();
+  const elements = [...new Set(all.flatMap((u) => [u.effect, ...(u.elementChoice ?? [])]))].sort((a, b) =>
+    (l(data.game.effects[a]) || a).localeCompare(l(data.game.effects[b]) || b, lang),
+  );
   const localCount = Object.keys(local).length;
   const reset = () => setLimit(PAGE);
 

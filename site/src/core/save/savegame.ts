@@ -120,17 +120,42 @@ export class GameRandom {
 
 const EFFECT_KEYS: Record<number, string> = { 0: 'normal', 1: 'fire', 2: 'shock', 3: 'acid', 8: 'bees', 10: 'cryo' };
 
+/** UpgradeProperty.GetRandomEffect* variants (EffectType values), ported from IL. */
+export function rollEffect(rand: GameRandom, func: string, count: number | null): number {
+  switch (func) {
+    case 'GetRandomEffect':
+      return rand.nextRange(1, 4);
+    case 'GetRandomEffectIncludingNormal':
+      return rand.nextRange(0, 4);
+    case 'GetRandomEffectIncludingNormalAndCryo': {
+      const v = rand.nextRange(0, 5);
+      return v === 4 ? 10 : v;
+    }
+    case 'GetRandomEffectIncludingCryo': {
+      const n = count ?? 3; // () overload: Next(1, 5), 4 => Cryo; (count) overload: Next(1, count + 2), count + 1 => Cryo
+      const v = rand.nextRange(1, n + 2);
+      return v === n + 1 ? 10 : v;
+    }
+    case 'GetRandomEffectIncludingCryoAndBees': {
+      const v = rand.nextRange(1, 6);
+      return v === 5 ? 10 : v === 4 ? 8 : v;
+    }
+    default:
+      return rand.nextRange(1, 4);
+  }
+}
+
 /**
- * Element of an upgrade instance when it can be derived exactly from the seed.
- * UpgradeProperty_PhotonDisc_Attunement.Apply: element field 0 -> GetRandomEffect(ref rand) is the FIRST draw of the
- * property's Random (seeded with ModifyPropertySeed(seed, index)), GetRandomEffect = (EffectType)Next(1, 4).
- * Other random-element properties draw after several stat rolls and are not derived (yet).
+ * Element of an upgrade instance, reproduced like the game: the property's Random is seeded with
+ * Upgrade.ModifyPropertySeed(seed, index + 1); `draws` stat rolls happen first (OverrideData.ApplyTo /
+ * Range.GetValue on the same Random), then GetRandomEffect* picks the element (Upgrade.elementRoll).
  */
 export function seededElement(u: Upgrade, seed: number): string | undefined {
-  const i = u.props.findIndex((p) => p.type === 'PhotonDisc_Attunement' && !p.data.element);
-  if (i < 0) return undefined;
-  const rand = new GameRandom(modifyPropertySeed(seed, i + 1));
-  return EFFECT_KEYS[rand.nextRange(1, 4)];
+  const r = u.elementRoll;
+  if (!r) return undefined;
+  const rand = new GameRandom(modifyPropertySeed(seed, r.prop + 1));
+  for (let i = 0; i < r.draws; i++) rand.next();
+  return EFFECT_KEYS[rollEffect(rand, r.func, r.count)];
 }
 
 /** UpgradeProperty_GrowGrid.AffectsColumn: +1 column if true, else +1 row. */

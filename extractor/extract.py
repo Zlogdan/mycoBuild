@@ -33,7 +33,7 @@ from UnityPy.helpers.TypeTreeNode import TypeTreeNode
 from TypeTreeGeneratorAPI import TypeTreeGenerator
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from statmap import build_element_map, build_stat_map  # noqa: E402
+from statmap import build_element_map, build_element_rules, build_stat_map  # noqa: E402
 
 # The C accelerated reader does not route [SerializeReference] lookups through
 # get_ref_type_node, so force the pure Python reader (fast enough for ~1000 objects).
@@ -51,7 +51,7 @@ RARITIES = [  # enum Rarity
     {"id": 5, "key": "contraband", "color": "#734CFF"},
 ]
 EFFECT_TYPES = {0: "normal", 1: "fire", 2: "shock", 3: "acid", 4: "decay", 5: "immunity",
-                6: "yellowresource", 7: "rot", 8: "bees", 9: "water", 10: "cryo"}
+                6: "yellowresource", 7: "rot", 8: "bees", 9: "water", 10: "cryo", 127: "all"}
 UPGRADE_FLAGS = {  # enum Upgrade.UpgradeFlags
     2: "SkillTreeUpgrade", 4: "ApplyStatUpgrades", 8: "CanStack", 16: "ExcludeFromWorldPool",
     32: "NoRandom", 64: "Coop", 128: "CraftLocked", 256: "DisableScrap", 512: "CantCraftBeforeCollected",
@@ -571,17 +571,63 @@ class Extractor:
 
         stat_labels = self.stat_labels(upgrades)
 
-        # Upgrades whose element is rolled per instance (UpgradeProperty.GetRandomEffect*): possible values
-        emap = build_element_map(os.path.join(self.data_dir, "Managed", "Assembly-CSharp.dll"))
-        n_choice = 0
+        # Upgrades whose element is rolled per instance (UpgradeProperty.GetRandomEffect*): possible values,
+        # and how to reproduce the roll from the instance seed (see statmap.build_element_rules)
+        dll = os.path.join(self.data_dir, "Managed", "Assembly-CSharp.dll")
+        emap = build_element_map(dll)
+        rules = build_element_rules(dll)
+
+        def field_value(v):
+            if isinstance(v, dict) and "data" in v:
+                return v.get("method", 0), v["data"]
+            return None, v
+
+        def cond_ok(rule, data):
+            c = rule.get("cond")
+            if not c:
+                return True
+            if c["field"] not in data:
+                return True
+            method, val = field_value(data[c["field"]])
+            if method == 0 and c["equals"] != 0:  # OverrideData not applied -> get_Override is false
+                return False
+            return val == c["equals"]
+
+        def draws(rule, data):
+            n = 0
+            for st in rule["steps"]:
+                if st["kind"] == "next":
+                    n += 1
+                    continue
+                v = data.get(st["field"]) if st["field"] else None
+                method, val = field_value(v)
+                if method == 0:
+                    continue  # OverrideData with method None: ApplyTo returns without rolling
+                if isinstance(val, dict) and isinstance(val.get("min"), dict):
+                    n += len(val["min"])  # Vector2/float2 ranges roll each component
+                else:
+                    n += 1
+            return n
+
+        n_choice = n_roll = 0
         for u in upgrades.values():
-            # a property with its own non-zero 'element' field uses that fixed element (e.g. PhotonDisc_Attunement)
-            opts = sorted({v for p in u["props"] if not p["data"].get("element")
-                           for v in emap.get(p["type"], [])})
+            opts, roll = set(), None
+            for i, p in enumerate(u["props"]):
+                rule = rules.get(p["type"])
+                if rule:
+                    if cond_ok(rule, p["data"]):
+                        opts |= set(rule["values"])
+                        if roll is None:
+                            roll = {"prop": i, "func": rule["func"], "count": rule["count"], "draws": draws(rule, p["data"])}
+                elif not p["data"].get("element"):
+                    opts |= set(emap.get(p["type"], []))  # rolled only in tooltips; not derivable from the seed
             if opts:
-                u["elementChoice"] = [EFFECT_TYPES[v] for v in opts if v in EFFECT_TYPES]
+                u["elementChoice"] = [EFFECT_TYPES[v] for v in sorted(opts) if v in EFFECT_TYPES]
                 n_choice += 1
-        log(f"Upgrades with a per-instance element: {n_choice}")
+            if roll:
+                u["elementRoll"] = roll
+                n_roll += 1
+        log(f"Upgrades with a per-instance element: {n_choice} (derivable from seed: {n_roll})")
 
         limits = {}
         for k, d in self.of_class("UpgradeLimitProvider"):
@@ -607,6 +653,8 @@ class Extractor:
                    "decay": "el_decay", "immunity": "el_immune", "yellowresource": "el_yeuco", "rot": "el_rot",
                    "bees": "el_bee", "water": "el_water", "cryo": "el_cryo"}
         effects = {v: (self.loc(el_keys.get(v, v)) or {"en": v.title()}) for v in EFFECT_TYPES.values()}
+        # EffectType.All (127) has no game text: the upgrade works with any element
+        effects["all"] = {"en": "Universal (any element)", "ru": "Универсальные (любая стихия)"}
         ui = {k: self.loc(k) for k in ("upgrade", "upgrades", "Heavy", "normal") if self.loc(k)}
 
         version = None

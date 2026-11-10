@@ -245,3 +245,129 @@ def build_element_map(dll_path: str) -> dict:
                         key = owner.removeprefix("UpgradeProperty_")
                         result[key] = sorted(set(result.get(key, [])) | set(values))
     return result
+
+
+def build_element_rules(dll_path: str) -> dict:
+    """For UpgradeProperty_* classes that roll an element: how to reproduce the roll from the instance seed.
+
+    Returns {PropertyType: {"values": [...], "func": name, "count": n|None,
+                            "cond": {"field": f, "equals": v} | None,
+                            "steps": [{"field": f|None, "kind": "apply"|"next"}] }}
+    `steps` are the Random-consuming calls on the property's own `ref Random` (ldarg.3) that happen before
+    GetRandomEffect in the same method (copies of the Random do not count). The site turns them into a
+    number of draws using the upgrade's data (an OverrideData field with method None does not roll).
+    """
+    pe = dnfile.dnPE(dll_path)
+    T = pe.net.mdtables
+    types = list(T.TypeDef)
+    field_owner, method_owner = {}, {}
+    for t in types:
+        for f in t.FieldList:
+            field_owner[f.row_index] = t.TypeName.value
+        for m in t.MethodList:
+            method_owner[m.row_index] = t.TypeName.value
+
+    def callee(tok):
+        tid, rid = tok.table, tok.rid
+        if tid == MetadataTables.MethodDef.value:
+            return method_owner.get(rid, "?"), T.MethodDef[rid - 1].Name.value
+        if tid == MetadataTables.MemberRef.value:
+            mr = T.MemberRef[rid - 1]
+            cn = getattr(mr.Class.row, "TypeName", None)
+            return (cn.value if cn is not None else "?"), mr.Name.value
+        if tid == MetadataTables.MethodSpec.value:
+            ms = T.MethodSpec[rid - 1]
+            m = ms.Method
+            row = m.row
+            name = getattr(row, "Name", None)
+            cls = getattr(getattr(row, "Class", None), "row", None) if hasattr(row, "Class") else None
+            cn = getattr(cls, "TypeName", None) if cls is not None else None
+            return (cn.value if cn is not None else "?"), (name.value if name is not None else "?")
+        return "?", "?"
+
+    def field_of(tok):
+        if tok.table == MetadataTables.Field.value:
+            return field_owner.get(tok.rid, "?"), T.Field[tok.rid - 1].Name.value
+        if tok.table == MetadataTables.MemberRef.value:
+            mr = T.MemberRef[tok.rid - 1]
+            return "?", mr.Name.value
+        return "?", "?"
+
+    def int_of(ins):
+        n = ins.opcode.name
+        if n in ("ldc.i4", "ldc.i4.s"):
+            return int(ins.operand)
+        if n == "ldc.i4.m1":
+            return -1
+        if n.startswith("ldc.i4."):
+            return int(n.rsplit(".", 1)[1])
+        return None
+
+    rules: dict = {}
+    for t in types:
+        owner = t.TypeName.value
+        if not owner.startswith("UpgradeProperty_"):
+            continue
+        methods = sorted(t.MethodList, key=lambda m: 0 if m.row.Name.value == "Apply" else 1)
+        for m in methods:
+            row = m.row
+            if not row.Rva:
+                continue
+            try:
+                ins = list(CilMethodBody(_Reader(pe, row)).instructions)
+            except MethodBodyFormatError:
+                continue
+            idx = next((i for i, x in enumerate(ins) if x.opcode.name in ("call", "callvirt") and isinstance(x.operand, Token)
+                        and callee(x.operand)[0] == "UpgradeProperty" and callee(x.operand)[1].startswith("GetRandomEffect")), None)
+            if idx is None:
+                continue
+            func = callee(ins[idx].operand)[1]
+            count = None
+            if func == "GetRandomEffectIncludingCryo":
+                prev = int_of(ins[idx - 2]) if idx >= 2 else None  # (count, ref rand) overload: count is pushed before rand
+                count = prev if isinstance(prev, int) and 1 <= prev <= 6 else None
+            # condition: nearest "ldfld <own field> [ldfld data] [ldc K] beq/bne/brfalse/brtrue" before the call
+            cond = None
+            for j in range(idx - 1, max(0, idx - 14), -1):
+                x = ins[j]
+                if x.opcode.name in ("ldfld", "ldflda") and isinstance(x.operand, Token):
+                    cls, fld = field_of(x.operand)
+                    if cls != owner:
+                        continue
+                    nxt = ins[j + 1:j + 5]
+                    k = next((int_of(y) for y in nxt if int_of(y) is not None), None)
+                    if any(y.opcode.name.startswith(("bne", "beq")) for y in nxt) and k is not None:
+                        cond = {"field": fld, "equals": k}
+                    elif any(y.opcode.name.startswith(("brfalse", "brtrue")) for y in nxt):
+                        cond = {"field": fld, "equals": 0}
+                    if cond:
+                        break
+            # Random-consuming calls on ldarg.3 before the element roll
+            steps = []
+            last_field = None
+            pushed_rand = False
+            for x in ins[:idx]:
+                n = x.opcode.name
+                if n in ("ldfld", "ldflda") and isinstance(x.operand, Token):
+                    cls, fld = field_of(x.operand)
+                    if cls == owner:
+                        last_field, pushed_rand = fld, False
+                elif n == "ldarg.3":
+                    pushed_rand = True
+                elif n in ("ldloca.s", "ldloca", "ldloc.s", "ldloc", "ldloc.0", "ldloc.1", "ldloc.2", "ldloc.3"):
+                    pass
+                elif n in ("call", "callvirt") and isinstance(x.operand, Token):
+                    cls, meth = callee(x.operand)
+                    if meth in ("ApplyTo", "GetValue") and pushed_rand:
+                        steps.append({"field": last_field, "kind": "apply"})
+                    elif cls == "Random" and meth.startswith("Next") and pushed_rand:
+                        steps.append({"field": None, "kind": "next"})
+                    elif cls == "UpgradeProperty" and meth.startswith("GetRandomEffect") and pushed_rand:
+                        steps.append({"field": None, "kind": "next"})
+                    pushed_rand = False
+            values = (list(range(1, count + 1)) + [10]) if func == "GetRandomEffectIncludingCryo" and count else \
+                ([1, 2, 3, 10] if func == "GetRandomEffectIncludingCryo" else _RANDOM_EFFECT_SETS.get(func, []))
+            rules[owner.removeprefix("UpgradeProperty_")] = {"values": values, "func": func, "count": count,
+                                                            "cond": cond, "steps": steps, "method": row.Name.value}
+            break
+    return rules

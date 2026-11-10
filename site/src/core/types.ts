@@ -40,6 +40,9 @@ export interface Upgrade {
   gears: string[];
   /** element rolled per instance (UpgradeProperty.GetRandomEffect*): possible EffectType keys */
   elementChoice?: string[];
+  /** how the game rolls the element from the instance seed: property index (0-based), GetRandomEffect* variant,
+   *  its count argument, and the number of Random draws made before it in the same property */
+  elementRoll?: { prop: number; func: string; count: number | null; draws: number };
   /** how the upgrade is obtained (composed like Upgrade.GetCollectionSource in game) */
   sourceInfo?: { kind: string; text: Loc | null; from?: Loc | null; after?: string };
 }

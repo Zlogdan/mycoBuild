@@ -60,7 +60,9 @@ export function Catalog() {
 
   if (!data || !gear || !pool) return null;
 
-  const elements = [...new Set([...pool.own, ...pool.common].flatMap((u) => [u.effect, ...(u.elementChoice ?? [])]))].sort();
+  const elements = [...new Set([...pool.own, ...pool.common].flatMap((u) => [u.effect, ...(u.elementChoice ?? [])]))].sort((a, b) =>
+    (l(data.game.effects[a]) || a).localeCompare(l(data.game.effects[b]) || b, lang),
+  );
 
   const quickPlace = (u: Upgrade) => {
     if (!ctx) return;
