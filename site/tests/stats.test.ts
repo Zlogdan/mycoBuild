@@ -35,6 +35,18 @@ describe('stat rows (real data)', () => {
     expect(rows('GrabHeight')).toEqual({ 'Высота': '+8 … +10' });
   });
 
+  it('element fields are shown as names: All (127) -> chosen element of the instance', () => {
+    const u = byKey(Object.values(data.upgrades).find((x) => x.name.ru === 'Экзотическая флора')!.key);
+    const names = (k: string) => (data.effects[k]?.ru ?? k);
+    // two rows are labelled "Стихия" in game: the element itself and its amount (+10)
+    const any = statRows(u, data.statLabels, {}, 'ru', { effectName: names }).map((r) => r.value);
+    expect(any).toContain('Универсальные (любая стихия)');
+    expect(any).toContain('+10');
+    const acid = statRows(u, data.statLabels, {}, 'ru', { element: 'acid', effectName: names }).map((r) => r.value);
+    expect(acid).toContain('Кислота');
+    expect(acid).not.toContain('127');
+  });
+
   it('no game label is attached to helper fields', () => {
     const helper = Object.entries(data.statLabels).filter(
       ([k, v]) => v.label && /\.(modify\w*|turbocharged|\w*[sS]tackModifier|em[A-Z]\w*)$/.test(k),

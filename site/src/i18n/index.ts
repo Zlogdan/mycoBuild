@@ -176,6 +176,16 @@ const ru = {
   elHint: 'В игре стихия этого мода выпадает случайно для каждого экземпляра. Укажите, какая у вашего.',
   elBadge: 'стихия у экземпляра',
   imp_badElement: 'Мод «{key}»: стихия «{element}» не подходит — пропущена',
+  scButton: 'Демонстрация',
+  scButtonHint: 'Карточка билда без интерфейса — для скриншота или картинки',
+  scPng: 'Скачать PNG',
+  scCopy: 'Копировать картинку',
+  scCopied: 'Картинка скопирована — вставьте в чат (Ctrl+V)',
+  scCopyFailed: 'Не удалось скопировать: {error}',
+  scError: 'Не удалось сохранить картинку: {error}',
+  scStats: 'характеристики',
+  scDesc: 'описания',
+  scHint: 'Esc — закрыть',
   langSwitch: 'EN',
 } as const;
 
@@ -357,6 +367,16 @@ const en: Record<TKey, string> = {
   elHint: 'In game this upgrade rolls a random element per instance. Choose the one yours has.',
   elBadge: 'per-instance element',
   imp_badElement: 'Upgrade “{key}”: element “{element}” is not valid — skipped',
+  scButton: 'Showcase',
+  scButtonHint: 'Build card without the interface — for a screenshot or an image',
+  scPng: 'Download PNG',
+  scCopy: 'Copy image',
+  scCopied: 'Image copied — paste it into a chat (Ctrl+V)',
+  scCopyFailed: 'Could not copy: {error}',
+  scError: 'Could not save the image: {error}',
+  scStats: 'stats',
+  scDesc: 'descriptions',
+  scHint: 'Esc — close',
   langSwitch: 'RU',
 };
 

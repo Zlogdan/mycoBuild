@@ -109,6 +109,22 @@ export function formatValue(v: number | Range, format: string): string {
   return a === b ? a : `${a} … ${b}`;
 }
 
+/** enum EffectType values -> keys used in game.json (effects{}) */
+const EFFECT_CODES: Record<number, string> = {
+  0: 'normal', 1: 'fire', 2: 'shock', 3: 'acid', 4: 'decay', 5: 'immunity', 6: 'yellowresource',
+  7: 'rot', 8: 'bees', 9: 'water', 10: 'cryo', 127: 'all',
+};
+/** Fields holding an EffectType (OverrideData<EffectType> or plain) — shown as an element name, not a number. */
+const ELEMENT_FIELD = /^(effect|effectType|element)$/;
+
+export interface StatRowOptions {
+  showAll?: boolean;
+  /** element chosen for this instance (Placement.element): replaces "All (127)" */
+  element?: string;
+  /** element key -> display name */
+  effectName?: (key: string) => string;
+}
+
 /**
  * Human readable stat rows of an upgrade.
  * Label priority: stats.overrides.json > game label (TextBlocks via GetStatData analysis) > humanized field.
@@ -119,8 +135,10 @@ export function statRows(
   labels: Record<string, StatLabel>,
   overrides: Record<string, StatOverride>,
   lang: Lang,
-  showAll = false,
+  optsOrShowAll: boolean | StatRowOptions = false,
 ): StatRow[] {
+  const opts: StatRowOptions = typeof optsOrShowAll === 'boolean' ? { showAll: optsOrShowAll } : optsOrShowAll;
+  const showAll = !!opts.showAll;
   const rows: StatRow[] = [];
   for (const prop of u.props) {
     for (const [field, raw] of Object.entries(prop.data)) {
@@ -146,7 +164,12 @@ export function statRows(
         if (!showAll) continue;
         label = humanize(field);
       }
-      const value = ov?.format ? formatValue(nv.value, ov.format) : auto!.prefix + formatValue(auto!.value, auto!.format);
+      let value: string;
+      if (ELEMENT_FIELD.test(field) && typeof nv.value === 'number' && !ov?.format) {
+        const code = nv.value;
+        const key = code === 127 && opts.element ? opts.element : EFFECT_CODES[code] ?? String(code);
+        value = opts.effectName ? opts.effectName(key) : key;
+      } else value = ov?.format ? formatValue(nv.value, ov.format) : auto!.prefix + formatValue(auto!.value, auto!.format);
       rows.push({ path, label, value, labelSource });
     }
   }

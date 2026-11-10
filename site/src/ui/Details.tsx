@@ -8,6 +8,7 @@ import { RichText } from './RichText';
 import { CommentBox, SourceLine } from './CommentBox';
 import { elementColor, rarityColor } from './colors';
 import { useT } from './hooks';
+import { loc } from '../i18n';
 
 /** Details of the inspected upgrade (+ controls of the selected placement). */
 export function Details() {
@@ -22,8 +23,8 @@ export function Details() {
   const u = inspectedId ? data?.game.upgrades[inspectedId] : undefined;
   const placement = placements.find((p) => p.uid === selectedUid && p.upgradeId === inspectedId);
   const rows = useMemo(
-    () => (u && data ? statRows(u, data.game.statLabels, data.overrides.fields, lang, showAll) : []),
-    [u, data, lang, showAll],
+    () => (u && data ? statRows(u, data.game.statLabels, data.overrides.fields, lang, { showAll, element: placement?.element, effectName: (k) => loc(data.game.effects[k], lang) || k }) : []),
+    [u, data, lang, showAll, placement?.element],
   );
 
   if (!data) return null;

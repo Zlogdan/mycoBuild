@@ -4,6 +4,7 @@ import { useBuild, useCurrentGear, useGearLevel, usePlacements } from '../store/
 import { RichText } from './RichText';
 import { useBoardContext, useT } from './hooks';
 import { removeSelected, rotateSelected } from './actions';
+import { useShowcase } from './Showcase';
 
 export function BuildHeader() {
   const data = useBuild((s) => s.data);
@@ -55,6 +56,9 @@ export function BuildHeader() {
       )}
 
       <div className="toolbar">
+        <button disabled={!placements.length} onClick={() => useShowcase.getState().set(true)} title={t('scButtonHint')}>
+          📸 {t('scButton')}
+        </button>
         <button disabled={!selectedUid || !ctx} onClick={() => ctx && rotateSelected(ctx, placements)} title={t('rotate')}>
           ⟳
         </button>

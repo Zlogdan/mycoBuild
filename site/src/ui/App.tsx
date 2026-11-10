@@ -12,6 +12,7 @@ import { useT } from './hooks';
 import { useDragController } from './useDragController';
 import { BuildIOButtons, BuildIODialogs, useBuildFromHash } from './BuildIO';
 import { SaveImportDialog } from './SaveImport';
+import { Showcase } from './Showcase';
 import { ModsPage } from './ModsPage';
 import { navigate, useRoute } from './route';
 import { EDITOR_MODE } from './editor';
@@ -66,6 +67,7 @@ function Main() {
       <Toast />
       <BuildIODialogs />
       <SaveImportDialog />
+      <Showcase />
     </div>
   );
 }

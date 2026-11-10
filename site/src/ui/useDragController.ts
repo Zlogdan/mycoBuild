@@ -4,6 +4,7 @@ import { useBuild, usePlacements } from '../store/build';
 import { canRotate, rotationUnlockLevel } from '../core/rules';
 import { useBoardContext, useT } from './hooks';
 import { removeSelected, rotateSelected } from './actions';
+import { useShowcase } from './Showcase';
 
 /**
  * Global pointer / keyboard handling for drag & drop and for the selected placement.
@@ -63,6 +64,7 @@ export function useDragController() {
     const onKey = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement | null;
       if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return;
+      if (useShowcase.getState().open) return; // the showcase overlay handles its own keys
       const d = drag();
       if (e.key === 'Escape') {
         if (d.active || d.pending) d.end();

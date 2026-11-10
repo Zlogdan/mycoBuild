@@ -222,7 +222,7 @@ const ModCard = memo(function ModCard({ u, gears }: { u: Upgrade; gears: Gear[] 
   const data = useBuild((s) => s.data)!;
   const color = rarityColor(u.rarity);
   const rarity = data.game.rarities.find((r) => r.id === u.rarity);
-  const rows = statRows(u, data.game.statLabels, data.overrides.fields, lang);
+  const rows = statRows(u, data.game.statLabels, data.overrides.fields, lang, { effectName: (k) => l(data.game.effects[k]) || k });
 
   const open = (g: Gear) => {
     const target = g.category === 'global' ? data.game.gears.find((x) => x.category === 'character') : g;
