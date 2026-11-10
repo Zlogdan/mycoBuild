@@ -116,6 +116,34 @@ describe('solver with donor patterns', () => {
   });
 });
 
+describe('auto-fill is never worse with the infuser', () => {
+  const gear = data.gears.find((g) => g.key === 'Mycologist')!;
+  const ctx = boardContext(loaded, gear, 30, 10);
+  const pool = [...ctx.pool!].map(get).filter((u): u is Upgrade => !!u && u.role === 'normal');
+  const sel = pool.slice(0, 14).map((u) => ({ upgradeId: u.id, weight: 5, count: 1 }));
+  const run = (infuser?: { enabled: boolean; neutralOnly: boolean; forceShrink: boolean }, placements = [] as Parameters<typeof prepareSolve>[1], ms = 600) =>
+    solve(prepareSolve(ctx, placements, sel, { keepPlaced: false, timeLimitMs: ms, topK: 5, infuser, allUpgrades: all })).solutions[0];
+
+  it('own shapes are searched first: every infuser mode reaches the score found without it', () => {
+    const plain = run();
+    for (const inf of [
+      { enabled: true, neutralOnly: true, forceShrink: true },
+      { enabled: true, neutralOnly: false, forceShrink: true },
+      { enabled: true, neutralOnly: false, forceShrink: false },
+    ])
+      expect(run(inf).score, JSON.stringify(inf)).toBeGreaterThanOrEqual(plain.score);
+  });
+
+  it('the current valid build is a starting solution (even with almost no search time)', () => {
+    const best = run(undefined, [], 1500);
+    let n = 0;
+    const current = best.placements.map((p) => ({ uid: `c${n++}`, upgradeId: p.upgradeId, rotation: p.rotation, anchor: p.anchor, ...(p.expand ? { expand: p.expand } : {}) }));
+    expect(evaluate(ctx, current).valid).toBe(true);
+    const quick = run({ enabled: true, neutralOnly: true, forceShrink: true }, current, 1);
+    expect(quick.score).toBeGreaterThanOrEqual(best.score);
+  });
+});
+
 describe('build file', () => {
   it('patternFrom round-trips; an invalid donor is dropped with a warning', () => {
     const target = all.find((u) => u.role === 'normal' && u.rarity !== 5 && infuseDonors(u, all).length > 0)!;

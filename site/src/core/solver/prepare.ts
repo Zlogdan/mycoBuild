@@ -2,7 +2,7 @@ import type { Upgrade } from '../types';
 import { fromRaw, uniqueOrientations } from '../pattern';
 import { allowedRotations, isGridExpander, isStackable } from '../rules';
 import { evaluate, infuseDonors, type BoardContext, type Placement } from '../placement';
-import type { ExpandDirection, Solution, SolveInput, SolveItem, SolveOrientation } from './solve';
+import type { ExpandDirection, SeedPlacement, Solution, SolveInput, SolveItem, SolveOrientation } from './solve';
 
 /** One upgrade chosen by the user for auto-placement. */
 export interface AutofillEntry {
@@ -98,7 +98,25 @@ export function prepareSolve(
     ? placements.filter((p) => kept.activeExpanders.includes(p.uid)).map((p) => p.expand ?? 'column')
     : [];
 
-  return { baseSize: ctx.baseSize, items, obstacles, fixedExpansion, topK: opts.topK ?? 5, timeLimitMs: opts.timeLimitMs ?? 3000 };
+  // the current build (when valid and not kept) is a starting solution: auto-fill never returns a worse layout
+  const seeds: SeedPlacement[][] = [];
+  if (!opts.keepPlaced && placements.length) {
+    const st = evaluate(ctx, placements);
+    if (st.valid) {
+      const left = new Map(items.map((it) => [it.upgradeId, it.count]));
+      const seed: SeedPlacement[] = [];
+      for (const p of placements) {
+        const n = left.get(p.upgradeId) ?? 0;
+        if (!n) continue;
+        left.set(p.upgradeId, n - 1);
+        const u = ctx.getUpgrade(p.upgradeId);
+        seed.push({ upgradeId: p.upgradeId, cells: st.cells.get(p.uid)!, ...(u && isGridExpander(u) ? { expand: p.expand ?? 'column' } : {}) });
+      }
+      if (seed.length) seeds.push(seed);
+    }
+  }
+
+  return { baseSize: ctx.baseSize, items, obstacles, fixedExpansion, seeds, topK: opts.topK ?? 5, timeLimitMs: opts.timeLimitMs ?? 3000 };
 }
 
 /** Converts a solver solution into build placements (kept placements first when requested). */
@@ -108,15 +126,23 @@ export function solutionToPlacements(
   keepPlaced: boolean,
   newUid: () => string,
 ): Placement[] {
+  // per-instance choices (element) of the current build are carried over to the same upgrades
+  const elements = new Map<string, string[]>();
+  if (!keepPlaced)
+    for (const p of kept) if (p.element) elements.set(p.upgradeId, [...(elements.get(p.upgradeId) ?? []), p.element]);
   return [
     ...(keepPlaced ? kept : []),
-    ...solution.placements.map((p) => ({
-      uid: newUid(),
-      upgradeId: p.upgradeId,
-      rotation: p.rotation,
-      anchor: { ...p.anchor },
-      ...(p.expand ? { expand: p.expand } : {}),
-      ...(p.patternFrom ? { patternFrom: p.patternFrom } : {}),
-    })),
+    ...solution.placements.map((p) => {
+      const element = elements.get(p.upgradeId)?.shift();
+      return {
+        uid: newUid(),
+        upgradeId: p.upgradeId,
+        rotation: p.rotation,
+        anchor: { ...p.anchor },
+        ...(p.expand ? { expand: p.expand } : {}),
+        ...(p.patternFrom ? { patternFrom: p.patternFrom } : {}),
+        ...(element ? { element } : {}),
+      };
+    }),
   ];
 }

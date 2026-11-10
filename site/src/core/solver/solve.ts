@@ -50,10 +50,19 @@ export interface SolveInput {
   fixedExpansion?: ExpandDirection[];
   topK?: number;
   timeLimitMs?: number;
+  /** known layouts (e.g. the current build) recorded as starting solutions: the result is never worse */
+  seeds?: SeedPlacement[][];
   /** progress callback (throttled to ~10/s) */
   onProgress?: (p: SolveProgress) => void;
   /** cooperative cancellation */
   shouldStop?: () => boolean;
+}
+
+export interface SeedPlacement {
+  upgradeId: string;
+  /** absolute axial cells */
+  cells: Axial[];
+  expand?: ExpandDirection;
 }
 
 export interface SolvedPlacement {
@@ -233,268 +242,321 @@ export function solve(input: SolveInput): SolveResult {
     if (solutions.length > topK) solutions.length = topK;
   };
 
-  for (const assign of assigns) {
-    const fixed = input.fixedExpansion ?? [];
-    const baseW = input.baseSize.w + fixed.filter((d) => d === 'column').length;
-    const baseH = input.baseSize.h + fixed.filter((d) => d === 'row').length;
-    const size = { w: baseW, h: baseH };
-    for (const d of assign) if (d === 'column') size.w++;
-    else if (d === 'row') size.h++;
-    if (size.w * size.h > WORDS * 32) continue;
-    const totalCells = size.w * size.h;
+  const hasDonors = items.some((i) => i.orientations.some((o) => o.patternFrom));
+  /**
+   * One search pass over all expander assignments. `ownOnly`: own shapes only (no donors) - a quick first
+   * stage, so the result with the infuser is never worse than without it (solutions carry over).
+   */
+  const runStage = (ownOnly: boolean, stageEnd: number) => {
+    const orients = (it: SolveItem) => (ownOnly ? it.orientations.filter((o) => !o.patternFrom) : it.orientations);
+    for (const assign of assigns) {
+      const fixed = input.fixedExpansion ?? [];
+      const baseW = input.baseSize.w + fixed.filter((d) => d === 'column').length;
+      const baseH = input.baseSize.h + fixed.filter((d) => d === 'row').length;
+      const size = { w: baseW, h: baseH };
+      for (const d of assign) if (d === 'column') size.w++;
+      else if (d === 'row') size.h++;
+      if (size.w * size.h > WORDS * 32) continue;
+      const totalCells = size.w * size.h;
 
-    const occ = newMask();
-    let used = 0;
-    for (const c of input.obstacles ?? []) {
-      const o = axialToOffset(c.q, c.r);
-      if (o.x >= 0 && o.y >= 0 && o.x < size.w && o.y < size.h) {
-        const bit = o.y * size.w + o.x;
-        if (!(occ[bit >>> 5] & (1 << (bit & 31)))) used++;
-        setBit(occ, bit);
-      }
-    }
-
-    // ---- slots: one per selected upgrade with a remaining copy count ----
-    interface Slot {
-      item: number;
-      weight: number;
-      /** weight minus the smallest penalty: upper bound of what one copy adds to the objective */
-      value: number;
-      /** smallest footprint among the orientations (for the bound) */
-      size: number;
-      rem: number;
-      mandatory: boolean;
-      expand?: ExpandDirection;
-      /** options indexed by their lowest cell (row-major) - used by first-free-cell branching */
-      byMin: Option[][];
-      /** options with a penalty > 0 somewhere: all options, smallest penalty first (for polishing) */
-      cheapest?: Option[];
-      /** size of the own shape when it costs nothing (Infinity: no free option, e.g. "force" mode) */
-      ownSize: number;
-      /** cells saved by the smallest shape, and the smallest penalty of a shape with a penalty */
-      saving: number;
-      infPen: number;
-    }
-    const indexByMin = (opts: Option[]) => {
-      const by: Option[][] = Array.from({ length: totalCells }, () => []);
-      for (const o of opts) {
-        let min = -1;
-        for (let w = 0; w < WORDS && min < 0; w++) if (o.mask[w]) min = w * 32 + (31 - Math.clz32(o.mask[w] & -o.mask[w]));
-        if (min >= 0) by[min].push(o);
-      }
-      return by;
-    };
-    const slots: Slot[] = [];
-    assign.forEach((d, k) => {
-      if (!d) return;
-      const it = items[expanderIdx[k]];
-      slots.push({
-        item: expanderIdx[k],
-        weight: it.weight,
-        value: it.weight - minPenalty(it),
-        size: Math.min(...it.orientations.map((o) => o.cells.length)),
-        rem: 1,
-        mandatory: true,
-        ownSize: Infinity,
-        saving: 0,
-        infPen: 0,
-        expand: d,
-        // an expander must stand inside the grid that exists without its own expansion
-        byMin: indexByMin(enumerateOptions(it.orientations, size, (x, y) => x < baseW && y < baseH)),
-      });
-    });
-    for (const idx of regularIdx) {
-      const it = items[idx];
-      slots.push({
-        item: idx,
-        weight: it.weight,
-        value: it.weight - minPenalty(it),
-        size: Math.min(...it.orientations.map((o) => o.cells.length)),
-        rem: it.count,
-        mandatory: false,
-        ownSize: Infinity,
-        saving: 0,
-        infPen: 0,
-        byMin: indexByMin(enumerateOptions(it.orientations, size)),
-      });
-    }
-    for (const sl of slots) {
-      const opts = sl.byMin.flat();
-      if (opts.some((o) => o.penalty)) sl.cheapest = opts.sort((a, b) => a.penalty - b.penalty);
-      const it = items[sl.item];
-      const free = it.orientations.filter((o) => !o.penalty).map((o) => o.cells.length);
-      sl.ownSize = free.length ? Math.min(...free) : Infinity;
-      sl.saving = sl.ownSize - sl.size;
-      const pens = it.orientations.filter((o) => o.penalty).map((o) => o.penalty!);
-      sl.infPen = pens.length ? Math.min(...pens) : 0;
-    }
-    // Pattern Infuser bound: when everything left must fit, the cells missing for the own shapes need
-    // at least k shrunk units (largest savings first), each costing at least its penalty.
-    const infuseBound = hasPenalties && slots.every((sl) => sl.ownSize < Infinity);
-    const bySaving = slots.filter((sl) => sl.saving > 0).sort((a, b) => b.saving - a.saving);
-    const baseOcc = occ.slice();
-    // heaviest first when branching (good solutions early), densest first for the bound
-    const byWeight = slots.slice().sort((a, b) => b.weight - a.weight || b.size - a.size);
-    const byDensity = slots.slice().sort((a, b) => b.value / b.size - a.value / a.size);
-    let remaining = slots.reduce((n, sl) => n + sl.rem, 0);
-    let mandatoryLeft = slots.filter((sl) => sl.mandatory).length;
-    let decided = used; // occupied + deliberately empty cells
-
-    /** current score + fractional knapsack of the remaining copies over the undecided cells */
-    const bound = (score: number) => {
-      const avail = totalCells - decided;
-      let free = avail;
-      let b = score;
-      let allFit = true;
-      for (const sl of byDensity) {
-        if (!sl.rem) continue;
-        if (free <= 0) {
-          allFit = false;
-          break;
-        }
-        const fit = Math.min(sl.rem, Math.floor(free / sl.size));
-        b += fit * sl.value;
-        free -= fit * sl.size;
-        if (fit < sl.rem) {
-          allFit = false;
-          if (free > 0) b += (sl.value * free) / sl.size;
-          free = 0;
+      const occ = newMask();
+      let used = 0;
+      for (const c of input.obstacles ?? []) {
+        const o = axialToOffset(c.q, c.r);
+        if (o.x >= 0 && o.y >= 0 && o.x < size.w && o.y < size.h) {
+          const bit = o.y * size.w + o.x;
+          if (!(occ[bit >>> 5] & (1 << (bit & 31)))) used++;
+          setBit(occ, bit);
         }
       }
-      if (infuseBound && allFit) {
-        let need = -avail;
-        for (const sl of slots) need += sl.ownSize * sl.rem;
-        for (const sl of bySaving) {
-          if (need <= 0) break;
-          for (let k = 0; k < sl.rem && need > 0; k++) {
-            need -= sl.saving;
-            b -= sl.infPen;
+
+      // ---- slots: one per selected upgrade with a remaining copy count ----
+      interface Slot {
+        item: number;
+        weight: number;
+        /** weight minus the smallest penalty: upper bound of what one copy adds to the objective */
+        value: number;
+        /** smallest footprint among the orientations (for the bound) */
+        size: number;
+        rem: number;
+        mandatory: boolean;
+        expand?: ExpandDirection;
+        /** options indexed by their lowest cell (row-major) - used by first-free-cell branching */
+        byMin: Option[][];
+        /** options with a penalty > 0 somewhere: all options, smallest penalty first (for polishing) */
+        cheapest?: Option[];
+        /** size of the own shape when it costs nothing (Infinity: no free option, e.g. "force" mode) */
+        ownSize: number;
+        /** cells saved by the smallest shape, and the smallest penalty of a shape with a penalty */
+        saving: number;
+        infPen: number;
+      }
+      const indexByMin = (opts: Option[]) => {
+        const by: Option[][] = Array.from({ length: totalCells }, () => []);
+        for (const o of opts) {
+          let min = -1;
+          for (let w = 0; w < WORDS && min < 0; w++) if (o.mask[w]) min = w * 32 + (31 - Math.clz32(o.mask[w] & -o.mask[w]));
+          if (min >= 0) by[min].push(o);
+        }
+        return by;
+      };
+      const slots: Slot[] = [];
+      assign.forEach((d, k) => {
+        if (!d) return;
+        const it = items[expanderIdx[k]];
+        slots.push({
+          item: expanderIdx[k],
+          weight: it.weight,
+          value: it.weight - minPenalty(it),
+          size: Math.min(...orients(it).map((o) => o.cells.length)),
+          rem: 1,
+          mandatory: true,
+          ownSize: Infinity,
+          saving: 0,
+          infPen: 0,
+          expand: d,
+          // an expander must stand inside the grid that exists without its own expansion
+          byMin: indexByMin(enumerateOptions(orients(it), size, (x, y) => x < baseW && y < baseH)),
+        });
+      });
+      for (const idx of regularIdx) {
+        const it = items[idx];
+        slots.push({
+          item: idx,
+          weight: it.weight,
+          value: it.weight - minPenalty(it),
+          size: Math.min(...orients(it).map((o) => o.cells.length)),
+          rem: it.count,
+          mandatory: false,
+          ownSize: Infinity,
+          saving: 0,
+          infPen: 0,
+          byMin: indexByMin(enumerateOptions(orients(it), size)),
+        });
+      }
+      for (const sl of slots) {
+        const opts = sl.byMin.flat();
+        if (opts.some((o) => o.penalty)) sl.cheapest = opts.sort((a, b) => a.penalty - b.penalty);
+        const it = items[sl.item];
+        const free = orients(it).filter((o) => !o.penalty).map((o) => o.cells.length);
+        sl.ownSize = free.length ? Math.min(...free) : Infinity;
+        sl.saving = sl.ownSize - sl.size;
+        const pens = orients(it).filter((o) => o.penalty).map((o) => o.penalty!);
+        sl.infPen = pens.length ? Math.min(...pens) : 0;
+      }
+      // Pattern Infuser bound: when everything left must fit, the cells missing for the own shapes need
+      // at least k shrunk units (largest savings first), each costing at least its penalty.
+      const infuseBound = hasPenalties && slots.every((sl) => sl.ownSize < Infinity);
+      const bySaving = slots.filter((sl) => sl.saving > 0).sort((a, b) => b.saving - a.saving);
+      const baseOcc = occ.slice();
+      // heaviest first when branching (good solutions early), densest first for the bound
+      const byWeight = slots.slice().sort((a, b) => b.weight - a.weight || b.size - a.size);
+      const byDensity = slots.slice().sort((a, b) => b.value / b.size - a.value / a.size);
+      let remaining = slots.reduce((n, sl) => n + sl.rem, 0);
+      let mandatoryLeft = slots.filter((sl) => sl.mandatory).length;
+      let decided = used; // occupied + deliberately empty cells
+
+      /** current score + fractional knapsack of the remaining copies over the undecided cells */
+      const bound = (score: number) => {
+        const avail = totalCells - decided;
+        let free = avail;
+        let b = score;
+        let allFit = true;
+        for (const sl of byDensity) {
+          if (!sl.rem) continue;
+          if (free <= 0) {
+            allFit = false;
+            break;
+          }
+          const fit = Math.min(sl.rem, Math.floor(free / sl.size));
+          b += fit * sl.value;
+          free -= fit * sl.size;
+          if (fit < sl.rem) {
+            allFit = false;
+            if (free > 0) b += (sl.value * free) / sl.size;
+            free = 0;
           }
         }
-      }
-      return b;
-    };
-
-    const chosen: { slot: Slot; opt: Option }[] = [];
-
-    /**
-     * Local improvement of a found layout: every placement with a penalty (donor shape, or area in
-     * "force" mode) is moved to the cheapest option that fits in the free cells, while others stay.
-     */
-    const polish = (list: { slot: Slot; opt: Option }[]): number => {
-      let gain = 0;
-      if (!slots.some((sl) => sl.cheapest)) return gain;
-      const used = baseOcc.slice();
-      for (const c of list) toggle(used, c.opt.mask);
-      let changed = true;
-      while (changed) {
-        changed = false;
-        for (const c of list) {
-          if (!c.opt.penalty || !c.slot.cheapest) continue;
-          toggle(used, c.opt.mask);
-          const better = c.slot.cheapest.find((o) => o.penalty < c.opt.penalty - 1e-12 && !intersects(o.mask, used));
-          if (better) {
-            gain += c.opt.penalty - better.penalty;
-            c.opt = better;
-            changed = true;
+        if (infuseBound && allFit) {
+          let need = -avail;
+          for (const sl of slots) need += sl.ownSize * sl.rem;
+          for (const sl of bySaving) {
+            if (need <= 0) break;
+            for (let k = 0; k < sl.rem && need > 0; k++) {
+              need -= sl.saving;
+              b -= sl.infPen;
+            }
           }
-          toggle(used, c.opt.mask);
         }
-      }
-      return gain;
-    };
+        return b;
+      };
 
-    const recordCurrent = (found: number) => {
-      if (mandatoryLeft > 0) return;
-      const list = chosen.map((c) => ({ ...c }));
-      const objective = found + polish(list);
-      if (solutions.length >= topK && objective < worst()) return;
-      let score = 0;
-      for (const c of list) score += c.slot.weight;
-      const placed = new Map<number, number>();
-      for (const c of list) placed.set(c.slot.item, (placed.get(c.slot.item) ?? 0) + 1);
-      const unplaced: Record<string, number> = {};
-      items.forEach((it, idx) => {
-        const missing = it.count - (placed.get(idx) ?? 0);
-        if (missing > 0) unplaced[it.upgradeId] = missing;
-      });
-      record({
-        score,
-        objective,
-        size: { ...size },
-        unplaced,
-        placements: list.map((c) => ({
-          upgradeId: items[c.slot.item].upgradeId,
-          rotation: c.opt.rotation,
-          anchor: c.opt.anchor,
-          ...(c.slot.expand ? { expand: c.slot.expand } : {}),
-          ...(c.opt.patternFrom ? { patternFrom: c.opt.patternFrom } : {}),
-        })),
-      });
+      const chosen: { slot: Slot; opt: Option }[] = [];
+
+      /**
+       * Local improvement of a found layout: every placement with a penalty (donor shape, or area in
+       * "force" mode) is moved to the cheapest option that fits in the free cells, while others stay.
+       */
+      const polish = (list: { slot: Slot; opt: Option }[]): number => {
+        let gain = 0;
+        if (!slots.some((sl) => sl.cheapest)) return gain;
+        const used = baseOcc.slice();
+        for (const c of list) toggle(used, c.opt.mask);
+        let changed = true;
+        while (changed) {
+          changed = false;
+          for (const c of list) {
+            if (!c.opt.penalty || !c.slot.cheapest) continue;
+            toggle(used, c.opt.mask);
+            const better = c.slot.cheapest.find((o) => o.penalty < c.opt.penalty - 1e-12 && !intersects(o.mask, used));
+            if (better) {
+              gain += c.opt.penalty - better.penalty;
+              c.opt = better;
+              changed = true;
+            }
+            toggle(used, c.opt.mask);
+          }
+        }
+        return gain;
+      };
+
+      const recordCurrent = (found: number) => {
+        if (mandatoryLeft > 0) return;
+        const list = chosen.map((c) => ({ ...c }));
+        const objective = found + polish(list);
+        if (solutions.length >= topK && objective < worst()) return;
+        let score = 0;
+        for (const c of list) score += c.slot.weight;
+        const placed = new Map<number, number>();
+        for (const c of list) placed.set(c.slot.item, (placed.get(c.slot.item) ?? 0) + 1);
+        const unplaced: Record<string, number> = {};
+        items.forEach((it, idx) => {
+          const missing = it.count - (placed.get(idx) ?? 0);
+          if (missing > 0) unplaced[it.upgradeId] = missing;
+        });
+        record({
+          score,
+          objective,
+          size: { ...size },
+          unplaced,
+          placements: list.map((c) => ({
+            upgradeId: items[c.slot.item].upgradeId,
+            rotation: c.opt.rotation,
+            anchor: c.opt.anchor,
+            ...(c.slot.expand ? { expand: c.slot.expand } : {}),
+            ...(c.opt.patternFrom ? { patternFrom: c.opt.patternFrom } : {}),
+          })),
+        });
+      };
+
+      /** records every seed that is a complete, valid layout for this expansion */
+    const recordSeeds = () => {
+      for (const seed of input.seeds ?? []) {
+        const picked: { slot: Slot; opt: Option }[] = [];
+        const taken = new Map<Slot, number>();
+        const used = baseOcc.slice();
+        let ok = true;
+        for (const sp of seed) {
+          const slot = slots.find(
+            (sl) => items[sl.item].upgradeId === sp.upgradeId && (sl.expand ?? null) === (sp.expand && sl.mandatory ? sp.expand : null) && (taken.get(sl) ?? 0) < sl.rem,
+          );
+          const mask = newMask();
+          for (const c of sp.cells) {
+            const o = axialToOffset(c.q, c.r);
+            if (o.x < 0 || o.y < 0 || o.x >= size.w || o.y >= size.h) ok = false;
+            else setBit(mask, o.y * size.w + o.x);
+          }
+          const opt = ok && slot ? slot.byMin.flat().find((o) => o.mask.every((v, i) => v === mask[i])) : undefined;
+          if (!slot || !opt || intersects(opt.mask, used)) {
+            ok = false;
+            break;
+          }
+          toggle(used, opt.mask);
+          taken.set(slot, (taken.get(slot) ?? 0) + 1);
+          picked.push({ slot, opt });
+        }
+        if (!ok || slots.some((sl) => sl.mandatory && !taken.get(sl))) continue;
+        chosen.push(...picked);
+        const saved = mandatoryLeft;
+        mandatoryLeft = 0;
+        recordCurrent(picked.reduce((a, c) => a + c.slot.weight - c.opt.penalty, 0));
+        mandatoryLeft = saved;
+        chosen.length = 0;
+      }
     };
 
     const isSet = (bit: number) => (occ[bit >>> 5] & (1 << (bit & 31))) !== 0;
 
-    /**
-     * First-free-cell branching: the first undecided cell is either covered by an option whose lowest
-     * cell it is, or left empty for good. Every layout is reached exactly once and empty cells
-     * immediately tighten the bound. Returns true when the search must stop (time limit / cancel).
-     */
-    const search = (from: number, score: number): boolean => {
-      nodes++;
-      if ((nodes & 1023) === 0) {
-        const now = Date.now();
-        if (now > deadline || input.shouldStop?.()) {
-          complete = false;
-          return true;
+      /**
+       * First-free-cell branching: the first undecided cell is either covered by an option whose lowest
+       * cell it is, or left empty for good. Every layout is reached exactly once and empty cells
+       * immediately tighten the bound. Returns true when the search must stop (time limit / cancel).
+       */
+      const search = (from: number, score: number): boolean => {
+        nodes++;
+        if ((nodes & 1023) === 0) {
+          const now = Date.now();
+          if (now > deadline || now > stageEnd || input.shouldStop?.()) {
+            complete = false;
+            return true;
+          }
+          if (input.onProgress && now - lastProgress > 100) {
+            lastProgress = now;
+            input.onProgress({ nodes, elapsedMs: now - t0, best: solutions[0]?.score ?? 0, solutions: solutions.slice() });
+          }
         }
-        if (input.onProgress && now - lastProgress > 100) {
-          lastProgress = now;
-          input.onProgress({ nodes, elapsedMs: now - t0, best: solutions[0]?.score ?? 0, solutions: solutions.slice() });
+        // all K variants already place everything requested: nothing better can exist
+        if (solutions.length >= topK && worst() >= maxObjective - 1e-9) return true;
+        let cell = from;
+        while (cell < totalCells && isSet(cell)) cell++;
+        if (remaining === 0 || cell >= totalCells) {
+          recordCurrent(score);
+          return false;
         }
-      }
-      // all K variants already place everything requested: nothing better can exist
-      if (solutions.length >= topK && worst() >= maxObjective - 1e-9) return true;
-      let cell = from;
-      while (cell < totalCells && isSet(cell)) cell++;
-      if (remaining === 0 || cell >= totalCells) {
-        recordCurrent(score);
-        return false;
-      }
-      if (pruned(bound(score))) return false;
+        if (pruned(bound(score))) return false;
 
-      for (const sl of byWeight) {
-        if (!sl.rem) continue;
-        for (const opt of sl.byMin[cell]) {
-          if (intersects(opt.mask, occ)) continue;
-          toggle(occ, opt.mask);
-          decided += opt.size;
-          sl.rem--;
-          remaining--;
-          if (sl.mandatory) mandatoryLeft--;
-          chosen.push({ slot: sl, opt });
-          const stop = search(cell + 1, score + sl.weight - opt.penalty);
-          chosen.pop();
-          if (sl.mandatory) mandatoryLeft++;
-          remaining++;
-          sl.rem++;
-          decided -= opt.size;
-          toggle(occ, opt.mask);
-          if (stop) return true;
-          if (pruned(bound(score))) return false;
+        for (const sl of byWeight) {
+          if (!sl.rem) continue;
+          for (const opt of sl.byMin[cell]) {
+            if (intersects(opt.mask, occ)) continue;
+            toggle(occ, opt.mask);
+            decided += opt.size;
+            sl.rem--;
+            remaining--;
+            if (sl.mandatory) mandatoryLeft--;
+            chosen.push({ slot: sl, opt });
+            const stop = search(cell + 1, score + sl.weight - opt.penalty);
+            chosen.pop();
+            if (sl.mandatory) mandatoryLeft++;
+            remaining++;
+            sl.rem++;
+            decided -= opt.size;
+            toggle(occ, opt.mask);
+            if (stop) return true;
+            if (pruned(bound(score))) return false;
+          }
         }
-      }
-      // leave this cell empty
-      occ[cell >>> 5] |= 1 << (cell & 31);
-      decided++;
-      const stop = search(cell + 1, score);
-      decided--;
-      occ[cell >>> 5] &= ~(1 << (cell & 31));
-      return stop;
-    };
+        // leave this cell empty
+        occ[cell >>> 5] |= 1 << (cell & 31);
+        decided++;
+        const stop = search(cell + 1, score);
+        decided--;
+        occ[cell >>> 5] &= ~(1 << (cell & 31));
+        return stop;
+      };
 
-    if (search(0, 0)) break;
-  }
+      recordSeeds(); // in each stage: a seed with donor shapes only matches the full stage
+      if (search(0, 0)) break;
+    }
+  };
+
+  if (hasDonors) {
+    runStage(true, t0 + (deadline - t0) * 0.4);
+    if (Date.now() < deadline && !input.shouldStop?.() && !(solutions.length >= topK && worst() >= maxObjective - 1e-9)) {
+      complete = true;
+      runStage(false, Infinity);
+    }
+  } else runStage(false, Infinity);
 
   const optimal = complete || (solutions.length > 0 && solutions[0].score >= maxScore);
   return { solutions, complete, optimal, nodes, elapsedMs: Date.now() - t0, maxScore };
