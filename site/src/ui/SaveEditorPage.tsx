@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { create } from 'zustand';
 import type { Gear, Loc, Upgrade } from '../core/types';
 import { canInfuse, infuseDonors } from '../core/placement';
 import { isGridExpander } from '../core/rules';
 import { statRows } from '../core/stats';
 import { SaveDoc, expandDirection, findSeed, rollUpgrade, type RollSteps, type SaveInstanceInfo } from '../core/save/editor';
-import { seededElement } from '../core/save/savegame';
+import { accountLevelFromMask, seededElement } from '../core/save/savegame';
+import { placementsToSlot, slotToPlacements } from '../core/save/equip';
+import { StaticBoard } from './StaticBoard';
+import { navigate } from './route';
 import { DATA_BASE, iconUrl } from '../data/load';
 import { loc } from '../i18n';
-import { useBuild } from '../store/build';
+import { boardContext, buildKey, newUid, useBuild } from '../store/build';
 import { elementColor, rarityColor } from './colors';
 import { useT } from './hooks';
 
@@ -81,6 +85,19 @@ const TXT = {
     error: 'Ошибка',
     globalSkins: 'Общие скины',
     universal: 'общий',
+    tabEquip: 'Экипировка',
+    slotNames: ['Текущий', 'Лоадаут 1', 'Лоадаут 2', 'Лоадаут 3'],
+    toBuilder: 'Открыть в конструкторе',
+    fromBuilder: 'Взять из конструктора',
+    clear: 'Очистить',
+    grantMissing: 'Выдавать недостающие моды (лучшие роллы)',
+    empty: 'Пусто',
+    mods: 'модов',
+    written: 'Записано модов: {w}, выдано новых: {g}',
+    notFound: 'Нет подходящих экземпляров: {list} — включите выдачу недостающих',
+    builderEmpty: 'В этом слоте конструктора пусто',
+    equipHint: 'Конструктор хранит свои слоты для каждого снаряжения: соберите билд в нужном слоте, затем возьмите его сюда. «Открыть в конструкторе» копирует слот сейва в тот же слот конструктора.',
+    unreadable: 'Не прочитано: {n}',
   },
   en: {
     title: 'Save editor',
@@ -143,29 +160,60 @@ const TXT = {
     error: 'Error',
     globalSkins: 'Shared skins',
     universal: 'shared',
+    tabEquip: 'Equipment',
+    slotNames: ['Current', 'Loadout 1', 'Loadout 2', 'Loadout 3'],
+    toBuilder: 'Open in builder',
+    fromBuilder: 'Take from builder',
+    clear: 'Clear',
+    grantMissing: 'Grant missing upgrades (best rolls)',
+    empty: 'Empty',
+    mods: 'upgrades',
+    written: 'Written: {w} upgrades, newly granted: {g}',
+    notFound: 'No matching instances: {list} - enable granting missing upgrades',
+    builderEmpty: 'This builder slot is empty',
+    equipHint: 'The builder keeps its own slots for every gear: build in the slot you want, then take it here. "Open in builder" copies the save slot into the same builder slot.',
+    unreadable: 'Not read: {n}',
   },
 } as const;
 
-type Tab = 'gear' | 'res' | 'mods' | 'skins';
+type Tab = 'gear' | 'res' | 'mods' | 'equip' | 'skins';
+
+interface EditorState {
+  extra: EditorData | null;
+  doc: SaveDoc | null;
+  fileName: string;
+  version: number;
+  changes: number;
+  error: string | null;
+  tab: Tab;
+}
+const useSaveEditor = create<EditorState>()(() => ({
+  extra: null, doc: null, fileName: 'PlayerData.saxon', version: 0, changes: 0, error: null, tab: 'gear',
+}));
 const CATS = ['character', 'primary', 'throwable', 'heavy'] as const;
 
 export function SaveEditorPage() {
   const data = useBuild((s) => s.data);
   const { lang, l } = useT();
   const T = lang === 'ru' ? TXT.ru : TXT.en;
-  const [extra, setExtra] = useState<EditorData | null>(null);
-  const [doc, setDoc] = useState<SaveDoc | null>(null);
-  const [fileName, setFileName] = useState('PlayerData.saxon');
-  const [version, setVersion] = useState(0);
-  const [changes, setChanges] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-  const [tab, setTab] = useState<Tab>('gear');
+  // the opened save lives outside the page, so it survives switching to the builder and back
+  const { extra, doc, fileName, version, changes, error, tab } = useSaveEditor();
+  const set = useSaveEditor.setState;
+  const setExtra = (v: EditorData) => set({ extra: v });
+  const setDoc = (v: SaveDoc | null) => set({ doc: v });
+  const setFileName = (v: string) => set({ fileName: v });
+  const setVersion = (f: (v: number) => number) => set((s) => ({ version: f(s.version) }));
+  const setChanges = (v: number | ((c: number) => number)) => set((s) => ({ changes: typeof v === 'function' ? v(s.changes) : v }));
+  const setError = (v: string | null) => set({ error: v });
+  const setTab = (v: Tab) => set({ tab: v });
 
   useEffect(() => {
+    if (extra) return;
     fetch(`${DATA_BASE}saveeditor.json`, { cache: 'no-cache' })
       .then((r) => r.json())
       .then(setExtra)
       .catch((e) => setError(String(e)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const edit = useCallback((fn: (d: SaveDoc) => void) => {
@@ -225,9 +273,9 @@ export function SaveEditorPage() {
             <button onClick={() => setDoc(null)}>{T.close}</button>
           </div>
           <div className="seg se-tabs">
-            {(['gear', 'res', 'mods', 'skins'] as Tab[]).map((k) => (
+            {(['gear', 'res', 'mods', 'equip', 'skins'] as Tab[]).map((k) => (
               <button key={k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}>
-                {k === 'gear' ? T.tabGear : k === 'res' ? T.tabRes : k === 'mods' ? T.tabMods : T.tabSkins}
+                {k === 'gear' ? T.tabGear : k === 'res' ? T.tabRes : k === 'mods' ? T.tabMods : k === 'equip' ? T.tabEquip : T.tabSkins}
               </button>
             ))}
           </div>
@@ -235,6 +283,7 @@ export function SaveEditorPage() {
           {tab === 'gear' && <GearTab key={version} doc={doc} T={T} edit={edit} />}
           {tab === 'res' && <ResourcesTab key={version} doc={doc} T={T} edit={edit} extra={extra} />}
           {tab === 'mods' && <ModsTab version={version} doc={doc} T={T} edit={edit} extra={extra} />}
+          {tab === 'equip' && <EquipTab version={version} doc={doc} T={T} edit={edit} extra={extra} />}
           {tab === 'skins' && <SkinsTab version={version} doc={doc} T={T} edit={edit} extra={extra} l={l} />}
         </>
       )}
@@ -628,6 +677,79 @@ function SkinsTab({ doc, T, edit, extra, version, l }: { doc: SaveDoc; T: TT; ed
       <div className="se-row wrap"><span>{T.skinsOf}:</span><GearSelect value={gearId} onChange={setGearId} /></div>
       {block(l(data.game.gears.find((g) => g.id === gearId)!.name), skins, gearId)}
       {shared.length > 0 && block(T.globalSkins, shared, gearId)}
+    </div>
+  );
+}
+
+/* ---------------- equipment ---------------- */
+
+const fmt = (s: string, p: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(p[k] ?? ''));
+
+function EquipTab({ doc, T, edit, extra, version }: { doc: SaveDoc; T: TT; edit: Edit; extra: EditorData; version: number }) {
+  const data = useBuild((s) => s.data)!;
+  const builds = useBuild((s) => s.builds);
+  const [gearId, setGearId] = useState(data.game.gears.find((g) => g.category === 'primary')!.id);
+  const [grant, setGrant] = useState(true);
+  const [notice, setNotice] = useState<string | null>(null);
+  const gear = data.game.gears.find((g) => g.id === gearId)!;
+  const player = data.game.gears.find((g) => g.category === 'global')!;
+  const level = doc.gears().find((g) => g.id === gearId)?.level ?? 1;
+  const account = accountLevelFromMask(doc.rotationMask, false);
+  const ctx = useMemo(() => boardContext(data, gear, account, level), [data, gear, account, level]);
+  const slots = useMemo(
+    () => [0, 1, 2, 3].map((s) => slotToPlacements(doc, gearId, s, (id) => data.game.upgrades[id], newUid)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [doc, version, gearId],
+  );
+  const toBuilder = (slot: number) => {
+    const list = slots[slot].placements;
+    useBuild.setState((s) => ({
+      builds: { ...s.builds, [buildKey(gearId, slot)]: list },
+      slots: { ...s.slots, [gearId]: slot },
+      gearLevels: { ...s.gearLevels, [gearId]: level },
+      gearId,
+    }));
+    navigate('builder');
+  };
+  const fromBuilder = (slot: number) => {
+    const list = builds[buildKey(gearId, slot)] ?? [];
+    if (!list.length) return setNotice(T.builderEmpty);
+    edit((d) => {
+      const r = placementsToSlot(d, ctx, gearId, slot, list, {
+        gearCategory: gear.category, playerId: player.id, playerUpgrades: player.upgrades, steps: extra.rollSteps, grantMissing: grant,
+      });
+      setNotice(fmt(T.written, { w: r.written, g: r.granted }) + (r.missing.length ? ' · ' + fmt(T.notFound, { list: r.missing.join(', ') }) : ''));
+    });
+  };
+  return (
+    <div className="se-panel">
+      <div className="se-row wrap">
+        <span>{T.gear}:</span>
+        <GearSelect value={gearId} onChange={(id) => { setGearId(id); setNotice(null); }} />
+        <label><input type="checkbox" checked={grant} onChange={(e) => setGrant(e.target.checked)} /> {T.grantMissing}</label>
+      </div>
+      <p className="muted small">{T.equipHint}</p>
+      {notice && <p className="small">{notice}</p>}
+      <div className="se-slots">
+        {slots.map((s, i) => {
+          const inBuilder = (builds[buildKey(gearId, i)] ?? []).length;
+          return (
+            <div key={i} className="se-slot">
+              <div className="se-row wrap">
+                <b>{T.slotNames[i]}</b>
+                <span className="muted small">{s.placements.length ? `${s.placements.length} ${T.mods}` : T.empty}</span>
+                {s.issues.length > 0 && <span className="warn small">{fmt(T.unreadable, { n: s.issues.length })}</span>}
+              </div>
+              <div className="se-board">{s.placements.length > 0 ? <StaticBoard ctx={ctx} placements={s.placements} size={16} /> : <div className="se-board-empty" />}</div>
+              <div className="se-row wrap">
+                <button disabled={!s.placements.length} onClick={() => toBuilder(i)}>{T.toBuilder}</button>
+                <button disabled={!inBuilder} onClick={() => fromBuilder(i)}>{T.fromBuilder}{inBuilder ? ` (${inBuilder})` : ''}</button>
+                <button disabled={!s.placements.length} onClick={() => edit((d) => d.setEquips(gearId, i, []))}>{T.clear}</button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

@@ -5,7 +5,10 @@ import { describe, expect, it } from 'vitest';
 import type { GameData } from '../src/core/types';
 import { readRecords, writeRecords } from '../src/core/save/nrbfw';
 import { SaveDoc, expandDirection, findSeed, rollUpgrade, seedQuality, type RollSteps } from '../src/core/save/editor';
-import { readSave, seededElement } from '../src/core/save/savegame';
+import { readSave, seededElement, accountLevelFromMask } from '../src/core/save/savegame';
+import { placementsToSlot, slotToPlacements } from '../src/core/save/equip';
+import { boardContext } from '../src/store/build';
+import { evaluate } from '../src/core/placement';
 
 const data: GameData = JSON.parse(readFileSync(resolve(__dirname, '../public/data/game.json'), 'utf-8'));
 const extra = JSON.parse(readFileSync(resolve(__dirname, '../public/data/saveeditor.json'), 'utf-8'));
@@ -81,5 +84,58 @@ describe.skipIf(!SAVE || !existsSync(SAVE))('editing a real save', () => {
     for (const id of [id1, id2, id3, id4]) expect(parsed.instances.has(id), `instance ${id}`).toBe(true);
     expect(parsed.instances.get(id1)!.seed).toBe(seed);
     expect(parsed.instances.get(id4)!.gearId).toBe(player.id);
+  });
+
+  it('equipment slots: reads like the site import; writing a slot keeps the others', () => {
+    const b = bytes();
+    const ref = readSave(b);
+    const doc = new SaveDoc(b);
+    for (const g of ref.gears) {
+      expect(doc.equips(g.gearId, 0)).toEqual(g.equipped);
+      for (let i = 0; i < 3; i++) expect(doc.equips(g.gearId, i + 1)).toEqual(g.loadouts[i] ?? []);
+    }
+    const loaded = { game: data, overrides: { fields: {} }, comments: { upgrades: {} }, issues: [] } as never;
+    const account = accountLevelFromMask(ref.rotationMask, ref.canRotateUpgrades);
+    const player = data.gears.find((g) => g.key === 'player')!;
+    let n = 0;
+    const touched: string[] = [];
+    for (const sg of ref.gears) {
+      const gear = data.gears.find((g) => g.id === sg.gearId);
+      if (!gear || !sg.equipped.length || touched.length >= 6) continue;
+      const ctx = boardContext(loaded, gear, account, sg.level);
+      const { placements } = slotToPlacements(doc, gear.id, 0, (id) => data.upgrades[id], () => `t${n++}`);
+      const res = placementsToSlot(doc, ctx, gear.id, 3, placements, {
+        gearCategory: gear.category, playerId: player.id, playerUpgrades: player.upgrades, steps, grantMissing: false,
+      });
+      expect(res.missing).toEqual([]);
+      expect(res.written).toBe(placements.length);
+      touched.push(gear.id);
+    }
+    expect(touched.length).toBeGreaterThan(0);
+
+    // a copy more than the save has: refused without granting, granted (best rolls) with it
+    const gid = touched[0];
+    const gear0 = data.gears.find((g) => g.id === gid)!;
+    const ctx0 = boardContext(loaded, gear0, account, ref.gears.find((x) => x.gearId === gid)!.level);
+    const base = slotToPlacements(doc, gid, 0, (id) => data.upgrades[id], () => `x${n++}`).placements;
+    const extraCopy = { ...base[0], uid: 'extra', instanceId: undefined };
+    const opts = { gearCategory: gear0.category, playerId: player.id, playerUpgrades: player.upgrades, steps };
+    const used = doc.instances().filter((i) => i.upgradeId === base[0].upgradeId).length;
+    const refused = placementsToSlot(doc, ctx0, gid, 1, [...base, ...Array.from({ length: used }, (_, k) => ({ ...extraCopy, uid: `e${k}` }))], { ...opts, grantMissing: false });
+    expect(refused.missing.length).toBeGreaterThan(0);
+    const granted = placementsToSlot(doc, ctx0, gid, 1, [...base, ...Array.from({ length: used }, (_, k) => ({ ...extraCopy, uid: `e${k}` }))], { ...opts, grantMissing: true });
+    expect(granted.granted).toBeGreaterThan(0);
+    expect(granted.missing).toEqual([]);
+    const out = readSave(new SaveDoc(doc.save()).save());
+    for (const id of touched) {
+      const g = out.gears.find((x) => x.gearId === id)!;
+      const before = ref.gears.find((x) => x.gearId === id)!;
+      const norm = (l: { instanceId: number; x: number; y: number; rotation: number }[]) => [...l].sort((a, c) => a.instanceId - c.instanceId);
+      expect(norm(g.loadouts[2] ?? [])).toEqual(norm(before.equipped));
+      expect(g.equipped).toEqual(before.equipped);
+      if (id !== touched[0]) expect(g.loadouts[0] ?? []).toEqual(before.loadouts[0] ?? []);
+      expect(g.loadouts[1] ?? []).toEqual(before.loadouts[1] ?? []);
+      void evaluate;
+    }
   });
 });

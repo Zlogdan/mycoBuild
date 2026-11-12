@@ -323,6 +323,7 @@ export function convertEquips(
       ...(u.role === 'gridExpander' ? { expand: growGridDirection(inst.seed) } : {}),
       ...(u.elementChoice && seededElement(u, inst.seed) ? { element: seededElement(u, inst.seed) } : {}),
       ...(patternFrom ? { patternFrom } : {}),
+      instanceId: e.instanceId,
     });
   }
   return { placements, issues };

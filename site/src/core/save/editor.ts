@@ -14,6 +14,15 @@ const isRec = (v: Value): v is Rec => typeof v === 'object' && v !== null;
 const isClass = (r: Rec) => r.t === RT.ClassWithId || r.t === RT.ClassTypes || r.t === RT.SysClassTypes;
 const isNullRun = (v: Value) => isRec(v) && (v.t === RT.NullMulti || v.t === RT.NullMulti256);
 const ref = (id: number): Rec => ({ t: RT.MemberRef, ref: id });
+const LIST_EQUIP = 'System.Collections.Generic.List`1[[PlayerData+UpgradeEquipData';
+const LIST_EQUIP_FULL = 'System.Collections.Generic.List`1[[PlayerData+UpgradeEquipData, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]';
+
+export interface SaveEquipEntry {
+  instanceId: number;
+  x: number;
+  y: number;
+  rotation: number;
+}
 const NULL: Rec = { t: RT.ObjNull };
 
 export interface SaveInstanceInfo {
@@ -390,6 +399,119 @@ export class SaveDoc {
   setPattern(inst: Rec, donorId: string | null, patternSize: number) {
     this.set(inst, 'overriddenPatternID', donorId ? Number(donorId) : 0);
     this.set(inst, 'patternSize', patternSize);
+  }
+
+  // ---------- equipment (Current + loadouts 1..3) ----------
+  /** Equip entries of a slot: 0 = equipped (Current), 1..3 = GearData.loadouts[slot - 1]. */
+  equips(gearId: string, slot: number): SaveEquipEntry[] {
+    const gd = this.gearData(gearId);
+    if (!gd) return [];
+    let lst: Rec | null = null;
+    if (slot === 0) lst = this.rec(gd, 'equippedUpgrades');
+    else {
+      const arr = this.rec(gd, 'loadouts');
+      const lo = arr?.items?.[slot - 1];
+      if (lo !== undefined && isRec(lo) && isClass(this.deref(lo) as Rec)) lst = this.rec(this.deref(lo) as Rec, 'upgrades');
+    }
+    if (!lst) return [];
+    return this.listItems(lst).map((e) => ({
+      instanceId: this.num(e, 'upgradeID'),
+      x: this.num(e, 'x'),
+      y: this.num(e, 'y'),
+      rotation: this.num(e, 'rotation'),
+    }));
+  }
+
+  private libId(): number {
+    let id: number | undefined;
+    const walk = (rs: Value[]) => {
+      for (const r of rs) {
+        if (!isRec(r) || id !== undefined) continue;
+        for (const l of r.libs ?? []) if (l.name.startsWith('Assembly-CSharp,')) id = l.id;
+        if (r.values) walk(r.values);
+        if (r.items) walk(r.items);
+      }
+    };
+    walk(this.recs);
+    if (id === undefined) throw new Error('Assembly-CSharp library not found');
+    return id;
+  }
+
+  /** Definition id of a class, creating a pending definition (written on first use) when the save has none. */
+  private defId(name: string, make: () => Omit<Rec, 'values'>): number {
+    for (const [id, r] of [...this.meta, ...this.pendingDefs]) if (r.ci && (r.ci.name === name || r.ci.name.startsWith(name))) return id;
+    const def = { ...make(), values: [] } as Rec;
+    const id = this.negId();
+    def.ci = { ...def.ci!, id };
+    this.pendingDefs.set(id, def);
+    this.meta.set(id, def);
+    return id;
+  }
+
+  private equipDefs() {
+    const lib = this.libId();
+    const equip = this.defId('PlayerData+UpgradeEquipData', () => ({
+      t: RT.ClassTypes, ci: { id: 0, name: 'PlayerData+UpgradeEquipData', members: ['upgradeID', 'x', 'y', 'rotation'] },
+      bts: [BT.Prim, BT.Prim, BT.Prim, BT.Prim], extra: [8, 10, 10, 2], lib,
+    }));
+    const list = this.defId(LIST_EQUIP, () => ({
+      t: RT.SysClassTypes, ci: { id: 0, name: LIST_EQUIP_FULL, members: ['_items', '_size', '_version'] },
+      bts: [BT.Class, BT.Prim, BT.Prim], extra: [['PlayerData+UpgradeEquipData[]', lib], 8, 8],
+    }));
+    const loadout = this.defId('PlayerData+Loadout', () => ({
+      t: RT.ClassTypes, ci: { id: 0, name: 'PlayerData+Loadout', members: ['iconIndex', 'upgrades'] },
+      bts: [BT.Prim, BT.SysClass], extra: [8, LIST_EQUIP_FULL], lib,
+    }));
+    return { lib, equip, list, loadout };
+  }
+
+  /** New List<UpgradeEquipData> object (not yet placed) + its items array (top level). */
+  private equipList(entries: SaveEquipEntry[]): Rec {
+    const { lib, equip, list } = this.equipDefs();
+    const items: Value[] = entries.map((e) => ({ t: RT.ClassWithId, id: this.negId(), meta: equip, values: [e.instanceId, e.x, e.y, e.rotation] }));
+    let cap = 4;
+    while (cap < items.length) cap *= 2;
+    const arr = this.top({ t: RT.BinaryArray, id: this.posId(), kind: 0, rank: 1, lengths: [cap], lower: null, bt: BT.Class,
+      ex: ['PlayerData+UpgradeEquipData', lib], items: this.padItems(items, cap) });
+    return { t: RT.ClassWithId, id: this.posId(), meta: list, values: [ref(arr.id!), entries.length, entries.length] };
+  }
+
+  /** Writes a slot like the game does (lists and the loadout array are separate referenced objects). */
+  setEquips(gearId: string, slot: number, entries: SaveEquipEntry[]) {
+    const gd = this.gearData(gearId);
+    if (!gd) throw new Error(`gear ${gearId} not in save`);
+    if (slot === 0) {
+      const lst = this.top(this.equipList(entries));
+      this.set(gd, 'equippedUpgrades', ref(lst.id!));
+      return;
+    }
+    const { lib, loadout } = this.equipDefs();
+    const old = this.rec(gd, 'loadouts');
+    const slots: Value[] = [0, 1, 2].map((i) => {
+      const cur = old?.items?.[i];
+      return cur !== undefined && isRec(cur) && isClass(this.deref(cur) as Rec) ? (this.deref(cur) as Rec) : null;
+    });
+    const items = slots.map((cur, i) => {
+      const icon = cur ? this.num(cur as Rec, 'iconIndex') : 0;
+      if (i === slot - 1)
+        return { t: RT.ClassWithId, id: this.negId(), meta: loadout, values: [icon, entries.length ? this.equipList(entries) : NULL] } as Rec;
+      if (cur) {
+        const c = cur as Rec;
+        const ups = this.rec(c, 'upgrades');
+        const keep = ups ? this.listItems(ups).map((e) => ({ instanceId: this.num(e, 'upgradeID'), x: this.num(e, 'x'), y: this.num(e, 'y'), rotation: this.num(e, 'rotation') })) : [];
+        return { t: RT.ClassWithId, id: this.negId(), meta: loadout, values: [icon, keep.length ? this.equipList(keep) : NULL] } as Rec;
+      }
+      return { t: RT.ClassWithId, id: this.negId(), meta: loadout, values: [0, NULL] } as Rec;
+    });
+    const arr = this.top({ t: RT.BinaryArray, id: this.posId(), kind: 0, rank: 1, lengths: [3], lower: null, bt: BT.Class,
+      ex: ['PlayerData+Loadout', lib], items });
+    this.set(gd, 'loadouts', ref(arr.id!));
+  }
+
+  /** Instance record by its save id. */
+  instance(id: number): Rec | undefined {
+    for (const r of this.byId.values()) if (isClass(r) && this.className(r) === 'UpgradeInstance' && this.num(r, 'id') === id) return r;
+    return undefined;
   }
 
   // ---------- writing ----------

@@ -17,6 +17,8 @@ export interface Placement {
   element?: string;
   /** Pattern Infuser: id of the upgrade whose pattern this instance uses (UpgradeInstance.overriddenPatternID) */
   patternFrom?: string;
+  /** save editor: the save's upgrade instance this placement came from (kept when written back) */
+  instanceId?: number;
 }
 
 export type IssueCode =
