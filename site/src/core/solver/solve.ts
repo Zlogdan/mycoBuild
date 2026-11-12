@@ -48,6 +48,8 @@ export interface SolveInput {
   obstacles?: Axial[];
   /** expansion already provided by kept expanders */
   fixedExpansion?: ExpandDirection[];
+  /** directions a selected grid expander may take (default: unused, column or row) */
+  expanderDirections?: (ExpandDirection | null)[];
   topK?: number;
   timeLimitMs?: number;
   /** known layouts (e.g. the current build) recorded as starting solutions: the result is never worse */
@@ -205,7 +207,7 @@ export function solve(input: SolveInput): SolveResult {
   let assigns: Assign[] = [[]];
   for (let k = 0; k < expanderIdx.length; k++) {
     const next: Assign[] = [];
-    for (const a of assigns) for (const d of [null, 'column', 'row'] as const) next.push([...a, d]);
+    for (const a of assigns) for (const d of input.expanderDirections ?? ([null, 'column', 'row'] as const)) next.push([...a, d]);
     assigns = next;
   }
   assigns.sort((a, b) => b.filter(Boolean).length - a.filter(Boolean).length);

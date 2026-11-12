@@ -14,6 +14,7 @@ import { BuildIOButtons, BuildIODialogs, useBuildFromHash } from './BuildIO';
 import { SaveImportDialog } from './SaveImport';
 import { Showcase } from './Showcase';
 import { ModsPage } from './ModsPage';
+import { SaveEditorPage } from './SaveEditorPage';
 import { navigate, useRoute } from './route';
 import { EDITOR_MODE } from './editor';
 
@@ -44,6 +45,14 @@ function Main() {
   useBuildFromHash();
   const dragging = useDrag((s) => s.active);
   const route = useRoute();
+  if (route === 'save')
+    return (
+      <div className="app mods">
+        <TopBar />
+        <SaveEditorPage />
+        <Toast />
+      </div>
+    );
   if (route === 'mods')
     return (
       <div className="app mods">
@@ -92,6 +101,9 @@ function TopBar() {
         </button>
         <button className={route === 'mods' ? 'on' : ''} onClick={() => navigate('mods')}>
           {t('navMods')}
+        </button>
+        <button className={route === 'save' ? 'on' : ''} onClick={() => navigate('save')}>
+          {t('navSave')}
         </button>
       </nav>
       <label className="level" title={t('accountLevelHint')}>

@@ -35,6 +35,9 @@ from TypeTreeGeneratorAPI import TypeTreeGenerator
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from statmap import build_element_map, build_element_rules, build_pattern_rules, build_stat_map  # noqa: E402
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "saveedit"))
+from rolls import build_roll_steps  # noqa: E402
+
 # The C accelerated reader does not route [SerializeReference] lookups through
 # get_ref_type_node, so force the pure Python reader (fast enough for ~1000 objects).
 TTH.read_typetree_boost = None
@@ -495,9 +498,10 @@ class Extractor:
         # or a loot source that exists only in Ouroboros (2FA codes, Ouroboros shop).
         ouro = {uid for uid, u in upgrades.items()
                 if "OnlyInOuroboros" in u["flags"] or u["rarity"] == 5 or u["sourceInfo"]["kind"] == "Ouroboros"}
+        excluded = {}
         if not self.include_ouroboros:
             for uid in ouro:
-                upgrades.pop(uid)
+                excluded[uid] = upgrades.pop(uid)
             log(f"Excluded {len(ouro)} Ouroboros-only upgrades")
         for u in upgrades.values():
             u["role"] = "normal"
@@ -720,10 +724,67 @@ class Extractor:
             "statLabels": stat_labels,
             "ui": ui,
         }
+        self.write_save_editor_data(excluded, gears)
+
         path = os.path.join(self.out_dir, "game.json")
         with open(path, "w", encoding="utf-8") as fh:
             json.dump(out, fh, ensure_ascii=False, separators=(",", ":"))
         log(f"Wrote {path} ({os.path.getsize(path) // 1024} KB) in {time.time() - t0:.1f}s")
+
+
+def _save_editor_data(self, excluded, gears):
+    """saveeditor.json: what the save editor needs besides game.json (skins, resources, items, roll model)."""
+    gear_by_key = {}
+    for k, d in self.of_class("GearInfo"):
+        gear_by_key[k] = str(d.get("<ID>k__BackingField"))
+    skins = {}
+    skin_ids = {}
+    for k, d in self.of_class("SkinUpgrade"):
+        sid = str(d.get("id"))
+        skin_ids[k] = sid
+        nk = d.get("_name") or d.get("m_Name")
+        skins[sid] = {"id": sid, "key": nk, "name": strip_tags(self.loc(nk)) or {"en": nk},
+                      "rarity": d.get("<Rarity>k__BackingField", 0), "icon": self.export_icon(k[0], d.get("icon")),
+                      "type": d.get("skinType", 0), "gears": []}
+    for k, d in self.of_class("GearInfo"):
+        gid = gear_by_key[k]
+        for p in list(d.get("skins", [])) + [d.get("defaultSkin", {})]:
+            sk = self.resolve(k[0], p) if isinstance(p, dict) else None
+            sid = skin_ids.get(sk)
+            if sid and gid not in skins[sid]["gears"]:
+                skins[sid]["gears"].append(gid)
+    resources = []
+    for k, d in self.of_class("PlayerResource"):
+        n = d["_name"]
+        resources.append({"key": n, "name": strip_tags(self.loc(n)) or {"en": n}, "desc": strip_tags(self.loc(n + "_1")),
+                          "max": d.get("<Max>k__BackingField", 0), "item": bool(d.get("isItem")),
+                          "rarity": d.get("<Rarity>k__BackingField", 0), "hidden": d.get("<Visibility>k__BackingField", 0) != 0,
+                          "icon": self.export_icon(k[0], d.get("<Icon>k__BackingField"))})
+    resources.sort(key=lambda r: (r["item"], r["rarity"], r["key"]))
+    gear_ids = {g["asset"]: g["id"] for g in gears}
+    items = []
+    for k, d in self.of_class("AuthItem"):
+        ck = self.resolve(k[0], d.get("character", {}))
+        cd = self.parse(ck) if ck else None
+        info = self.resolve(ck[0], cd.get("<Info>k__BackingField", {})) if cd else None
+        items.append({"key": d.get("id"), "asset": d.get("m_Name"), "gear": gear_by_key.get(info),
+                      "rarity": d.get("rarity", 0), "icon": self.export_icon(k[0], d.get("icon"))})
+    dll = os.path.join(self.data_dir, "Managed", "Assembly-CSharp.dll")
+    out = {
+        "skins": skins,
+        "resources": resources,
+        "items": items,
+        "excludedUpgrades": {uid: {"id": uid, "key": u["key"], "name": u["name"], "rarity": u["rarity"],
+                                   "cells": len(u["pattern"]["cells"]), "icon": u["icon"]} for uid, u in excluded.items()},
+        "rollSteps": build_roll_steps(dll),
+    }
+    path = os.path.join(self.out_dir, "saveeditor.json")
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(out, fh, ensure_ascii=False, separators=(",", ":"))
+    log(f"Save editor data: {len(skins)} skins, {len(resources)} resources, {len(items)} items -> {path}")
+
+
+Extractor.write_save_editor_data = _save_editor_data
 
 
 def main():
